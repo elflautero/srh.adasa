@@ -30,6 +30,7 @@ public class MainController {
 	
 	@FXML StackPane stackPMainSearch;
 	@FXML StackPane stackPRegister;
+	@FXML StackPane stackPaneTop;
 	
 	
 	@FXML Pane pMainSearch;
@@ -51,9 +52,9 @@ public class MainController {
 		
 		
 		
-		AnchorPane.setTopAnchor(pMainTop, 0.0);
-	    AnchorPane.setLeftAnchor(pMainTop, 0.0);
-	    AnchorPane.setRightAnchor(pMainTop, 0.0);
+		AnchorPane.setTopAnchor(stackPaneTop, 0.0);
+	    AnchorPane.setLeftAnchor(stackPaneTop, 0.0);
+	    AnchorPane.setRightAnchor(stackPaneTop, 0.0);
 	    
 	    AnchorPane.setLeftAnchor(stackPMainSearch, 0.0);
 	    AnchorPane.setRightAnchor(stackPMainSearch, 0.0);
@@ -66,6 +67,7 @@ public class MainController {
 	    
 	    StackPane.setAlignment(pMainSearch,Pos.CENTER);
 	    StackPane.setAlignment(spRegister,Pos.CENTER);
+	    StackPane.setAlignment(pMainTop,Pos.CENTER);
 	    
 	    Platform.runLater(new Runnable(){
 

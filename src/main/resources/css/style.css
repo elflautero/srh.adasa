@@ -13,7 +13,7 @@
 	 
 }
 .pMainTopClass {
-	-fx-background-color: rgb(72,82,91,0.9);
+	
 }
 
 
@@ -51,4 +51,9 @@
     -fx-background-color: white;
     -fx-text-fill	: #3797DD;
     -fx-scale-y: 1.1;
+}
+
+
+.stackPaneClass {
+	-fx-background-color: rgb(72,82,91,0.9);
 }
