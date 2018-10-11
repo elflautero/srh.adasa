@@ -1,0 +1,54 @@
+.generalClassFont {
+	
+    -fx-font		: 14px "Arial";
+	-fx-font-family: "Roboto", "Arial", sans-serif;
+}
+
+.pRetLateral:hover {
+	-fx-background-color: red;
+}
+
+.pMainFootClass {
+	 -fx-background-color: #48525B;
+	 
+}
+.pMainTopClass {
+	-fx-background-color: rgb(72,82,91,0.9);
+}
+
+
+
+.btnMainClass {
+     -fx-background-color: #3797DD; 
+     -fx-text-fill	: #FFFFFF;
+     -fx-font-weight: bold;
+}
+
+.btnMainClass:pressed:hover {
+    -fx-scale-y: 0.9;
+    -fx-scale-x: 0.9;
+}
+
+.btnMainClass:hover {
+    -fx-background-color: white;
+    -fx-text-fill	: #3797DD;
+    -fx-scale-y: 1.1;
+}
+
+.btnMainClassTrans {
+	
+	-fx-background-color: transparent; 
+     -fx-text-fill	: #FFFFFF;
+     -fx-font-weight: bold;
+}
+
+.btnMainClassTrans:pressed:hover {
+    -fx-scale-y: 0.9;
+    -fx-scale-x: 0.9;
+}
+
+.btnMainClassTrans:hover {
+    -fx-background-color: white;
+    -fx-text-fill	: #3797DD;
+    -fx-scale-y: 1.1;
+}

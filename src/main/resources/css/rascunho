@@ -1,0 +1,168 @@
+/*
+		WebView wMaps = new WebView();
+		WebEngine weMaps = wMaps.getEngine();
+		weMaps.load("https://www.google.com.br/maps");
+		
+		WebView wSEI = new WebView();
+		WebEngine weSEI = wSEI.getEngine();
+		weSEI.load("https://sei.df.gov.br/sei/controlador.php?acao=procedimento_controlar&acao_origem=principal&acao_retorno=principal&inicializando=1&infra_sistema=100000100&infra_unidade_atual=110009258&infra_hash=5e7a09d9f1f1d46cb5c4c2c72ffb3e22d70cc4a2f934cc9e88d1cd901713ef94");
+		
+		
+		final Pane pMaps = new Pane();
+		
+			pMaps.getChildren().add(wMaps);
+		
+		final Pane pCad = new Pane();
+        
+		     pCad.setPrefSize(1500, 800);
+		     
+		     pCad.setLayoutX(2000);
+		     pCad.setLayoutY(100);
+		    
+		     pCad.setStyle("-fx-background-color: green");
+		     
+		
+        final Pane pSEI = new Pane();
+     
+	        pSEI.setPrefSize(1500, 800);
+			     
+	        pSEI.setLayoutX(2000);
+	        pSEI.setLayoutY(100);
+	        
+	        pSEI.getChildren().add(wSEI);
+	        
+	        
+	        TextField t = new  TextField();
+		        t.setPromptText("insira as coordenadas...");
+		        t.setPrefWidth(100);
+		        t.setLayoutX(30);
+        
+	    pCad.getChildren().add(t);
+	    
+	    Pane pLateral= new Pane();
+	    pLateral.setLayoutX(0);
+	    pLateral.setPrefSize(100, 900);
+	    
+	    pLateral.getStyleClass().add("pRetLateral");
+	    
+	    Pane pTop = new Pane();
+	    pTop.setLayoutX(0);
+	    //pTop.widthProperty().addListener();
+	    	
+		
+		Image imgMaps = new Image(getClass().getResourceAsStream("/images/imgMaps.png"));
+		Image imgSEI = new Image(getClass().getResourceAsStream("/images/imgSEI.jpg"));
+		Image imgArc = new Image(getClass().getResourceAsStream("/images/imgArchive.png"));
+		
+		
+		Button btnMaps = new  Button(null, new ImageView(imgMaps));
+		
+			btnMaps.setLayoutX(230);
+			btnMaps.setLayoutY(100);
+				
+			btnMaps.setOnAction(new EventHandler<ActionEvent>() {
+				    public void handle(ActionEvent e) {
+				    	
+				    	pCad.setLayoutX(2000);
+			    		pSEI.setLayoutX(2000);
+			    		
+				    	/*
+				    	if (pCad.getLayoutX() == 300) {
+				    		
+				    		pCad.setLayoutX(2000);
+				    		pSEI.setLayoutX(2000);
+				    	}
+				    		
+				    	else {
+				    		pCad.setLayoutX(300);
+				    		pSEI.setLayoutX(300);
+				    	}
+				    	*/
+				    	
+				    	
+				    }
+				});
+		
+		Button btnSEI = new  Button( null, new ImageView(imgSEI));
+		
+			btnSEI.setLayoutX(230);
+			btnSEI.setLayoutY(135);
+		
+		
+				btnSEI.setOnAction(new EventHandler<ActionEvent>() {
+				    public void handle(ActionEvent e) {
+				    	
+				    	if (pSEI.getLayoutX() == 2000) {
+				    		
+				    		
+				    		pSEI.setLayoutX(300);
+				    		pCad.setLayoutX(2000);
+				    	}
+				    		
+				    	else {
+				    		
+				    		
+				    		pSEI.setLayoutX(2000);
+				    		pCad.setLayoutX(2000);
+				    	}
+				    	
+				    }
+				});
+				
+			Button btnArc = new  Button(null, new ImageView(imgArc));
+				
+				btnArc.setLayoutX(230);
+				btnArc.setLayoutY(170);
+					
+				btnArc.setOnAction(new EventHandler<ActionEvent>() {
+					    public void handle(ActionEvent e) {
+					    	
+					    	
+					    	if (pCad.getLayoutX() == 300) {
+					    		
+					    		pCad.setLayoutX(2000);
+					    		pSEI.setLayoutX(2000);
+					    	}
+					    		
+					    	else {
+					    		
+					    		pCad.setLayoutX(300);
+					    		pSEI.setLayoutX(2000);
+					    	}
+					    
+					    	
+					    }
+					});
+		
+		
+		
+        Scene scene = new Scene(new Group(pMaps, pCad, pSEI, btnMaps, btnSEI, btnArc, pLateral));
+        
+        scene.getStylesheets().add("css/style.css");
+        
+        
+        
+        xxxxxxxxxxxxxxx
+        
+        
+        
+        
+        
+        
+        
+        
+         stage.setScene(scene); 
+        
+        System.out.println(stage.xProperty());
+        System.out.println(pCad.getLayoutX());
+        
+        //wMaps.setPrefSize(stage.getWidth(), stage.getHeight());
+        //wSEI.setPrefSize(pSEI.getWidth(), pSEI.getHeight());
+        
+        wMaps.minWidthProperty().bind(stage.widthProperty());
+        wMaps.minHeightProperty().bind(stage.heightProperty());
+        
+        wSEI.minWidthProperty().bind(pSEI.widthProperty());
+        wSEI.minHeightProperty().bind(pSEI.heightProperty());
+       
+        
