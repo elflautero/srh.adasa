@@ -3,4 +3,17 @@
   <groupId>com.fiscal</groupId>
   <artifactId>com.fical</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  	<dependencies>
+  	
+	  	<dependency>
+	        <groupId>de.jensd</groupId>
+	        <artifactId>fontawesomefx</artifactId>
+	        <version>8.9</version>
+	    </dependency>
+    
+  	</dependencies>
+   
+    
+    
 </project>

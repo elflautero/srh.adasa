@@ -1,3 +1,4 @@
+
 .generalClassFont {
 	
     -fx-font		: 14px "Arial";
@@ -19,7 +20,7 @@
 
 
 .btnMainClass {
-     -fx-background-color: #3797DD; 
+     -fx-background-color: #0494C8;  /*#3797DD; */
      -fx-text-fill	: #FFFFFF;
      -fx-font-weight: bold;
 }
@@ -53,7 +54,26 @@
     -fx-scale-y: 1.1;
 }
 
+btnMainClassTransRegister {
+
+	-fx-background-color: transparent; 
+     -fx-text-fill	: rgb(72,82,91,1);
+     -fx-font-weight: bold;
+}
+
 
 .stackPaneClass {
-	-fx-background-color: rgb(72,82,91,0.9);
+	-fx-background-color: rgb(72,82,91,0.95);
 }
+stackPaneClassRegister {
+	-fx-background-color: white;
+	
+}
+
+
+.leftPaneMainClass {
+     -fx-background-color: transparent;
+     -fx-text-fill	: #FFFFFF;
+     -fx-font-weight: bold;
+}
+
