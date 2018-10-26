@@ -1,4 +1,6 @@
-package controllers;
+package controladores;
+
+import java.io.IOException;
 
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -8,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -23,16 +26,20 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
-public class MainController {
-	
+public class ControladorPrincipal {
 	
 	@FXML AnchorPane apMain;
+	
+	ControladorFiscalizacao controladorFiscalizacao;
 	
 	@FXML Pane pMainTop;
 	@FXML Pane pCenter;
 	@FXML Pane pMainSearch;
+	
 	Pane pBrowserSEI = new Pane();
+	
 	Pane pFiscalizacao  = new Pane();
+	Pane p;
 	
 	@FXML ScrollPane spWebMap;
 	@FXML ScrollPane spWebBrowser;
@@ -111,17 +118,18 @@ public class MainController {
 	    
 	    bpCenter.setDisable(true);
 	    
-        // Pane Fiscalizacao //
-	    
+        // -- Pane Fiscalizacao -- //
 	    pFiscalizacao.prefWidthProperty().bind(pCenter.widthProperty());
+	    
+	    pFiscalizacao.setStyle("-fx-background-color: transparent;"); //
 	    
 	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
 	    AnchorPane.setBottomAnchor(pFiscalizacao, 45.0);
 	    
-	    pFiscalizacao.setStyle("-fx-background-color: #ffff00;"); //
-	    
-	    // Para começar fora da visão da tela
+	    // Para abrir o pane fora do campo de visão
 	    pFiscalizacao.setTranslateY(880.0);
+	    
+	    //pFiscalizacao.getChildren().add(ControladorPaneFiscalizacao.pFiscalizacao);
 	    
 	    apMain.getChildren().add(pFiscalizacao);
 	    
@@ -160,6 +168,16 @@ public class MainController {
 				wMaps = new WebView();
 				WebEngine weMaps = wMaps.getEngine();
 				weMaps.load("https://www.google.com.br/maps");
+				
+				// "https://www.google.com.br/maps"
+				
+				// "http://gis.adasa.df.gov.br/portal/home/index.html"
+				
+				// http://gis.adasa.df.gov.br/portal/home/webmap/viewer.html?useExisting=1
+				
+				// http://gis.adasa.df.gov.br/portal/apps/webappviewer/index.html?id=ecc4fad54e6248dfba416d25c23142da
+				
+			// http://gis.adasa.df.gov.br/portal/home/webscene/viewer.html
 				
 				
 				wMaps.minWidthProperty().bind(apMain.widthProperty());
@@ -240,8 +258,6 @@ public class MainController {
         
         btnFiscal.setOnAction((ActionEvent evt)->{
         	
-        	System.out.println(pFiscalizacao.getTranslateY());
-        	
         	dblFiscal =  pFiscalizacao.getTranslateY();
         	
         	if(dblFiscal.equals(0.0)){
@@ -255,6 +271,31 @@ public class MainController {
             		upFiscal.play();
             		downBrowser.play();
             		}
+        	
+        	if (p == null) {
+	        	p = new Pane();
+	        	
+	        	controladorFiscalizacao = new ControladorFiscalizacao();
+	        	
+	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Fiscalizacao.fxml"));
+				
+				loader.setRoot(p);
+				loader.setController(controladorFiscalizacao);
+				try {
+					loader.load();
+				} catch (IOException e) {
+					System.out.println("erro");
+					e.printStackTrace();
+				}
+				
+				p.prefWidthProperty().bind(pFiscalizacao.widthProperty());
+				p.prefHeightProperty().bind(pFiscalizacao.heightProperty());
+				
+				p.setStyle("-fx-background-color: transparent;");
+				
+				pFiscalizacao.getChildren().add(p);
+        	}
+        	
         	
         });
         

@@ -1,4 +1,4 @@
-package com.srh.adasa;
+package principal;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class Main extends Application{
+public class Principal extends Application{
 	
 	public Parent rootNode;
 	
@@ -20,7 +20,7 @@ public class Main extends Application{
     // metodo controller //
     public void init() throws Exception {
         
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Principal.fxml"));
         rootNode = fxmlLoader.load();
         
         }

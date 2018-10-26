@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1297.0" prefWidth="1306.0" styleClass="generalClassFont" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1297.0" prefWidth="1306.0" styleClass="generalClassFont" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.ControladorPrincipal">
    <children>
       <ScrollPane fx:id="spWebMap" layoutX="368.0" layoutY="523.0" prefHeight="205.0" prefWidth="605.0">
         <content>
@@ -33,14 +33,14 @@
             <Pane fx:id="pCenter" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
-      <StackPane fx:id="stackPaneTop" prefHeight="110.0" prefWidth="1305.0" styleClass="stackPaneClass" stylesheets="@../css/style.css">
+      <StackPane fx:id="stackPaneTop" prefHeight="63.0" prefWidth="1305.0" styleClass="stackPaneClass" stylesheets="@../css/style.css">
          <children>
-            <Pane fx:id="pMainTop" maxHeight="73.0" maxWidth="1240.0" prefHeight="73.0" prefWidth="1240.0">
+            <Pane fx:id="pMainTop" maxHeight="40.0" maxWidth="1240.0" prefHeight="40.0" prefWidth="1240.0">
                <children>
-                  <Button fx:id="btnMenu" layoutX="124.0" layoutY="24.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="BUSCA" />
-                  <Button fx:id="btnRegister" layoutX="235.0" layoutY="24.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="CADASTRO" />
-                  <Button fx:id="btnSEI" layoutX="344.0" layoutY="24.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="SEI" />
-                  <Button layoutX="14.0" layoutY="24.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="HOME" />
+                  <Button fx:id="btnMenu" layoutX="142.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="BUSCA" />
+                  <Button fx:id="btnRegister" layoutX="253.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="CADASTRO" />
+                  <Button fx:id="btnSEI" layoutX="362.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="SEI" />
+                  <Button layoutX="32.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="HOME" />
                </children>
             </Pane>
          </children>
