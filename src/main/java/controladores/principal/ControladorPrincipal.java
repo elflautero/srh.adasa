@@ -1,7 +1,8 @@
-package controladores;
+package controladores.principal;
 
 import java.io.IOException;
 
+import controladores.fiscalizacao.ControladorFiscalizacao;
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
@@ -25,11 +26,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
+import mapas.GoogleMap;
 
 public class ControladorPrincipal {
 	
 	@FXML AnchorPane apMain;
 	
+	// para chamar a parte da fiscalizacao //
 	ControladorFiscalizacao controladorFiscalizacao;
 	
 	@FXML Pane pMainTop;
@@ -66,6 +69,8 @@ public class ControladorPrincipal {
 	WebView wMaps;
 	WebView wBrowser;
 	
+	static GoogleMap googleMaps;
+	
 	
 	@FXML ComboBox <String> cbMainSearch;
 	ObservableList<String> olCBMainSearch;
@@ -86,6 +91,12 @@ public class ControladorPrincipal {
 	
 	TranslateTransition downBrowser;
 	TranslateTransition upBrowser;
+	
+	public static GoogleMap capturarGoogleMaps () {
+		
+    	return googleMaps;
+    }
+    
 	
 	@FXML 
 	private void initialize() {
@@ -114,12 +125,17 @@ public class ControladorPrincipal {
 	    AnchorPane.setRightAnchor(bpCenter, 0.0);
 	    AnchorPane.setBottomAnchor(bpCenter, 45.0); //-632.0
 	    
+	    
+	    pCenter.minWidthProperty().bind(bpCenter.widthProperty().subtract(300.0));
 	    pCenter.maxWidthProperty().bind(bpCenter.widthProperty().subtract(300.0));
+	    
 	    
 	    bpCenter.setDisable(true);
 	    
         // -- Pane Fiscalizacao -- //
-	    pFiscalizacao.prefWidthProperty().bind(pCenter.widthProperty());
+	    pFiscalizacao.minWidthProperty().bind(pCenter.widthProperty());
+	    pFiscalizacao.maxWidthProperty().bind(pCenter.widthProperty());
+	    
 	    
 	    pFiscalizacao.setStyle("-fx-background-color: transparent;"); //
 	    
@@ -165,25 +181,40 @@ public class ControladorPrincipal {
 
 			public void run() {
 				
+				/*
 				wMaps = new WebView();
 				WebEngine weMaps = wMaps.getEngine();
 				weMaps.load("https://www.google.com.br/maps");
 				
-				// "https://www.google.com.br/maps"
-				
-				// "http://gis.adasa.df.gov.br/portal/home/index.html"
-				
-				// http://gis.adasa.df.gov.br/portal/home/webmap/viewer.html?useExisting=1
-				
-				// http://gis.adasa.df.gov.br/portal/apps/webappviewer/index.html?id=ecc4fad54e6248dfba416d25c23142da
-				
-			// http://gis.adasa.df.gov.br/portal/home/webscene/viewer.html
-				
-				
 				wMaps.minWidthProperty().bind(apMain.widthProperty());
 				wMaps.minHeightProperty().bind(apMain.heightProperty());
 				
+				
 				spWebMap.setContent(wMaps);
+				
+				*/
+				//spWebMap.setContent(wMaps);
+				
+				googleMaps = new GoogleMap();
+				
+				//spWebMap.minWidthProperty().bind(apMain.widthProperty());
+				//spWebMap.minHeightProperty().bind(apMain.heightProperty());
+				
+				spWebMap.setContent(googleMaps);
+				
+				apMain.widthProperty().addListener(
+			    		(observable, oldValue, newValue) -> {
+			    			googleMaps.resizeWidthMap ((Double)newValue);
+				    	     
+				    	    }
+			    		);
+				
+				apMain.heightProperty().addListener(
+			    		(observable, oldValue, newValue) -> {
+			    			googleMaps.resizeHeightMap((Double)newValue);
+				    	     
+				    	    }
+			    		);
 				
 				
 				AnchorPane.setTopAnchor(spWebMap, 0.0);
@@ -197,7 +228,7 @@ public class ControladorPrincipal {
 			
     	});
 	    
-        
+	    
         btnHome = GlyphsDude.createIconButton(
         		FontAwesomeIcon.HOME,
         		"HOME", 
@@ -273,23 +304,27 @@ public class ControladorPrincipal {
             		}
         	
         	if (p == null) {
+        		
 	        	p = new Pane();
 	        	
 	        	controladorFiscalizacao = new ControladorFiscalizacao();
 	        	
-	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Fiscalizacao.fxml"));
+	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/Fiscalizacao.fxml"));
 				
 				loader.setRoot(p);
 				loader.setController(controladorFiscalizacao);
 				try {
 					loader.load();
 				} catch (IOException e) {
-					System.out.println("erro");
+					System.out.println("erro na abertura do pane fiscalizacao");
 					e.printStackTrace();
 				}
 				
-				p.prefWidthProperty().bind(pFiscalizacao.widthProperty());
-				p.prefHeightProperty().bind(pFiscalizacao.heightProperty());
+				p.minWidthProperty().bind(pFiscalizacao.widthProperty());
+				p.minHeightProperty().bind(pFiscalizacao.heightProperty());
+				
+				p.maxWidthProperty().bind(pFiscalizacao.widthProperty());
+				p.maxHeightProperty().bind(pFiscalizacao.heightProperty());
 				
 				p.setStyle("-fx-background-color: transparent;");
 				
@@ -364,6 +399,14 @@ public class ControladorPrincipal {
 	            }
 	            
         });
+        
+        btnMapa.setOnAction((ActionEvent evt)->{
+        	
+        	googleMaps.setMarkerPosition(-15.0,-47.0);
+	    	googleMaps.setMapCenter(-15.0,-47.0);
+	    	System.out.println("bnt map clicado");
+        }
+        );
         
         	
 	}

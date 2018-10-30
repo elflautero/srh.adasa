@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1297.0" prefWidth="1306.0" styleClass="generalClassFont" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.ControladorPrincipal">
+<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1297.0" prefWidth="1306.0" styleClass="generalClassFont" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.principal.ControladorPrincipal">
    <children>
       <ScrollPane fx:id="spWebMap" layoutX="368.0" layoutY="523.0" prefHeight="205.0" prefWidth="605.0">
         <content>
@@ -19,7 +19,7 @@
       </ScrollPane>
       <StackPane fx:id="stackPMainSearch" layoutX="-21.0" layoutY="728.0" prefHeight="83.0" prefWidth="1305.0">
          <children>
-            <Pane fx:id="pMainSearch" maxHeight="63.0" maxWidth="1155.0" prefHeight="63.0" prefWidth="1190.0" styleClass="pMainFootClass" stylesheets="@../css/style.css">
+            <Pane fx:id="pMainSearch" maxHeight="63.0" maxWidth="1155.0" prefHeight="63.0" prefWidth="1190.0" styleClass="pMainFootClass" stylesheets="@../../css/style.css">
                <children>
                   <TextField layoutX="182.0" layoutY="12.0" prefHeight="40.0" prefWidth="791.0" promptText="..." />
                   <Button fx:id="btnMainSearch" layoutX="984.0" layoutY="11.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" styleClass="btnMainClass" text="BUSCAR" />
@@ -33,7 +33,7 @@
             <Pane fx:id="pCenter" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
-      <StackPane fx:id="stackPaneTop" prefHeight="63.0" prefWidth="1305.0" styleClass="stackPaneClass" stylesheets="@../css/style.css">
+      <StackPane fx:id="stackPaneTop" prefHeight="63.0" prefWidth="1305.0" styleClass="stackPaneClass" stylesheets="@../../css/style.css">
          <children>
             <Pane fx:id="pMainTop" maxHeight="40.0" maxWidth="1240.0" prefHeight="40.0" prefWidth="1240.0">
                <children>

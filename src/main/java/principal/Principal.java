@@ -20,7 +20,7 @@ public class Principal extends Application{
     // metodo controller //
     public void init() throws Exception {
         
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Principal.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/principal/Principal.fxml"));
         rootNode = fxmlLoader.load();
         
         }
