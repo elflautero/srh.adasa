@@ -18,13 +18,17 @@
                <children>
                   <BorderPane fx:id="bpDemanda" prefHeight="419.0" prefWidth="641.0">
                      <top>
-                        <Pane maxHeight="332.0" maxWidth="556.0" prefHeight="332.0" prefWidth="556.0" style="-fx-background-color: #A9F5F2;" BorderPane.alignment="CENTER">
+                        <Pane maxHeight="332.0" maxWidth="556.0" prefHeight="321.0" prefWidth="405.0" style="-fx-background-color: #A9F5F2;" BorderPane.alignment="CENTER">
                            <children>
-                              <Label fx:id="lblTeste" layoutX="200.0" layoutY="14.0" prefHeight="58.0" prefWidth="168.0" style="-fx-background-color: #e6ccff;" />
-                              <Button fx:id="btnTeste" layoutX="235.0" layoutY="83.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="114.0" text="clique" />
-                              <TextField fx:id="tfLat" layoutX="185.0" layoutY="175.0" promptText="tfLat" />
-                              <TextField fx:id="tfLng" layoutX="185.0" layoutY="210.0" />
-                              <Button fx:id="btnLatLng" layoutX="233.0" layoutY="250.0" mnemonicParsing="false" text="Localizar" />
+                              <Pane layoutX="169.0" layoutY="12.0" prefHeight="272.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="lblTeste" layoutX="23.0" layoutY="21.0" prefHeight="25.0" prefWidth="155.0" style="-fx-background-color: #e6ccff;" />
+                                    <Button fx:id="btnTeste" layoutX="22.0" layoutY="121.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="clique" />
+                                    <TextField fx:id="tfLat" layoutX="22.0" layoutY="55.0" prefHeight="25.0" prefWidth="155.0" promptText="latitude" />
+                                    <TextField fx:id="tfLng" layoutX="22.0" layoutY="88.0" prefHeight="25.0" prefWidth="155.0" promptText="longitude" />
+                                    <Button fx:id="btnLatLng" layoutX="69.0" layoutY="219.0" mnemonicParsing="false" text="Localizar" />
+                                 </children>
+                              </Pane>
                            </children>
                         </Pane>
                      </top>

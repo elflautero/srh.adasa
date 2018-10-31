@@ -75,7 +75,7 @@ public class GoogleMap extends Parent {
 	        });
 	    }
 
-	    // método de comunicação com o webEngine //
+	    // metodo de comunicacao com o webEngine //
 	    private void initCommunication() {
 	        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
 	        {
@@ -110,7 +110,7 @@ public class GoogleMap extends Parent {
 	            doc.eval(str);
 	             }
 	        	catch (JSException js){ 
-	            System.out.println("não ready execao de leitura javascript " + js);
+	            System.out.println("nao ready execao de leitura javascript " + js);
 	        	}
 	        }
 	        else {
@@ -142,7 +142,7 @@ public class GoogleMap extends Parent {
 	    
 	    public void handle(double lat, double lng, String endMap) {
 	    	
-	    	System.out.println("método handle chamado: " + lat + " e " + lng + "e endereço: " + endMap);
+	    	System.out.println("metodo handle chamado: " + lat + " e " + lng + "e endereco: " + endMap);
 	    	
 	    	/*
 	    	TabEnderecoController.latDec = Double.toString(lat);
