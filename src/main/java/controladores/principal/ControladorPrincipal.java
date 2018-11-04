@@ -296,13 +296,13 @@ public class ControladorPrincipal {
         	if(dblFiscal.equals(0.0)){
             	
             	downFiscal.play(); 
-            	downBrowser.play();
+            	pBrowserSEI.setTranslateY(880.0);//downBrowser.play();
         		} 
             	
             	else {
             			
             		upFiscal.play();
-            		downBrowser.play();
+            		pBrowserSEI.setTranslateY(880.0); //downBrowser.play();
             		}
         	
         	if (p == null) {
@@ -391,12 +391,12 @@ public class ControladorPrincipal {
             if(dblBrowser.equals(0.0)){
             	
             	downBrowser.play();
-            	downFiscal.play();
+            	pFiscalizacao.setTranslateY(880.0);//downFiscal.play();
             	
 	            } else {
 	            
 	            	upBrowser.play();
-	            	downFiscal.play();
+	            	pFiscalizacao.setTranslateY(880.0);//downFiscal.play();
 	            
 	            }
 	            
