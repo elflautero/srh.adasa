@@ -47,6 +47,8 @@ public class ControladorPrincipal {
 	@FXML ScrollPane spWebMap;
 	@FXML ScrollPane spWebBrowser;
 	
+	@FXML AnchorPane apWebMap;
+	
 	@FXML TextField txtMainSearch = new TextField();
 	
 	
@@ -200,7 +202,7 @@ public class ControladorPrincipal {
 				//spWebMap.minWidthProperty().bind(apMain.widthProperty());
 				//spWebMap.minHeightProperty().bind(apMain.heightProperty());
 				
-				spWebMap.setContent(googleMaps);
+				apWebMap.getChildren().add(googleMaps);  //.setContent(googleMaps);
 				
 				apMain.widthProperty().addListener(
 			    		(observable, oldValue, newValue) -> {
@@ -217,7 +219,7 @@ public class ControladorPrincipal {
 			    		);
 				
 				
-				AnchorPane.setTopAnchor(spWebMap, 0.0);
+				AnchorPane.setTopAnchor(spWebMap, 63.0);
 				AnchorPane.setLeftAnchor(spWebMap, 0.0);
 			    AnchorPane.setRightAnchor(spWebMap, 0.0);
 			    AnchorPane.setBottomAnchor(spWebMap, 0.0);

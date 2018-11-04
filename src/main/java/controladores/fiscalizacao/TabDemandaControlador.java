@@ -14,12 +14,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import mapas.CoordinateConversion;
-import uk.me.jstott.jcoord.LatLng;
-import uk.me.jstott.jcoord.OSRef;
-import uk.me.jstott.jcoord.RefEll;
-import uk.me.jstott.jcoord.Test;
-import uk.me.jstott.jcoord.UTMRef;
+
+
 
 public class TabDemandaControlador implements Initializable {
 	
@@ -62,41 +58,11 @@ public class TabDemandaControlador implements Initializable {
 		btnTeste.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
 		    	
-		        double latitude = Double.parseDouble(tfLat.getText());
-		        double longitude = Double.parseDouble(tfLng.getText());
-		        
-		        
-		        CoordinateConversion coord = new CoordinateConversion();
-		        
-		        String strUTM = coord.latLon2UTM(latitude,longitude);
-		        
-		        System.out.println("Decimal convertida: " + coord.latLon2UTM(latitude,longitude));
-		        
-		        System.out.println("Decimal convertida para GRUTM "  + coord.latLon2MGRUTM(latitude,longitude));
-		        
-		        System.out.print("converter a UTM convertida para Decimal " + coord.utm2LatLon(strUTM)[0]);
-		        System.out.println(coord.utm2LatLon(strUTM)[1]);
-		        
-		        System.out.println("degree do radian " + coord.radianToDegree(latitude));
-		        
-		        
-		        // utm2LatLon(String UTM)
+		       // double latitude = Double.parseDouble(tfLat.getText());
+		        //double longitude = Double.parseDouble(tfLng.getText());
 		        
 		        
 		        
-		        //CoordinateConversion.latLon2UTM(latitude,longitude);
-		       
-		        
-		        
-		        /*
-		         * 
-		         * latLng.toUTMRef() + " e to osgb36 " + latLng.toOSGB36() + " e to wgs84 " +  latLng.toWGS84() 
-		         * 
-		         * 
-		         */
-		        // -4921405.704050833 e -7820198.36591879
-		        
-		       // certo universidade de Montana 284947 8340702.3
 		        
 		    }
 		});

@@ -40,8 +40,8 @@ public class GoogleMap extends Parent {
 		
 		public void resizeHeightMap (Double hMap) {
 			
-			webView.setMaxHeight(hMap + 10);
-			webView.setMinHeight(hMap + 10);
+			webView.setMaxHeight(hMap);
+			webView.setMinHeight(hMap);
 	       
 	        
 		}
@@ -55,7 +55,12 @@ public class GoogleMap extends Parent {
 	        webEngine = webView.getEngine();
 	        webView.setPrefWidth(1900);
 	        webView.setPrefHeight(710);
-	        webEngine.load(getClass().getResource("/html/mapas/map.html").toExternalForm()); // originalMap
+	        webEngine.load(getClass().getResource("/html/mapas/mapaPrincipal/mapaPrincipal.html").toExternalForm()); // originalMap
+	        
+	        
+	        //  /html/mapas/mapaPrincipal/mapaPrincipal.html
+	        // /html/mapas/map.html
+	        
 	        
 	        ready = false;
 	        
