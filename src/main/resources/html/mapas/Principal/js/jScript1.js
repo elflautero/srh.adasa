@@ -13,11 +13,12 @@ function get_click_position(event){
     	document.getElementById('lng').value = lng;  // não  vai usar mais
     	document.getElementById('latlng').value = lat + "," + lng;
 		var endMap = "";
-    	app.handle(lat, lng, endMap);
+    	//app.handle(lat, lng, endMap);
     	//app.handle(lat, lng);
     }
 
 function setMarkerPosition(lat, lng) {
+	
         var clickLatLng = new google.maps.LatLng(lat, lng);
         marker.setPosition(clickLatLng);
     }
@@ -120,7 +121,7 @@ function initAutocomplete() {
 	//-- opcoes do mapa --//
 	 var mapOptions = {
 	        center: defLatLng,
-	        zoom: 10,
+	        zoom: 11,
 	        mapTypeId: google.maps.MapTypeId.ROADMAP,
 	        scaleControl: true,
 	        disableDefaultUI: true // desabilitar controles

@@ -1,12 +1,14 @@
 package mapas;
 
 
+import controladores.principal.ControladorPrincipal;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
@@ -35,7 +37,6 @@ public class GoogleMap extends Parent {
 	        webView.setMaxWidth(wMap);
 	        webView.setMinWidth(wMap);
 	       
-	        
 		}
 		
 		public void resizeHeightMap (Double hMap) {
@@ -43,11 +44,8 @@ public class GoogleMap extends Parent {
 			webView.setMaxHeight(hMap);
 			webView.setMinHeight(hMap);
 	       
-	        
 		}
 		
-		 
-
 	    // inicializacao do webview e mapa html javascript //
 	    void initMap()
 	    {
@@ -55,12 +53,7 @@ public class GoogleMap extends Parent {
 	        webEngine = webView.getEngine();
 	        webView.setPrefWidth(1900);
 	        webView.setPrefHeight(710);
-	        webEngine.load(getClass().getResource("/html/mapas/mapaPrincipal/mapaPrincipal.html").toExternalForm()); // originalMap
-	        
-	        
-	        //  /html/mapas/mapaPrincipal/mapaPrincipal.html
-	        // /html/mapas/map.html
-	        
+	        webEngine.load(getClass().getResource("/html/mapas/Principal/index.html").toExternalForm()); // originalMap
 	        
 	        ready = false;
 	        
@@ -101,14 +94,6 @@ public class GoogleMap extends Parent {
 	    } 
 	   
 	    private void invokeJS(final String str) {
-	    	/*
-	    	if (ready == true) {
-	    		System.out.println("ready true");
-	    	}
-	    	else { 
-	    		System.out.println("ready false");
-	    	}
-	    	*/
 	    	
 	        if(ready) {
 	        	try {
@@ -139,15 +124,28 @@ public class GoogleMap extends Parent {
 	            
 	        }
 	    }
+	    
+	    
 	
 	    public void setOnMapLatLngChanged(EventHandler<MapEvent> eventHandler) {
 	        onMapLatLngChanged = eventHandler;
 	    }
 	    
-	    
-	    public void handle(double lat, double lng, String endMap) {
+	    public void handle(String ddLatLon, String utmLatLon) {
 	    	
-	    	System.out.println("metodo handle chamado: " + lat + " e " + lng + "e endereco: " + endMap);
+	    	
+	    	/*
+	    	Alert a = new Alert (Alert.AlertType.INFORMATION);
+			a.setTitle("Alerta!!!");
+			a.setContentText(ddLatLon + " e " + utmLatLon);
+			a.setHeaderText(null);
+			a.show();
+			*/
+			
+			ControladorPrincipal.lblCoord1.setText(ddLatLon);
+			ControladorPrincipal.lblCoord2.setText(utmLatLon);
+			
+	    	//System.out.println("metodo handle chamado: " + lat + " e " + lng + "e endereco: " + endMap);
 	    	
 	    	/*
 	    	TabEnderecoController.latDec = Double.toString(lat);
@@ -166,7 +164,32 @@ public class GoogleMap extends Parent {
 	        */
 	        
 	    }
+	    
+	    public void setAllCoords(String dd, String dms, String utm) {
+	    	
+	    	ControladorPrincipal.lblDD.setText(dd);
+	    	ControladorPrincipal.lblDMS.setText(dms);
+	    	ControladorPrincipal.lblUTM.setText(utm);
+	    	
+	    	System.out.println(dd + " e " + dms + " e " + utm);
+	    }
 
+	    public void convDD (String lat, String lon) {
+	    	
+	    	invokeJS("obterUTMDMS(" + lat + ", " + lon + ")");
+	    }
+	    
+	    public void convDMS (String lat, String lon) {
+	    	
+	    	invokeJS("obterDDUTM(\'" + ""+ lat + ""  + "\', \'" + ""+ lon + "" + "\');"); 
+	    	
+	    }
+	    
+	    public void convUTM(String latLon) {
+	    	
+	    	invokeJS("obterDDDMS(\'" + ""+ latLon + ""  + "\');"); 
+	    	
+	    }
 	    
 	    public void setMarkerPosition(double lat, double lng) {
 	    	

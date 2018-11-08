@@ -3,27 +3,26 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1297.0" prefWidth="1306.0" styleClass="generalClassFont" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.principal.ControladorPrincipal">
+<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1297.0" prefWidth="1306.0" styleClass="clFonteGeral" stylesheets="@../../css/principal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.principal.ControladorPrincipal">
    <children>
-      <ScrollPane fx:id="spWebMap" layoutX="368.0" layoutY="523.0" prefHeight="205.0" prefWidth="605.0">
+      <ScrollPane fx:id="spWebMap" layoutX="366.0" layoutY="500.0" prefHeight="205.0" prefWidth="605.0">
         <content>
           <AnchorPane fx:id="apWebMap" minHeight="0.0" minWidth="0.0" prefHeight="216.0" prefWidth="609.0" />
         </content>
       </ScrollPane>
-      <StackPane fx:id="stackPMainSearch" layoutX="-21.0" layoutY="728.0" prefHeight="83.0" prefWidth="1305.0">
+      <StackPane fx:id="stackPMainSearch" layoutX="-21.0" layoutY="715.0" prefHeight="96.0" prefWidth="1305.0">
          <children>
-            <Pane fx:id="pMainSearch" maxHeight="63.0" maxWidth="1155.0" prefHeight="63.0" prefWidth="1190.0" styleClass="pMainFootClass" stylesheets="@../../css/style.css">
+            <Pane fx:id="pConversor" maxHeight="97.0" maxWidth="1050.0" prefHeight="97.0" prefWidth="1050.0" styleClass="clPaneConversor" stylesheets="@../../css/principal.css">
                <children>
-                  <TextField layoutX="182.0" layoutY="12.0" prefHeight="40.0" prefWidth="791.0" promptText="..." />
-                  <Button fx:id="btnMainSearch" layoutX="984.0" layoutY="11.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" styleClass="btnMainClass" text="BUSCAR" />
-                  <ComboBox fx:id="cbMainSearch" layoutX="11.0" layoutY="11.0" prefHeight="40.0" prefWidth="160.0" styleClass="btnMainClass" />
+                  <Button fx:id="btnMainSearch" layoutX="937.0" layoutY="53.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipal" text="BUSCAR" />
+                  <ComboBox fx:id="cbMainSearch" layoutX="11.0" layoutY="53.0" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipal" />
+                  <Pane fx:id="pConversorCentro" layoutX="108.0" layoutY="48.0" prefHeight="40.0" prefWidth="829.0" />
                </children>
             </Pane>
          </children>
@@ -33,18 +32,18 @@
             <Pane fx:id="pCenter" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
-      <StackPane fx:id="stackPaneTop" prefHeight="63.0" prefWidth="1305.0" styleClass="stackPaneClass" stylesheets="@../../css/style.css">
+      <StackPane fx:id="stackPaneTop" prefHeight="63.0" prefWidth="1305.0" styleClass="clStackPaneSuperiorPrincipal" stylesheets="@../../css/principal.css">
          <children>
             <Pane fx:id="pMainTop" maxHeight="40.0" maxWidth="1240.0" prefHeight="40.0" prefWidth="1240.0">
                <children>
-                  <Button fx:id="btnMenu" layoutX="142.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="BUSCA" />
-                  <Button fx:id="btnRegister" layoutX="253.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="CADASTRO" />
-                  <Button fx:id="btnSEI" layoutX="362.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="SEI" />
-                  <Button layoutX="32.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="btnMainClassTrans" text="HOME" />
+                  <Button fx:id="btnMenu" layoutX="142.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipalSuperior" text="BUSCA" />
+                  <Button fx:id="btnRegister" layoutX="253.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipalSuperior" text="CADASTRO" />
+                  <Button fx:id="btnSEI" layoutX="362.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipalSuperior" text="SEI" />
+                  <Button layoutX="32.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipalSuperior" text="HOME" />
                </children>
             </Pane>
          </children>
       </StackPane>
-      <VBox fx:id="vbLateral" layoutX="14.0" layoutY="194.0" prefHeight="408.0" prefWidth="55.0" styleClass="leftPaneMainClass" />
+      <VBox fx:id="vbLateral" layoutX="14.0" layoutY="194.0" prefHeight="408.0" prefWidth="55.0" styleClass="clPanePrincipalLateral" />
    </children>
 </AnchorPane>

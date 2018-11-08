@@ -1,78 +1,68 @@
 
-.generalClassFont {
-	
-    -fx-font		: 14px "Arial";
+.clFonteGeral {
+    -fx-font		: 13px "Arial";
 	-fx-font-family: "Roboto", "Arial", sans-serif;
 }
 
-.pRetLateral:hover {
-	-fx-background-color: red;
-}
-
-.pMainFootClass {
-	 -fx-background-color: #48525B;
+.clPaneConversor {
+	 -fx-background-color: rgba(24, 29, 36, 1);
 	 
 }
-.pMainTopClass {
-	
-}
 
-.btnMainClass {
-     -fx-background-color: #0494C8;  /*#3797DD; */
+.clBotoesPrincipal{
+     -fx-background-color: #3A86C8;  /*#3797DD; */
      -fx-text-fill	: #FFFFFF;
+     -fx-text-base-color: #FFFFFF;
      -fx-font-weight: bold;
 }
 
-.btnMainClass:pressed:hover {
+.clBotoesPrincipal:pressed:hover {
     -fx-scale-y: 0.9;
     -fx-scale-x: 0.9;
+    -fx-text-base-color: #3A86C8;
 }
 
-.btnMainClass:hover {
+.clBotoesPrincipal:hover {
     -fx-background-color: white;
-    -fx-text-fill	: #3797DD;
+    -fx-text-fill	: #3A86C8;
     -fx-scale-y: 1.1;
+    -fx-text-base-color: #3A86C8;
 }
 
-.btnMainClassTrans {
-	
+.clBotoesPrincipalSuperior {
 	-fx-background-color: transparent; 
      -fx-text-fill	: #FFFFFF;
      -fx-font-weight: bold;
 }
 
-.btnMainClassTrans:pressed:hover {
+.clBotoesPrincipalSuperior:pressed:hover {
     -fx-scale-y: 0.9;
     -fx-scale-x: 0.9;
 }
 
-.btnMainClassTrans:hover {
+.clBotoesPrincipalSuperior:hover {
     -fx-background-color: white;
-    -fx-text-fill	: #3797DD;
+    -fx-text-fill	: #3A86C8;
     -fx-scale-y: 1.1;
 }
 
 btnMainClassTransRegister {
-
 	-fx-background-color: transparent; 
      -fx-text-fill	: rgb(72,82,91,1);
      -fx-font-weight: bold;
 }
 
-
-.stackPaneClass {
+.clStackPaneSuperiorPrincipal {
 	-fx-background-color: rgba(24, 29, 36, 1); /*rgb(72,82,91,0.95);*/
 }
-stackPaneClassRegister {
-	-fx-background-color: white;
-	
-}
 
-
-.leftPaneMainClass {
+.clPanePrincipalLateral {
      -fx-background-color: transparent;
      -fx-text-fill	: #FFFFFF;
      -fx-font-weight: bold;
+}
+.clBotoesLateral {
+	-fx-background-color: white;
 }
 
 
