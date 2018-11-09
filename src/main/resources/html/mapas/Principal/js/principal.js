@@ -19,7 +19,7 @@ function initAutocomplete() {
 
 	var mapOptions = {
 	        center: defLatLng,
-	        zoom: 11,
+	        zoom: 4,
 	        mapTypeId: google.maps.MapTypeId.ROADMAP,
 	        scaleControl: true,
 	        disableDefaultUI: true // desabilitar controles

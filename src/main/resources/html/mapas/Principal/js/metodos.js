@@ -85,11 +85,13 @@ function setMarkerPosition (lat, lng) {
 	// limpar marcadores antigos dos cliques //
 	marker.setMap(null);
 
+	
 	// limpar marcadores antigos das buscas por endereços //
 	markers.forEach(function(marker) {
 	  marker.setMap(null);
 	});
 	markers = [];
+
 
 	// criar um novo marcador a partir da posição clicada //
 	marker = new google.maps.Marker({
@@ -102,7 +104,7 @@ function setMarkerPosition (lat, lng) {
 
 }
 
-function obterUTMDMS (lat,lon) {
+function obterUTMDMS (typeCoordinate, lat,lon) {
 	// conversão DD para DMS //
  	var lat = Dms.parseDMS(lat);
  	var lon = Dms.parseDMS(lon);
@@ -113,29 +115,41 @@ function obterUTMDMS (lat,lon) {
  	
  	var resultadoLatLon = latLon + ' e ' + toUTM;
 	
- 	app.handle (latLon, toUTM);
+ 	app.handle (typeCoordinate, lat + "," + lon, latLon, toUTM);
 	//console.log(latLon + ' e ' + toUTM);
-	
+ 	setMarkerPosition(lat, lon);
+ 	setMapCenter(lat, lon);
 	
 }
 
-function obterDDUTM (lat, lon) {
+function obterDDUTM (typeCoordinate, latDMS, lonDMS) {
 	
 	// conversão da coordenada convertida DMS em DD //
-	var latDMSToDD = Dms.parseDMS(lat); // Dms.toLat (utmToDMSaa.lat, 'dms', 0);
-	var lonDMSToDD = Dms.parseDMS(lon); //Dms.toLon (utmToDMSaa.lon, 'dms', 0);
+	var latDMSToDD = Dms.parseDMS(latDMS); // Dms.toLat (utmToDMSaa.lat, 'dms', 0);
+	var lonDMSToDD = Dms.parseDMS(lonDMS); //Dms.toLon (utmToDMSaa.lon, 'dms', 0);
 	
 	
 	// conversão DD para UTM //
  	var latLon2UTM = new LatLon (latDMSToDD, lonDMSToDD);
 	var toUTM = latLon2UTM.toUtm();
+	
+	if (latDMSToDD.toString().length > 11) {
+		
+		latDMSToDD = latDMSToDD.toString().substring (0,11)
+ 		}
+	
+	if (lonDMSToDD.toString().length > 11) {
+		lonDMSToDD = lonDMSToDD.toString().substring (0,11);
+		}
 	 
 		
-		app.handle (latDMSToDD + "," + lonDMSToDD, toUTM);
-		
+	app.handle (typeCoordinate, latDMSToDD + "," + lonDMSToDD, latDMS + "," + lonDMS, toUTM);
+	
+	setMarkerPosition(latDMSToDD, lonDMSToDD);
+	setMapCenter(latDMSToDD, lonDMSToDD);
 }
 
-function obterDDDMS (utm) {
+function obterDDDMS (typeCoordinate, utm) {
 	
 	// reversão da coordenada convertida UTM para DMS
 		var UTMTODMS = Utm.parse(utm);
@@ -145,8 +159,19 @@ function obterDDDMS (utm) {
 	var latDMSToDD = Dms.parseDMS(utmToDMS.lat); // Dms.toLat (utmToDMSaa.lat, 'dms', 0);
 	var lonDMSToDD = Dms.parseDMS(utmToDMS.lon); //Dms.toLon (utmToDMSaa.lon, 'dms', 0);
 	
+	if (latDMSToDD.toString().length > 11) {
+		
+		latDMSToDD = latDMSToDD.toString().substring (0,11)
+ 		}
 	
-	app.handle (latDMSToDD + "," + lonDMSToDD, utmToDMS);
+	if (lonDMSToDD.toString().length > 11) {
+		lonDMSToDD = lonDMSToDD.toString().substring (0,11);
+		}
+	
+	app.handle (typeCoordinate, latDMSToDD + "," + lonDMSToDD, utmToDMS, utm);
+	
+	setMarkerPosition(latDMSToDD, lonDMSToDD);
+	setMapCenter(latDMSToDD, lonDMSToDD);
  	
 }
 
@@ -165,14 +190,11 @@ function obterUTMDMSMapClick (lat,lon) {
  	if (lat.toString().length > 11) {
 		
  		lat = lat.toString().substring (0,11)
-	
-	}
+ 		}
 	
 	if (lon.toString().length > 11) {
-		
 		lon = lon.toString().substring (0,11);
-		
-	}
+		}
 	
  	app.setAllCoords(lat + ',' + lon, latLon, toUTM);
  	

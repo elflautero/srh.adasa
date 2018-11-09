@@ -29,7 +29,7 @@
       </StackPane>
       <BorderPane fx:id="bpCenter" layoutX="102.0" layoutY="122.0" prefHeight="380.0" prefWidth="1155.0">
          <center>
-            <Pane fx:id="pCenter" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+            <Pane fx:id="pCenter" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="380.0" prefWidth="1092.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
       <StackPane fx:id="stackPaneTop" prefHeight="63.0" prefWidth="1305.0" styleClass="clStackPaneSuperiorPrincipal" stylesheets="@../../css/principal.css">
@@ -44,6 +44,7 @@
             </Pane>
          </children>
       </StackPane>
-      <VBox fx:id="vbLateral" layoutX="14.0" layoutY="194.0" prefHeight="408.0" prefWidth="55.0" styleClass="clPanePrincipalLateral" />
+      <VBox fx:id="vbLateralEsq" layoutX="14.0" layoutY="194.0" prefHeight="408.0" prefWidth="55.0" style="-fx-background-color: blue;" styleClass="clPanePrincipalLateral" />
+      <VBox fx:id="vbLateralDir" layoutX="1237.0" layoutY="194.0" prefHeight="408.0" prefWidth="55.0" style="-fx-background-color: blue;" styleClass="clPanePrincipalLateral" />
    </children>
 </AnchorPane>

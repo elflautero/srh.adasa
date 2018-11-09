@@ -131,38 +131,25 @@ public class GoogleMap extends Parent {
 	        onMapLatLngChanged = eventHandler;
 	    }
 	    
-	    public void handle(String ddLatLon, String utmLatLon) {
+	    public void handle(String typeCoordinate, String ddLatLon, String dmsLatLon, String utmLatLon) {
 	    	
+	    	System.out.println(typeCoordinate);
 	    	
-	    	/*
-	    	Alert a = new Alert (Alert.AlertType.INFORMATION);
-			a.setTitle("Alerta!!!");
-			a.setContentText(ddLatLon + " e " + utmLatLon);
-			a.setHeaderText(null);
-			a.show();
-			*/
-			
-			ControladorPrincipal.lblCoord1.setText(ddLatLon);
-			ControladorPrincipal.lblCoord2.setText(utmLatLon);
-			
-	    	//System.out.println("metodo handle chamado: " + lat + " e " + lng + "e endereco: " + endMap);
+	    	if (typeCoordinate.equals(" DD ")) {
+	    		ControladorPrincipal.lblCoord1.setText(dmsLatLon);
+				ControladorPrincipal.lblCoord2.setText(utmLatLon);
+	    	}
 	    	
-	    	/*
-	    	TabEnderecoController.latDec = Double.toString(lat);
-			TabEnderecoController.lngDec = Double.toString(lng);
-			TabEnderecoController.endMap = endMap;
-			
-		    TabInterfController.latDec = Double.toString(lat);
-		    TabInterfController.lngDec = Double.toString(lng);
-		    
-		    
-	        if(onMapLatLngChanged != null) {
-	            MapEvent event = new MapEvent(this, lat, lng);
-	            onMapLatLngChanged.handle(event);
-	           
-	        }
-	        */
-	        
+	    	if (typeCoordinate.equals(" DMS ")) {
+	    		ControladorPrincipal.lblCoord1.setText(ddLatLon);
+				ControladorPrincipal.lblCoord2.setText(utmLatLon);
+	    	}
+	    	
+	    	if (typeCoordinate.equals(" UTM ")) {
+	    		ControladorPrincipal.lblCoord1.setText(ddLatLon);
+				ControladorPrincipal.lblCoord2.setText(dmsLatLon);
+	    	}
+	    	
 	    }
 	    
 	    public void setAllCoords(String dd, String dms, String utm) {
@@ -173,21 +160,21 @@ public class GoogleMap extends Parent {
 	    	
 	    	System.out.println(dd + " e " + dms + " e " + utm);
 	    }
-
-	    public void convDD (String lat, String lon) {
-	    	
-	    	invokeJS("obterUTMDMS(" + lat + ", " + lon + ")");
+	    
+	    public void convDD (String typeCoord, String lat, String lon) {
+	    
+	    	invokeJS("obterUTMDMS(\'" + ""+ typeCoord + ""  + "\', \'" + "" + lat + "" + "\', \'" + ""+ lon + "" + "\')");
 	    }
 	    
-	    public void convDMS (String lat, String lon) {
+	    public void convDMS (String typeCoordinate, String lat, String lon) {
 	    	
-	    	invokeJS("obterDDUTM(\'" + ""+ lat + ""  + "\', \'" + ""+ lon + "" + "\');"); 
+	    	invokeJS("obterDDUTM(\'" + ""+ typeCoordinate + ""  + "\', \'" + "" + lat + ""  + "\', \'" + ""+ lon + "" + "\');"); 
 	    	
 	    }
 	    
-	    public void convUTM(String latLon) {
+	    public void convUTM(String typeCoordinate, String latLon) {
 	    	
-	    	invokeJS("obterDDDMS(\'" + ""+ latLon + ""  + "\');"); 
+	    	invokeJS("obterDDDMS(\'" + ""+ typeCoordinate + ""  + "\', \'" + ""+ latLon + "" + "\');"); 
 	    	
 	    }
 	    

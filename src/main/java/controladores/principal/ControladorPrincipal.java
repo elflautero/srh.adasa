@@ -86,7 +86,9 @@ public class ControladorPrincipal {
 	@FXML ComboBox <String> cbMainSearch;
 	ObservableList<String> olCBMainSearch;
 	
-	@FXML VBox vbLateral;
+	@FXML VBox vbLateralEsq;
+	@FXML VBox vbLateralDir;
+	
 	
 	Double dblSearch;
 	Double dblBrowser;
@@ -128,6 +130,7 @@ public class ControladorPrincipal {
 	
 	
 	
+	/*
 	public void copiarCoordenadas () {
 		
 		lblCoord1.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -160,6 +163,7 @@ public class ControladorPrincipal {
 	        }
 	    });
 	}
+	*/
 	
 	
 	@FXML 
@@ -180,8 +184,6 @@ public class ControladorPrincipal {
             public void changed(ObservableValue<? extends String> ov, String oldValue, String newValue) {  
             	
                 if (newValue == " DD ") {
-                	
-                	System.out.println("escolha dd");
                 	
                 	tfLatDD = new TextField("-15"); // <TextField fx:id="tfLat1" layoutX="28.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" />
                 	tfLatDD.setPrefSize(193.0, 30.0);
@@ -212,8 +214,12 @@ public class ControladorPrincipal {
                 	
                 	btnMainSearch.setOnAction((ActionEvent evt)->{
                     	
-            			googleMaps.convDD (tfLatDD.getText(), tfLonDD.getText());
-            			copiarCoordenadas();
+                		String typeCoordinate = cbMainSearch.getValue();
+                		
+            			googleMaps.convDD (typeCoordinate, tfLatDD.getText(), tfLonDD.getText());
+            			
+            			copiarCoord (lblCoord1);
+            			copiarCoord (lblCoord2);
                         
                     });
                 	
@@ -268,19 +274,17 @@ public class ControladorPrincipal {
                 	
                 	btnMainSearch.setOnAction((ActionEvent evt)->{
                 		
-                		String latLon = tfZonaUTM.getText() + " " + cbNorteSul.getValue() + " " + tfLatDD.getText() + " " + tfLonDD.getText();
+                		String typeCoordinate = cbMainSearch.getValue();
+                		String utmLatLon = tfZonaUTM.getText() + " " + cbNorteSul.getValue() + " " + tfLatDD.getText() + " " + tfLonDD.getText();
                 		
-                		System.out.println("Botão utm " + latLon);
-                		
-                		googleMaps.convUTM(latLon);
-                		copiarCoordenadas();
+                		googleMaps.convUTM(typeCoordinate, utmLatLon);
+                		copiarCoord(lblCoord1);
+            			copiarCoord(lblCoord2);
                 		
                     });
                 }
                 
                 if (newValue == " DMS ") {
-                	
-                	System.out.println("escolha dms");
                 	
                 	cbNorteSulOpcoes = FXCollections.observableArrayList(
                 	        "N",
@@ -338,13 +342,15 @@ public class ControladorPrincipal {
                 	
                 	btnMainSearch.setOnAction((ActionEvent evt)->{
                 		
+                		
+                		String typeCoordinate = cbMainSearch.getValue();
+                		
                 		String lat = tfLatDD.getText() + " " + cbNorteSul.getValue();
                 		String lon = tfLonDD.getText() + " " + cbLesteOeste.getValue();
                 		
-                		System.out.println("string lat lon " + lat + " e " + lon);
-                		
-                		googleMaps.convDMS (lat, lon);
-                		copiarCoordenadas();
+                		googleMaps.convDMS (typeCoordinate, lat, lon);
+                		copiarCoord(lblCoord1);
+            			copiarCoord(lblCoord2);
                 		
                     });
                 }
@@ -403,15 +409,26 @@ public class ControladorPrincipal {
 		lblUTM.setAlignment(Pos.CENTER); 
 		lblUTM.setStyle("-fx-background-color: white;");
 		
+		copiarCoord (lblDD);
+		copiarCoord (lblDMS);
+		copiarCoord (lblUTM);
+		
 		pConversor.getChildren().addAll(lblDD, lblDMS, lblUTM);
     	
     	btnMainSearch.setOnAction((ActionEvent evt)->{
         	
-			googleMaps.convDD (tfLatDD.getText(), tfLonDD.getText());
-			copiarCoordenadas();
+    		String typeCoordinate = cbMainSearch.getValue();
+    		
+			googleMaps.convDD (typeCoordinate, tfLatDD.getText(), tfLonDD.getText());
+			
+			copiarCoord (lblCoord1);
+			copiarCoord (lblCoord2);
             
         });
 		
+    	// vb lado direito //
+    	AnchorPane.setRightAnchor(vbLateralDir, 10.0);
+    	
 		// Pane Main Top
 		AnchorPane.setTopAnchor(stackPaneTop, 0.0);
 	    AnchorPane.setLeftAnchor(stackPaneTop, 0.0);
@@ -444,8 +461,6 @@ public class ControladorPrincipal {
 	    
 	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
 	    AnchorPane.setBottomAnchor(pFiscalizacao, 105.0);
-	    
-	    
 	    
 	    
 	    // Para abrir o pane fora do campo de visão
@@ -579,8 +594,10 @@ public class ControladorPrincipal {
         
         
         
-        vbLateral.getChildren().addAll(btnHome,btnMapa,btnBrowserSEI, btnSearch,btnFiscal);
-        vbLateral.setAlignment(Pos.TOP_CENTER);
+        vbLateralEsq.getChildren().addAll(btnHome,btnMapa,btnBrowserSEI, btnSearch,btnFiscal);
+        
+        vbLateralEsq.setAlignment(Pos.TOP_CENTER);
+        vbLateralDir.setAlignment(Pos.TOP_CENTER);
         
        
         downSearch = new TranslateTransition(new Duration(350), (stackPMainSearch));
@@ -724,6 +741,26 @@ public class ControladorPrincipal {
         );
         
         	
+	}
+	
+	// ao clicar copiar o valor da coordenada para utilizar em navegadores //
+	public void copiarCoord (Label lbl) {
+		
+		lbl.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	        @Override
+	        public void handle(MouseEvent mouseEvent) {
+	            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+	                if(mouseEvent.getClickCount() == 1){
+	                    
+	                	Clipboard clip = Clipboard.getSystemClipboard();
+	                    ClipboardContent conteudo = new ClipboardContent();
+	                    conteudo.putString(lbl.getText());
+	                    clip.setContent(conteudo);
+	                }
+	            }
+	        }
+	    });
+		
 	}
 	
 	
