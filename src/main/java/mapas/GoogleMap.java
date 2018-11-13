@@ -178,6 +178,18 @@ public class GoogleMap extends Parent {
 	    	
 	    }
 	    
+	    public void setZoomIn() {
+	    	invokeJS("setZoomIn();");
+	    }
+	    
+	    public void setZoomOut() {
+	    	invokeJS("setZoomOut();");
+	    }
+	    
+	    public void openShape(int shape) {
+	    	invokeJS("openShape(" + shape + ");");
+	    }
+	    
 	    public void setMarkerPosition(double lat, double lng) {
 	    	
 	        String sLat = Double.toString(lat);

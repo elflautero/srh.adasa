@@ -20,8 +20,8 @@
          <children>
             <Pane fx:id="pConversor" maxHeight="97.0" maxWidth="1050.0" prefHeight="97.0" prefWidth="1050.0" styleClass="clPaneConversor" stylesheets="@../../css/principal.css">
                <children>
-                  <Button fx:id="btnMainSearch" layoutX="937.0" layoutY="53.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipal" text="BUSCAR" />
-                  <ComboBox fx:id="cbMainSearch" layoutX="11.0" layoutY="53.0" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipal" />
+                  <Button fx:id="btnConverteCoord" layoutX="937.0" layoutY="53.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipal" text="BUSCAR" />
+                  <ComboBox fx:id="cbConverterCoord" layoutX="11.0" layoutY="53.0" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipal" />
                   <Pane fx:id="pConversorCentro" layoutX="108.0" layoutY="48.0" prefHeight="40.0" prefWidth="829.0" />
                </children>
             </Pane>
@@ -32,19 +32,12 @@
             <Pane fx:id="pCenter" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="380.0" prefWidth="1092.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
-      <StackPane fx:id="stackPaneTop" prefHeight="63.0" prefWidth="1305.0" styleClass="clStackPaneSuperiorPrincipal" stylesheets="@../../css/principal.css">
+      <StackPane fx:id="stackPaneTop" prefHeight="33.0" prefWidth="1305.0" styleClass="clStackPaneSuperiorPrincipal" stylesheets="@../../css/principal.css">
          <children>
-            <Pane fx:id="pMainTop" maxHeight="40.0" maxWidth="1240.0" prefHeight="40.0" prefWidth="1240.0">
-               <children>
-                  <Button fx:id="btnMenu" layoutX="142.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipalSuperior" text="BUSCA" />
-                  <Button fx:id="btnRegister" layoutX="253.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipalSuperior" text="CADASTRO" />
-                  <Button fx:id="btnSEI" layoutX="362.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipalSuperior" text="SEI" />
-                  <Button layoutX="32.0" layoutY="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" styleClass="clBotoesPrincipalSuperior" text="HOME" />
-               </children>
-            </Pane>
+            <Pane fx:id="pMainTop" maxHeight="40.0" maxWidth="1240.0" prefHeight="33.0" prefWidth="1240.0" />
          </children>
       </StackPane>
-      <VBox fx:id="vbLateralEsq" layoutX="14.0" layoutY="194.0" prefHeight="408.0" prefWidth="55.0" style="-fx-background-color: blue;" styleClass="clPanePrincipalLateral" />
-      <VBox fx:id="vbLateralDir" layoutX="1237.0" layoutY="194.0" prefHeight="408.0" prefWidth="55.0" style="-fx-background-color: blue;" styleClass="clPanePrincipalLateral" />
+      <VBox fx:id="vbLateralEsq" layoutX="4.0" layoutY="194.0" prefHeight="400.0" prefWidth="140.0" styleClass="clPanePrincipalLateral" />
+      <VBox fx:id="vbLateralDir" layoutX="1160.0" layoutY="194.0" prefHeight="400.0" prefWidth="140.0" styleClass="clPanePrincipalLateral" />
    </children>
 </AnchorPane>

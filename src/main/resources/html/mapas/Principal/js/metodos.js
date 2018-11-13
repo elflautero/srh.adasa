@@ -199,3 +199,21 @@ function obterUTMDMSMapClick (lat,lon) {
  	app.setAllCoords(lat + ',' + lon, latLon, toUTM);
  	
 }
+
+function setZoomIn () {
+	
+	var zoom = map.getZoom() + 2;
+	
+	map.setZoom(zoom);
+	map.setCenter(marker.getPosition());
+
+}
+
+function setZoomOut () {
+	
+	var zoom = map.getZoom() - 2;
+	
+	map.setZoom(zoom);
+	map.setCenter(marker.getPosition());
+
+}

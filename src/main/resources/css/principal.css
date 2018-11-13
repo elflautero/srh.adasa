@@ -1,68 +1,81 @@
 
-.clFonteGeral {
+.clFonteGeral { /* tamanho da fonte (letra) */
     -fx-font		: 13px "Arial";
 	-fx-font-family: "Roboto", "Arial", sans-serif;
 }
 
-.clPaneConversor {
-	 -fx-background-color: rgba(24, 29, 36, 1);
+.clPaneConversor { /* cl classe conversor  */
+	 -fx-background-color: #28353D; /*rgba(24, 29, 36, 1);*/
 	 
 }
 
 .clBotoesPrincipal{
-     -fx-background-color: #3A86C8;  /*#3797DD; */
+     -fx-background-color: #1E73BE; /*#3A86C8;  #3797DD; */
      -fx-text-fill	: #FFFFFF;
      -fx-text-base-color: #FFFFFF;
      -fx-font-weight: bold;
 }
 
-.clBotoesPrincipal:pressed:hover {
-    -fx-scale-y: 0.9;
-    -fx-scale-x: 0.9;
-    -fx-text-base-color: #3A86C8;
+.clBotoesPrincipal:pressed:hover { /* ao passar o mouse e clicar */
+    -fx-scale-y				: 0.9;
+    -fx-scale-x				: 0.9;
+    -fx-text-base-color		: #1E73BE; /* #3A86C8; */
+    
 }
 
-.clBotoesPrincipal:hover {
-    -fx-background-color: white;
-    -fx-text-fill	: #3A86C8;
-    -fx-scale-y: 1.1;
-    -fx-text-base-color: #3A86C8;
-}
-
-.clBotoesPrincipalSuperior {
-	-fx-background-color: transparent; 
-     -fx-text-fill	: #FFFFFF;
-     -fx-font-weight: bold;
-}
-
-.clBotoesPrincipalSuperior:pressed:hover {
-    -fx-scale-y: 0.9;
-    -fx-scale-x: 0.9;
-}
-
-.clBotoesPrincipalSuperior:hover {
-    -fx-background-color: white;
-    -fx-text-fill	: #3A86C8;
-    -fx-scale-y: 1.1;
+.clBotoesPrincipal:hover { /* ao passar o mouse */
+    -fx-background-color	: white;
+    -fx-text-fill			: #1E73BE;
+    -fx-scale-y				: 1.1;
+    -fx-text-base-color		: #1E73BE; /* para mudar a cor  do texto no combo box DD DMS UTM */
 }
 
 btnMainClassTransRegister {
-	-fx-background-color: transparent; 
-     -fx-text-fill	: rgb(72,82,91,1);
-     -fx-font-weight: bold;
+	-fx-background-color	: transparent; 
+     -fx-text-fill			: rgb(72,82,91,1);
+     -fx-font-weight		: bold;
 }
 
-.clStackPaneSuperiorPrincipal {
-	-fx-background-color: rgba(24, 29, 36, 1); /*rgb(72,82,91,0.95);*/
+.clStackPaneSuperiorPrincipal { /* cor do pane superior */
+	-fx-background-color	: #28353D; /*rgb(72,82,91,0.95);*/
 }
 
 .clPanePrincipalLateral {
-     -fx-background-color: transparent;
-     -fx-text-fill	: #FFFFFF;
-     -fx-font-weight: bold;
+     -fx-background-color	: transparent;
+     -fx-text-fill			: #FFFFFF;
+     -fx-font-weight		: bold;
 }
 .clBotoesLateral {
-	-fx-background-color: white;
+	-fx-background-color	: white;
+}
+
+.tab { /* cor de fundo tab, local do click */
+	-fx-background-color	: #28353D; 
+	
+
+}
+.tab:hover { /* cor ao passar o mouse */
+    -fx-background-color: #34495E;
+   
+}
+.tab:hover .tab-label{ /* cor ao passar o mouse do texto da tab */
+    -fx-background-color: #34495E;
+    -fx-text-fill: #FFFFFF;
+
+}
+.tab:selected { /* cor ao selecionar */
+    -fx-background-color: #34495E;
+ 
+    
+}
+.tab:selected .tab-label { /* cor do texto da tab ao selecionar */
+    -fx-background-color: #34495E;
+    -fx-text-fill	: #FFFFFF;
+
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
 }
 
 

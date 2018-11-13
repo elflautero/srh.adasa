@@ -17,10 +17,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -31,6 +34,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
@@ -48,6 +53,26 @@ public class ControladorPrincipal {
 	@FXML Pane pConversor;
 	@FXML Pane pConversorCentro;
 	
+	
+	TabPane tpPrincLatDir;
+	TabPane tpPrinclatEsq;
+	
+	Button btnTerrain;
+	Button btnRoadMap;
+	Button btnSattelite;
+	Button btnHybrid;
+	Button btnZoomOut;
+	Button btnZoomIn;
+	
+	CheckBox ceckBacia;
+	CheckBox checkRiodDF;
+	CheckBox checkRiosUniao;
+	CheckBox checkFraturado;
+	CheckBox checkPoroso;
+	CheckBox checkUTM;
+	CheckBox checkTrafego;
+	
+	
 	Pane pBrowserSEI = new Pane();
 	
 	Pane pFiscalizacao  = new Pane();
@@ -61,7 +86,7 @@ public class ControladorPrincipal {
 	@FXML TextField txtMainSearch = new TextField();
 	
 	
-	@FXML Button btnMainSearch = new Button();
+	@FXML Button btnConverteCoord = new Button();
 	@FXML Button btnMenu;
 	@FXML Button btnRegister;
 	@FXML Button btnSEI;
@@ -71,6 +96,7 @@ public class ControladorPrincipal {
 	Button btnSearch;
 	Button btnFiscal;
 	Button btnBrowserSEI;
+	
 	
 	@FXML StackPane stackPMainSearch;
 	@FXML StackPane stackPaneTop;
@@ -83,13 +109,12 @@ public class ControladorPrincipal {
 	static GoogleMap googleMaps;
 	
 	
-	@FXML ComboBox <String> cbMainSearch;
-	ObservableList<String> olCBMainSearch;
+	@FXML ComboBox <String> cbConverterCoord;
+	ObservableList<String> olcbMainConverteCoord;
 	
 	@FXML VBox vbLateralEsq;
 	@FXML VBox vbLateralDir;
-	
-	
+		
 	Double dblSearch;
 	Double dblBrowser;
 	Double dblFiscal;
@@ -104,10 +129,8 @@ public class ControladorPrincipal {
 	TranslateTransition upBrowser;
 	
 	public static GoogleMap capturarGoogleMaps () {
-		
-    	return googleMaps;
+		return googleMaps;
     }
-	
 	
 	TextField tfLatDD;
 	TextField tfLonDD;
@@ -129,58 +152,20 @@ public class ControladorPrincipal {
 	
 	
 	
-	
-	/*
-	public void copiarCoordenadas () {
-		
-		lblCoord1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	        @Override
-	        public void handle(MouseEvent mouseEvent) {
-	            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-	                if(mouseEvent.getClickCount() == 1){
-	                    
-	                	Clipboard clip = Clipboard.getSystemClipboard();
-	                    ClipboardContent conteudo = new ClipboardContent();
-	                    conteudo.putString(lblCoord1.getText());
-	                    clip.setContent(conteudo);
-	                }
-	            }
-	        }
-	    });
-		
-		lblCoord2.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	        @Override
-	        public void handle(MouseEvent mouseEvent) {
-	            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-	                if(mouseEvent.getClickCount() == 1){
-	                    
-	                	Clipboard clip = Clipboard.getSystemClipboard();
-	                    ClipboardContent conteudo = new ClipboardContent();
-	                    conteudo.putString(lblCoord2.getText());
-	                    clip.setContent(conteudo);
-	                }
-	            }
-	        }
-	    });
-	}
-	*/
-	
-	
 	@FXML 
 	private void initialize() {
 		
-		olCBMainSearch = FXCollections.observableArrayList(
+		olcbMainConverteCoord = FXCollections.observableArrayList(
     	        " DD ",
     	        " DMS ",
     	        " UTM "
     	    ); 
 		
-		cbMainSearch.setItems(olCBMainSearch);
+		cbConverterCoord.setItems(olcbMainConverteCoord);
 		
-		cbMainSearch.setValue(" DD ");
+		cbConverterCoord.setValue(" DD ");
 		
-		cbMainSearch.valueProperty().addListener(new ChangeListener<String>() {
-            @Override 
+		cbConverterCoord.valueProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> ov, String oldValue, String newValue) {  
             	
                 if (newValue == " DD ") {
@@ -212,9 +197,9 @@ public class ControladorPrincipal {
                 	pConversorCentro.getChildren().clear();
                 	pConversorCentro.getChildren().addAll(tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
                 	
-                	btnMainSearch.setOnAction((ActionEvent evt)->{
+                	btnConverteCoord.setOnAction((ActionEvent evt)->{
                     	
-                		String typeCoordinate = cbMainSearch.getValue();
+                		String typeCoordinate = cbConverterCoord.getValue();
                 		
             			googleMaps.convDD (typeCoordinate, tfLatDD.getText(), tfLonDD.getText());
             			
@@ -272,9 +257,9 @@ public class ControladorPrincipal {
                 	pConversorCentro.getChildren().clear();
                 	pConversorCentro.getChildren().addAll(cbNorteSul, tfZonaUTM, tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
                 	
-                	btnMainSearch.setOnAction((ActionEvent evt)->{
+                	btnConverteCoord.setOnAction((ActionEvent evt)->{
                 		
-                		String typeCoordinate = cbMainSearch.getValue();
+                		String typeCoordinate = cbConverterCoord.getValue();
                 		String utmLatLon = tfZonaUTM.getText() + " " + cbNorteSul.getValue() + " " + tfLatDD.getText() + " " + tfLonDD.getText();
                 		
                 		googleMaps.convUTM(typeCoordinate, utmLatLon);
@@ -340,10 +325,10 @@ public class ControladorPrincipal {
                 	pConversorCentro.getChildren().clear();
                 	pConversorCentro.getChildren().addAll(tfLatDD, cbNorteSul,tfLonDD, cbLesteOeste, lblCoord1, lblCoord2 );
                 	
-                	btnMainSearch.setOnAction((ActionEvent evt)->{
+                	btnConverteCoord.setOnAction((ActionEvent evt)->{
                 		
                 		
-                		String typeCoordinate = cbMainSearch.getValue();
+                		String typeCoordinate = cbConverterCoord.getValue();
                 		
                 		String lat = tfLatDD.getText() + " " + cbNorteSul.getValue();
                 		String lon = tfLonDD.getText() + " " + cbLesteOeste.getValue();
@@ -415,9 +400,9 @@ public class ControladorPrincipal {
 		
 		pConversor.getChildren().addAll(lblDD, lblDMS, lblUTM);
     	
-    	btnMainSearch.setOnAction((ActionEvent evt)->{
+		btnConverteCoord.setOnAction((ActionEvent evt)->{
         	
-    		String typeCoordinate = cbMainSearch.getValue();
+    		String typeCoordinate = cbConverterCoord.getValue();
     		
 			googleMaps.convDD (typeCoordinate, tfLatDD.getText(), tfLonDD.getText());
 			
@@ -426,8 +411,9 @@ public class ControladorPrincipal {
             
         });
 		
-    	// vb lado direito //
-    	AnchorPane.setRightAnchor(vbLateralDir, 10.0);
+    	// vb lado direito e esquerdo
+    	AnchorPane.setRightAnchor(vbLateralDir, 5.0);
+    	AnchorPane.setLeftAnchor(vbLateralEsq, 5.0);
     	
 		// Pane Main Top
 		AnchorPane.setTopAnchor(stackPaneTop, 0.0);
@@ -459,21 +445,18 @@ public class ControladorPrincipal {
 	    
 	    pFiscalizacao.setStyle("-fx-background-color: transparent;"); //
 	    
-	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
-	    AnchorPane.setBottomAnchor(pFiscalizacao, 105.0);
+	    AnchorPane.setTopAnchor(pFiscalizacao, 150.5);
+	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
 	    
 	    
 	    // Para abrir o pane fora do campo de visão
 	    pFiscalizacao.setTranslateY(880.0);
 	    
-	    //pFiscalizacao.getChildren().add(ControladorPaneFiscalizacao.pFiscalizacao);
 	    
 	    apMain.getChildren().add(pFiscalizacao);
 	    
-	    // Pane Navegador SEI //
-		
 	    AnchorPane.setTopAnchor(pBrowserSEI, 150.0);
-	    AnchorPane.setBottomAnchor(pBrowserSEI, 105.0);
+	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0);
 	    
 	    pBrowserSEI.setTranslateY(880.0);
 	    
@@ -502,24 +485,7 @@ public class ControladorPrincipal {
 
 			public void run() {
 				
-				/*
-				wMaps = new WebView();
-				WebEngine weMaps = wMaps.getEngine();
-				weMaps.load("https://www.google.com.br/maps");
-				
-				wMaps.minWidthProperty().bind(apMain.widthProperty());
-				wMaps.minHeightProperty().bind(apMain.heightProperty());
-				
-				
-				spWebMap.setContent(wMaps);
-				
-				*/
-				//spWebMap.setContent(wMaps);
-				
 				googleMaps = new GoogleMap();
-				
-				//spWebMap.minWidthProperty().bind(apMain.widthProperty());
-				//spWebMap.minHeightProperty().bind(apMain.heightProperty());
 				
 				apWebMap.getChildren().add(googleMaps);  //.setContent(googleMaps);
 				
@@ -537,64 +503,218 @@ public class ControladorPrincipal {
 				    	    }
 			    		);
 				
-				
-				AnchorPane.setTopAnchor(spWebMap, 63.0);
+				AnchorPane.setTopAnchor(spWebMap, 30.0);
 				AnchorPane.setLeftAnchor(spWebMap, 0.0);
 			    AnchorPane.setRightAnchor(spWebMap, 0.0);
 			    AnchorPane.setBottomAnchor(spWebMap, 0.0);
-			    
 			    
 			}
 	   
 			
     	});
 	    
+	    Text iconHome = GlyphsDude.createIcon(FontAwesomeIcon.HOME);
+	    iconHome.setFill(Color.BLACK);
 	    
-        btnHome = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.HOME,
-        		"HOME", 
-        		"11px", 
-                "11px",  
-                ContentDisplay.TOP);
+        btnHome = new Button("HOME");
+        btnHome.setGraphic(iconHome);
         
+       
         btnHome.getStyleClass().add("clBotoesLateral");
+        btnHome.setLayoutX(5.0);
+        btnHome.setLayoutY(14.0);
         
         
         btnBrowserSEI = GlyphsDude.createIconButton(
         		FontAwesomeIcon.CHROME,
-        		"   SEI   ", 
-        		"11px", 
+        		"SEI - GDF", 
+        		"15px", 
                 "11px",  
-                ContentDisplay.TOP);
+                ContentDisplay.LEFT);
+        
         btnBrowserSEI.getStyleClass().add("clBotoesLateral");
-        
-        btnMapa = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.MAP,
-        		"MAPA", 
-        		"11px", 
-                "11px",  
-                ContentDisplay.TOP);
-        btnMapa.getStyleClass().add("clBotoesLateral");
-        
-        btnSearch = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.GLOBE,
-        		"COORD", 
-        		"11px", 
-                "11px",   
-                ContentDisplay.TOP);
-        btnSearch.getStyleClass().add("clBotoesLateral");
+        btnBrowserSEI.setLayoutX(5.0);
+        btnBrowserSEI.setLayoutY(55.0);
         
         btnFiscal = GlyphsDude.createIconButton(
         		FontAwesomeIcon.TICKET,
-        		"FISCAL", 
-        		"11px", 
+        		"FISCALIZAÇÃO", 
+        		"20px", 
                 "11px",  
-                ContentDisplay.TOP);
+                ContentDisplay.LEFT);
+        
         btnFiscal.getStyleClass().add("clBotoesLateral");
+        btnFiscal.setLayoutX(5.0);
+        btnFiscal.setLayoutY(96.0);
+        
+        btnSearch = GlyphsDude.createIconButton(
+        		FontAwesomeIcon.GLOBE,
+        		"CONVERSOR", 
+        		"20px", 
+                "11px",   
+                ContentDisplay.LEFT);
+        
+        btnSearch.getStyleClass().add("clBotoesLateral");
+        btnSearch.setLayoutX(5.0);
+        btnSearch.setLayoutY(137.0);
+        
+        
+        // botao de aumentar o zoom //
+       
+        btnZoomIn = GlyphsDude.createIconButton(
+        		FontAwesomeIcon.PLUS_CIRCLE,
+        		"", 
+        		"20px", 
+                "10px",  
+                ContentDisplay.TOP);
+        btnZoomIn.getStyleClass().add("clBotoesLateral");
+        
+        btnZoomIn.setOnAction((ActionEvent evt)->{
+        	googleMaps.setZoomIn();
+        });
+        btnZoomIn.setLayoutX(59.0);
+        btnZoomIn.setLayoutY(274.0);
+        
+        
+        // botao de diminuir o zoom //
+        btnZoomOut = GlyphsDude.createIconButton(
+        		FontAwesomeIcon.MINUS_CIRCLE,
+        		"", 
+        		"20px", 
+                "10px",  
+                ContentDisplay.TOP);
+        btnZoomOut.getStyleClass().add("clBotoesLateral");
+        
+        btnZoomOut.setOnAction((ActionEvent evt)->{
+        	googleMaps.setZoomOut();
+        });
+        btnZoomOut.setLayoutX(59.0);
+        btnZoomOut.setLayoutY(308.0);
         
         
         
-        vbLateralEsq.getChildren().addAll(btnHome,btnMapa,btnBrowserSEI, btnSearch,btnFiscal);
+        Button btnTerrain = new Button("Terreno");
+    	Button btnRoadMap = new Button("Rodovias");
+    	Button btnSattelite = new Button("Satélite");
+    	Button btnHybrid = new Button("Híbrido");
+    	
+    	btnTerrain.setLayoutX(23.0);
+    	btnTerrain.setLayoutY(14.0);
+    	btnTerrain.setPrefWidth(95.0);
+        
+    	btnRoadMap.setLayoutX(23.0);
+    	btnRoadMap.setLayoutY(39.0);
+    	btnRoadMap.setPrefWidth(95.0);
+        
+    	btnSattelite.setLayoutX(23.0);
+    	btnSattelite.setLayoutY(64.0);
+    	btnSattelite.setPrefWidth(95.0);
+        
+    	btnHybrid.setLayoutX(23.0);
+    	btnHybrid.setLayoutY(89.0);
+    	btnHybrid.setPrefWidth(95.0);
+    	
+    	
+    	ceckBacia = new CheckBox("Bacias");
+    	checkRiodDF  = new CheckBox("Rios do DF");
+    	checkRiosUniao  = new CheckBox("Rios da União");
+    	checkFraturado  = new CheckBox("Fraturado");
+    	checkPoroso  = new CheckBox("Poroso");
+    	checkUTM  = new CheckBox("UTM");
+    	checkTrafego  = new CheckBox("Tráfego");
+    	
+    	ceckBacia.setLayoutX(20.0);
+    	ceckBacia.setLayoutY(90.0);
+    	
+    	checkRiodDF.setLayoutX(20.0);
+    	checkRiodDF.setLayoutY(115.0);
+    	
+    	checkRiosUniao.setLayoutX(20.0);
+    	checkRiosUniao.setLayoutY(140.0);
+    	
+    	checkFraturado.setLayoutX(20.0);
+    	checkFraturado.setLayoutY(165.0);
+    	
+    	checkPoroso.setLayoutX(20.0);
+    	checkPoroso.setLayoutY(190.0);
+    	
+    	checkUTM.setLayoutX(20.0);
+    	checkUTM.setLayoutY(215.0);
+    	
+    	checkTrafego.setLayoutX(20.0);
+    	checkTrafego.setLayoutY(240.0);
+    	
+        tpPrincLatDir = new TabPane();
+        tpPrinclatEsq = new TabPane();
+        
+       
+        Text iconTabHome = GlyphsDude.createIcon(FontAwesomeIcon.HOME, "20px");
+        iconTabHome.setFill(Color.WHITE);
+        
+        Tab tab1 = new Tab();
+        tab1.setGraphic(iconTabHome);
+      
+        tab1.setClosable(false);
+        
+        Text iconTabHome2 = GlyphsDude.createIcon(FontAwesomeIcon.CROP, "20px");
+        iconTabHome2.setFill(Color.WHITE);
+        
+        Tab tab2 = new Tab();
+        tab2.setGraphic(iconTabHome2);
+        tab2.setClosable(false);
+        
+        Pane pOrgaos = new Pane ();
+        pOrgaos.setPrefSize(130, 370);
+        pOrgaos.setStyle("-fx-background-color: #425665;");
+        
+        
+        pOrgaos.getChildren().addAll(btnHome, btnBrowserSEI, btnFiscal, btnSearch);
+        
+        tab1.setContent(pOrgaos);
+        
+        tpPrinclatEsq.getTabs().addAll(tab1, tab2);
+        tpPrinclatEsq.getStyleClass().add("tbPrincLat");
+        
+        Text iconTabMap1 = GlyphsDude.createIcon(FontAwesomeIcon.MAP, "20px");
+        iconTabMap1.setFill(Color.WHITE);
+        
+        Tab tab3 = new Tab();
+        tab3.setGraphic(iconTabMap1);
+        
+        tab3.setClosable(false);
+        
+        
+        Text iconTabMap2 = GlyphsDude.createIcon(FontAwesomeIcon.OBJECT_GROUP, "20px");
+        iconTabMap2.setFill(Color.WHITE);
+        
+        Tab tab4 = new Tab();
+        tab4.setGraphic(iconTabMap2);
+        tab4.setClosable(false);
+       
+        
+        Pane pOpcoesMapa = new Pane ();
+        pOpcoesMapa.setPrefSize(130, 370);
+        pOpcoesMapa.setStyle("-fx-background-color: #425665;");
+        
+        
+        Pane pShapes = new Pane ();
+        pShapes.setPrefSize(130, 370);
+        pShapes.setStyle("-fx-background-color: #425665; -fx-text-fill: red;");
+        
+        
+        
+        pOpcoesMapa.getChildren().addAll(btnTerrain, btnRoadMap, btnSattelite, btnHybrid, btnZoomIn, btnZoomOut);
+        pShapes.getChildren().addAll(ceckBacia, checkRiodDF, checkRiosUniao, checkFraturado, checkPoroso, checkUTM, checkTrafego);
+        
+        tab3.setContent(pOpcoesMapa);
+        tab4.setContent(pShapes);
+        
+        tpPrincLatDir.getStyleClass().add("tbPrincLat");
+        tpPrincLatDir.getTabs().addAll(tab3, tab4);
+      
+        vbLateralEsq.getChildren().addAll(tpPrinclatEsq);
+        vbLateralDir.getChildren().addAll(tpPrincLatDir);
+        
         
         vbLateralEsq.setAlignment(Pos.TOP_CENTER);
         vbLateralDir.setAlignment(Pos.TOP_CENTER);
@@ -616,6 +736,50 @@ public class ControladorPrincipal {
         upBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
         upBrowser.setToY(0.0);
         
+        ceckBacia.setOnAction((ActionEvent evt)->{
+        	googleMaps.openShape(6);
+        });
+        
+        checkRiodDF.setOnAction((ActionEvent evt)->{ 
+        	googleMaps.openShape(1);
+        });
+        
+        checkRiosUniao.setOnAction((ActionEvent evt)->{
+        	googleMaps.openShape(4);
+        });
+        
+        checkFraturado.setOnAction((ActionEvent evt)->{
+        	googleMaps.openShape(2);
+        });
+        
+        checkPoroso.setOnAction((ActionEvent evt)->{
+        	googleMaps.openShape(3);
+        });
+        
+        checkUTM.setOnAction((ActionEvent evt)->{
+        	googleMaps.openShape(5);
+        });
+        
+        checkTrafego.setOnAction((ActionEvent evt)->{
+        	googleMaps.openShape(7);
+        });
+        
+        
+        btnTerrain.setOnAction((ActionEvent evt)->{
+        	googleMaps.switchTerrain();
+        });
+        
+        btnRoadMap.setOnAction((ActionEvent evt)->{
+        	googleMaps.switchRoadmap();
+        });
+        
+        btnSattelite.setOnAction((ActionEvent evt)->{
+        	googleMaps.switchSatellite();
+        });
+        
+        btnHybrid.setOnAction((ActionEvent evt)->{
+        	googleMaps.switchHybrid();
+        });
         
         btnFiscal.setOnAction((ActionEvent evt)->{
         	
@@ -731,14 +895,6 @@ public class ControladorPrincipal {
 	            }
 	            
         });
-        
-        btnMapa.setOnAction((ActionEvent evt)->{
-        	
-        	googleMaps.setMarkerPosition(-15.0,-47.0);
-	    	googleMaps.setMapCenter(-15.0,-47.0);
-	    	System.out.println("bnt map clicado");
-        }
-        );
         
         	
 	}
@@ -910,3 +1066,63 @@ AnchorPane.setRightAnchor(spWebBrowser, 0.0);
 AnchorPane.setBottomAnchor(spWebBrowser, 0.0);
 
 */
+
+/*
+ btnMapa = GlyphsDude.createIconButton(
+        		FontAwesomeIcon.MAP,
+        		"MAPA", 
+        		"11px", 
+                "11px",  
+                ContentDisplay.LEFT);
+        btnMapa.getStyleClass().add("clBotoesLateral");
+        btnMapa.setLayoutX(25.0);
+        btnMapa.setLayoutY(96.0);
+
+
+
+        btnMapa.setOnAction((ActionEvent evt)->{
+        	
+        	googleMaps.setMarkerPosition(-15.0,-47.0);
+	    	googleMaps.setMapCenter(-15.0,-47.0);
+	    	System.out.println("bnt map clicado");
+        }
+        );
+        */
+
+
+
+/*
+public void copiarCoordenadas () {
+	
+	lblCoord1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                if(mouseEvent.getClickCount() == 1){
+                    
+                	Clipboard clip = Clipboard.getSystemClipboard();
+                    ClipboardContent conteudo = new ClipboardContent();
+                    conteudo.putString(lblCoord1.getText());
+                    clip.setContent(conteudo);
+                }
+            }
+        }
+    });
+	
+	lblCoord2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                if(mouseEvent.getClickCount() == 1){
+                    
+                	Clipboard clip = Clipboard.getSystemClipboard();
+                    ClipboardContent conteudo = new ClipboardContent();
+                    conteudo.putString(lblCoord2.getText());
+                    clip.setContent(conteudo);
+                }
+            }
+        }
+    });
+}
+*/
+

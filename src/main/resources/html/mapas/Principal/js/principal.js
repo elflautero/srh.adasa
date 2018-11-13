@@ -7,7 +7,7 @@
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 var map;
-var marker;
+var marker;6
 var markers = [];
 var layers = [];
 
@@ -16,7 +16,8 @@ function initAutocomplete() {
 
 	var defLatLng = new google.maps.LatLng(-15.790631073109617, -47.74939032660592); // centralizar o mapa no DF
 	var adasa = new google.maps.LatLng(-15.775073004902042, -47.940351677729836); // coordenada adasa
-
+	
+	// opcoes do mapa //
 	var mapOptions = {
 	        center: defLatLng,
 	        zoom: 4,
@@ -25,17 +26,28 @@ function initAutocomplete() {
 	        disableDefaultUI: true // desabilitar controles
 	    	//streetViewControl: true
 	    };
+	
+	// mapa //
 	map = new google.maps.Map(document.getElementById("map"), mapOptions);
 	
+	// primeiro marcador //
 	marker = new google.maps.Marker({
 	    position: adasa,
 	    map: map,
 	    title: 'Adasa'
 	 });
 	
+	// ouvinte para dar zoom ao clicar no primeiro marcador //
+	marker.addListener('click', function() {
+	    map.setZoom(12);
+	    map.setCenter(marker.getPosition());
+	    console.log(map.getZoom());
+	  });
+	
+	// ouvinte para  obter  as coordenadas do local clicado no  mapa //
 	google.maps.event.addListener(map, 'click', getCoordClick);
 
-	  // Create the search box and link it to the UI element.
+	// Create the search box and link it to the UI element.
 	var input = document.getElementById('pac-input');
 	var searchBox = new google.maps.places.SearchBox(input);
 	map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
@@ -43,19 +55,19 @@ function initAutocomplete() {
 	// Bias the SearchBox results towards current map's viewport.
 	map.addListener('bounds_changed', function() {
 	   searchBox.setBounds(map.getBounds());
-  });
+	});
 
  
-  // Listen for the event fired when the user selects a prediction and retrieve
-  // more details for that place.
-  searchBox.addListener('places_changed', function() {
-    var places = searchBox.getPlaces();
+	// Listen for the event fired when the user selects a prediction and retrieve
+	// more details for that place.
+	searchBox.addListener('places_changed', function() {
+	    var places = searchBox.getPlaces();
+	
+	    if (places.length == 0) {
+	      return;
+	    }
 
-    if (places.length == 0) {
-      return;
-    }
-
-    // Clear out the old markers.
+	// Clear out the old markers.
     markers.forEach(function(marker) {
       marker.setMap(null);
     });
