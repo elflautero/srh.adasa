@@ -5,12 +5,12 @@
 }
 
 .clPaneConversor { /* cl classe conversor  */
-	 -fx-background-color: #28353D; /*rgba(24, 29, 36, 1);*/
+	 -fx-background-color: #28353D;
 	 
 }
 
 .clBotoesPrincipal{
-     -fx-background-color: #1E73BE; /*#3A86C8;  #3797DD; */
+     -fx-background-color: #1E73BE;
      -fx-text-fill	: #FFFFFF;
      -fx-text-base-color: #FFFFFF;
      -fx-font-weight: bold;
@@ -19,7 +19,7 @@
 .clBotoesPrincipal:pressed:hover { /* ao passar o mouse e clicar */
     -fx-scale-y				: 0.9;
     -fx-scale-x				: 0.9;
-    -fx-text-base-color		: #1E73BE; /* #3A86C8; */
+    -fx-text-base-color		: #1E73BE;
     
 }
 
@@ -30,11 +30,6 @@
     -fx-text-base-color		: #1E73BE; /* para mudar a cor  do texto no combo box DD DMS UTM */
 }
 
-btnMainClassTransRegister {
-	-fx-background-color	: transparent; 
-     -fx-text-fill			: rgb(72,82,91,1);
-     -fx-font-weight		: bold;
-}
 
 .clStackPaneSuperiorPrincipal { /* cor do pane superior */
 	-fx-background-color	: #28353D; /*rgb(72,82,91,0.95);*/
@@ -47,35 +42,52 @@ btnMainClassTransRegister {
 }
 .clBotoesLateral {
 	-fx-background-color	: white;
+	-fx-font-size			: 13px;
+	-fx-background-radius: 0 0 0 0;
+	-fx-pref-width: 120px;
+	-fx-pref-height: 30px;
+
 }
 
 .tab { /* cor de fundo tab, local do click */
-	-fx-background-color	: #28353D; 
+	-fx-background-color	: rgba(58,86,109,0.95); 
 	
 
 }
 .tab:hover { /* cor ao passar o mouse */
-    -fx-background-color: #34495E;
+    -fx-background-color	: rgba(58,86,109,0.95);
    
 }
 .tab:hover .tab-label{ /* cor ao passar o mouse do texto da tab */
-    -fx-background-color: #34495E;
-    -fx-text-fill: #FFFFFF;
+    -fx-background-color	: rgba(58,86,109,0.95);
+    -fx-text-fill			: #FFFFFF;
 
 }
 .tab:selected { /* cor ao selecionar */
-    -fx-background-color: #34495E;
+    -fx-background-color	: rgba(58,86,109,0.95); 
  
     
 }
 .tab:selected .tab-label { /* cor do texto da tab ao selecionar */
-    -fx-background-color: #34495E;
-    -fx-text-fill	: #FFFFFF;
+    -fx-background-color	: rgba(58,86,109,0.95);
+    -fx-text-fill			: #FFFFFF;
 
 }
 
-.tab-pane .tab-header-area .tab-header-background {
-    -fx-background-color: transparent;
+.tab-pane .tab-header-area .tab-header-background { /* para o fundo do tabPane ficar transparent, aparecer somente a tab para escolha */
+    -fx-background-color	: transparent;
+    -fx-effect				: null;
 }
+
+.panesLaterais { /* cor dos  panes dentro das tabs laterais */
+	-fx-background-color: rgba(58,86,109,0.9); 
+	
+}
+
+.checkBox {
+	-fx-text-fill			: black;
+	-fx-effect: dropshadow(three-pass-box, white, 2, 0.5, 0, 0);
+}
+
 
 

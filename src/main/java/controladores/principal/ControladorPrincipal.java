@@ -64,7 +64,7 @@ public class ControladorPrincipal {
 	Button btnZoomOut;
 	Button btnZoomIn;
 	
-	CheckBox ceckBacia;
+	CheckBox checkBacia;
 	CheckBox checkRiodDF;
 	CheckBox checkRiosUniao;
 	CheckBox checkFraturado;
@@ -85,17 +85,13 @@ public class ControladorPrincipal {
 	
 	@FXML TextField txtMainSearch = new TextField();
 	
-	
 	@FXML Button btnConverteCoord = new Button();
-	@FXML Button btnMenu;
-	@FXML Button btnRegister;
-	@FXML Button btnSEI;
 	
 	Button btnHome;
 	Button btnMapa;
-	Button btnSearch;
-	Button btnFiscal;
-	Button btnBrowserSEI;
+	Button btnConversor;
+	Button btnFiscalizacao;
+	Button btnSEI;
 	
 	
 	@FXML StackPane stackPMainSearch;
@@ -513,56 +509,56 @@ public class ControladorPrincipal {
 			
     	});
 	    
-	    Text iconHome = GlyphsDude.createIcon(FontAwesomeIcon.HOME);
-	    iconHome.setFill(Color.BLACK);
 	    
-        btnHome = new Button("HOME");
-        btnHome.setGraphic(iconHome);
+        btnHome = GlyphsDude.createIconButton(
+        		FontAwesomeIcon.HOME,
+        		"HOME", 
+        		"15px", 
+                "11px",  
+                ContentDisplay.LEFT);
         
-       
         btnHome.getStyleClass().add("clBotoesLateral");
-        btnHome.setLayoutX(5.0);
-        btnHome.setLayoutY(14.0);
+        btnHome.setLayoutX(10.0);
+        btnHome.setLayoutY(16.0);
         
-        
-        btnBrowserSEI = GlyphsDude.createIconButton(
+        btnSEI = GlyphsDude.createIconButton(
         		FontAwesomeIcon.CHROME,
         		"SEI - GDF", 
         		"15px", 
                 "11px",  
                 ContentDisplay.LEFT);
         
-        btnBrowserSEI.getStyleClass().add("clBotoesLateral");
-        btnBrowserSEI.setLayoutX(5.0);
-        btnBrowserSEI.setLayoutY(55.0);
+        btnSEI.getStyleClass().add("clBotoesLateral");
+        btnSEI.setLayoutX(10.0);
+        btnSEI.setLayoutY(55.0);
         
-        btnFiscal = GlyphsDude.createIconButton(
+        btnFiscalizacao = GlyphsDude.createIconButton(
         		FontAwesomeIcon.TICKET,
         		"FISCALIZAÇÃO", 
         		"20px", 
                 "11px",  
                 ContentDisplay.LEFT);
         
-        btnFiscal.getStyleClass().add("clBotoesLateral");
-        btnFiscal.setLayoutX(5.0);
-        btnFiscal.setLayoutY(96.0);
+        btnFiscalizacao.getStyleClass().add("clBotoesLateral");
+        btnFiscalizacao.setLayoutX(10.0);
+        btnFiscalizacao.setLayoutY(96.0);
         
-        btnSearch = GlyphsDude.createIconButton(
+        btnConversor = GlyphsDude.createIconButton(
         		FontAwesomeIcon.GLOBE,
         		"CONVERSOR", 
         		"20px", 
                 "11px",   
                 ContentDisplay.LEFT);
         
-        btnSearch.getStyleClass().add("clBotoesLateral");
-        btnSearch.setLayoutX(5.0);
-        btnSearch.setLayoutY(137.0);
+        btnConversor.getStyleClass().add("clBotoesLateral");
+        btnConversor.setLayoutX(10.0);
+        btnConversor.setLayoutY(137.0);
         
         
         // botao de aumentar o zoom //
        
         btnZoomIn = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.PLUS_CIRCLE,
+        		FontAwesomeIcon.PLUS,
         		"", 
         		"20px", 
                 "10px",  
@@ -572,13 +568,13 @@ public class ControladorPrincipal {
         btnZoomIn.setOnAction((ActionEvent evt)->{
         	googleMaps.setZoomIn();
         });
-        btnZoomIn.setLayoutX(59.0);
-        btnZoomIn.setLayoutY(274.0);
+        btnZoomIn.setLayoutX(10.0);
+        btnZoomIn.setLayoutY(254.0);
         
         
         // botao de diminuir o zoom //
         btnZoomOut = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.MINUS_CIRCLE,
+        		FontAwesomeIcon.MINUS,
         		"", 
         		"20px", 
                 "10px",  
@@ -588,7 +584,7 @@ public class ControladorPrincipal {
         btnZoomOut.setOnAction((ActionEvent evt)->{
         	googleMaps.setZoomOut();
         });
-        btnZoomOut.setLayoutX(59.0);
+        btnZoomOut.setLayoutX(10.0);
         btnZoomOut.setLayoutY(308.0);
         
         
@@ -597,25 +593,26 @@ public class ControladorPrincipal {
     	Button btnRoadMap = new Button("Rodovias");
     	Button btnSattelite = new Button("Satélite");
     	Button btnHybrid = new Button("Híbrido");
+    	btnHybrid.getStyleClass().add("clBotoesLateral");
     	
-    	btnTerrain.setLayoutX(23.0);
-    	btnTerrain.setLayoutY(14.0);
-    	btnTerrain.setPrefWidth(95.0);
+    	btnTerrain.setLayoutX(10.0);
+    	btnTerrain.setLayoutY(16.0);
+    	btnTerrain.getStyleClass().add("clBotoesLateral");
         
-    	btnRoadMap.setLayoutX(23.0);
-    	btnRoadMap.setLayoutY(39.0);
-    	btnRoadMap.setPrefWidth(95.0);
+    	btnRoadMap.setLayoutX(10.0);
+    	btnRoadMap.setLayoutY(55.0);
+    	btnRoadMap.getStyleClass().add("clBotoesLateral");
         
-    	btnSattelite.setLayoutX(23.0);
-    	btnSattelite.setLayoutY(64.0);
-    	btnSattelite.setPrefWidth(95.0);
+    	btnSattelite.setLayoutX(10.0);
+    	btnSattelite.setLayoutY(94.0);
+    	btnSattelite.getStyleClass().add("clBotoesLateral");
         
-    	btnHybrid.setLayoutX(23.0);
-    	btnHybrid.setLayoutY(89.0);
-    	btnHybrid.setPrefWidth(95.0);
+    	btnHybrid.setLayoutX(10.0);
+    	btnHybrid.setLayoutY(133.0);
+    	btnHybrid.getStyleClass().add("clBotoesLateral");
     	
     	
-    	ceckBacia = new CheckBox("Bacias");
+    	checkBacia = new CheckBox("Bacias");
     	checkRiodDF  = new CheckBox("Rios do DF");
     	checkRiosUniao  = new CheckBox("Rios da União");
     	checkFraturado  = new CheckBox("Fraturado");
@@ -623,8 +620,8 @@ public class ControladorPrincipal {
     	checkUTM  = new CheckBox("UTM");
     	checkTrafego  = new CheckBox("Tráfego");
     	
-    	ceckBacia.setLayoutX(20.0);
-    	ceckBacia.setLayoutY(90.0);
+    	checkBacia.setLayoutX(20.0);
+    	checkBacia.setLayoutY(90.0);
     	
     	checkRiodDF.setLayoutX(20.0);
     	checkRiodDF.setLayoutY(115.0);
@@ -644,6 +641,14 @@ public class ControladorPrincipal {
     	checkTrafego.setLayoutX(20.0);
     	checkTrafego.setLayoutY(240.0);
     	
+    	checkBacia.getStyleClass().add("checkBox");
+    	checkRiodDF.getStyleClass().add("checkBox");
+    	checkRiosUniao.getStyleClass().add("checkBox");
+    	checkFraturado.getStyleClass().add("checkBox");
+    	checkPoroso.getStyleClass().add("checkBox");
+    	checkUTM.getStyleClass().add("checkBox");
+    	checkTrafego.getStyleClass().add("checkBox");
+    	
         tpPrincLatDir = new TabPane();
         tpPrinclatEsq = new TabPane();
         
@@ -651,26 +656,30 @@ public class ControladorPrincipal {
         Text iconTabHome = GlyphsDude.createIcon(FontAwesomeIcon.HOME, "20px");
         iconTabHome.setFill(Color.WHITE);
         
-        Tab tab1 = new Tab();
-        tab1.setGraphic(iconTabHome);
-      
-        tab1.setClosable(false);
+	        Tab tab1 = new Tab();
+	        tab1.setGraphic(iconTabHome);
+	        tab1.setClosable(false);
         
         Text iconTabHome2 = GlyphsDude.createIcon(FontAwesomeIcon.CROP, "20px");
         iconTabHome2.setFill(Color.WHITE);
         
-        Tab tab2 = new Tab();
-        tab2.setGraphic(iconTabHome2);
-        tab2.setClosable(false);
+	        Tab tab2 = new Tab();
+	        tab2.setGraphic(iconTabHome2);
+	        tab2.setClosable(false);
         
         Pane pOrgaos = new Pane ();
         pOrgaos.setPrefSize(130, 370);
-        pOrgaos.setStyle("-fx-background-color: #425665;");
+        pOrgaos.getStyleClass().add("panesLaterais");
+        
+        Pane pOrgaos2 = new Pane ();
+        pOrgaos2.setPrefSize(130, 370);
+        pOrgaos2.getStyleClass().add("panesLaterais");
         
         
-        pOrgaos.getChildren().addAll(btnHome, btnBrowserSEI, btnFiscal, btnSearch);
+        pOrgaos.getChildren().addAll(btnHome, btnSEI, btnFiscalizacao, btnConversor);
         
         tab1.setContent(pOrgaos);
+        tab2.setContent(pOrgaos2);
         
         tpPrinclatEsq.getTabs().addAll(tab1, tab2);
         tpPrinclatEsq.getStyleClass().add("tbPrincLat");
@@ -694,17 +703,17 @@ public class ControladorPrincipal {
         
         Pane pOpcoesMapa = new Pane ();
         pOpcoesMapa.setPrefSize(130, 370);
-        pOpcoesMapa.setStyle("-fx-background-color: #425665;");
+        pOpcoesMapa.getStyleClass().add("panesLaterais");
         
         
         Pane pShapes = new Pane ();
         pShapes.setPrefSize(130, 370);
-        pShapes.setStyle("-fx-background-color: #425665; -fx-text-fill: red;");
+        pShapes.getStyleClass().add("panesLaterais");
         
         
         
         pOpcoesMapa.getChildren().addAll(btnTerrain, btnRoadMap, btnSattelite, btnHybrid, btnZoomIn, btnZoomOut);
-        pShapes.getChildren().addAll(ceckBacia, checkRiodDF, checkRiosUniao, checkFraturado, checkPoroso, checkUTM, checkTrafego);
+        pShapes.getChildren().addAll(checkBacia, checkRiodDF, checkRiosUniao, checkFraturado, checkPoroso, checkUTM, checkTrafego);
         
         tab3.setContent(pOpcoesMapa);
         tab4.setContent(pShapes);
@@ -736,7 +745,7 @@ public class ControladorPrincipal {
         upBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
         upBrowser.setToY(0.0);
         
-        ceckBacia.setOnAction((ActionEvent evt)->{
+        checkBacia.setOnAction((ActionEvent evt)->{
         	googleMaps.openShape(6);
         });
         
@@ -781,7 +790,7 @@ public class ControladorPrincipal {
         	googleMaps.switchHybrid();
         });
         
-        btnFiscal.setOnAction((ActionEvent evt)->{
+        btnFiscalizacao.setOnAction((ActionEvent evt)->{
         	
         	dblFiscal =  pFiscalizacao.getTranslateY();
         	
@@ -831,7 +840,7 @@ public class ControladorPrincipal {
         });
         
         
-        btnSearch.setOnAction((ActionEvent evt)->{
+        btnConversor.setOnAction((ActionEvent evt)->{
         	
         	dblSearch =  stackPMainSearch.getTranslateY();
         	
@@ -847,7 +856,7 @@ public class ControladorPrincipal {
             
         });
         
-        btnBrowserSEI.setOnAction((ActionEvent evt)->{
+        btnSEI.setOnAction((ActionEvent evt)->{
         	
         	
         	if (wBrowser == null ) {

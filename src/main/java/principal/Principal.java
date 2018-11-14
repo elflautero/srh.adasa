@@ -25,8 +25,7 @@ public class Principal extends Application{
         rootNode = fxmlLoader.load();
         
         }
-    
-    
+
     // metodo start //
 	@Override
 	public void start(Stage stage) throws Exception {
