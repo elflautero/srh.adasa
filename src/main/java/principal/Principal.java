@@ -44,10 +44,13 @@ public class Principal extends Application{
         stage.setY(primaryScreenBounds.getMinY());
         stage.setWidth(primaryScreenBounds.getWidth());
         stage.setHeight(primaryScreenBounds.getHeight());
+        
+        
+        // teste no notebook
+       // stage.setWidth(1266);
+       // stage.setHeight(668);
        
         // limites de tamanho do stage
-        
-        
         stage.setMinHeight(768);
         stage.setMinWidth(1366);
         stage.setMaxHeight(1080);

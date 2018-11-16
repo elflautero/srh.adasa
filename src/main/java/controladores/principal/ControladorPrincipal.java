@@ -620,34 +620,33 @@ public class ControladorPrincipal {
     	checkUTM  = new CheckBox("UTM");
     	checkTrafego  = new CheckBox("Tráfego");
     	
-    	checkBacia.setLayoutX(20.0);
-    	checkBacia.setLayoutY(90.0);
+    	Pane pCheck = new Pane ();
+    	pCheck.setPrefSize(120, 345);
+    	pCheck.setLayoutX(10.0);
+    	pCheck.setLayoutY(10.0);
+    	pCheck.setStyle("-fx-background-color: white;");
+    	pCheck.getChildren().addAll(checkBacia, checkRiodDF, checkRiosUniao,  checkFraturado, checkPoroso,checkUTM, checkTrafego);
     	
-    	checkRiodDF.setLayoutX(20.0);
-    	checkRiodDF.setLayoutY(115.0);
+    	checkBacia.setLayoutX(5.0);
+    	checkBacia.setLayoutY(15.0);
     	
-    	checkRiosUniao.setLayoutX(20.0);
-    	checkRiosUniao.setLayoutY(140.0);
+    	checkRiodDF.setLayoutX(5.0);
+    	checkRiodDF.setLayoutY(40.0);
     	
-    	checkFraturado.setLayoutX(20.0);
-    	checkFraturado.setLayoutY(165.0);
+    	checkRiosUniao.setLayoutX(5.0);
+    	checkRiosUniao.setLayoutY(65.0);
     	
-    	checkPoroso.setLayoutX(20.0);
-    	checkPoroso.setLayoutY(190.0);
+    	checkFraturado.setLayoutX(5.0);
+    	checkFraturado.setLayoutY(90.0);
     	
-    	checkUTM.setLayoutX(20.0);
-    	checkUTM.setLayoutY(215.0);
+    	checkPoroso.setLayoutX(5.0);
+    	checkPoroso.setLayoutY(115.0);
     	
-    	checkTrafego.setLayoutX(20.0);
-    	checkTrafego.setLayoutY(240.0);
+    	checkUTM.setLayoutX(5.0);
+    	checkUTM.setLayoutY(140.0);
     	
-    	checkBacia.getStyleClass().add("checkBox");
-    	checkRiodDF.getStyleClass().add("checkBox");
-    	checkRiosUniao.getStyleClass().add("checkBox");
-    	checkFraturado.getStyleClass().add("checkBox");
-    	checkPoroso.getStyleClass().add("checkBox");
-    	checkUTM.getStyleClass().add("checkBox");
-    	checkTrafego.getStyleClass().add("checkBox");
+    	checkTrafego.setLayoutX(5.0);
+    	checkTrafego.setLayoutY(165.0);
     	
         tpPrincLatDir = new TabPane();
         tpPrinclatEsq = new TabPane();
@@ -713,7 +712,7 @@ public class ControladorPrincipal {
         
         
         pOpcoesMapa.getChildren().addAll(btnTerrain, btnRoadMap, btnSattelite, btnHybrid, btnZoomIn, btnZoomOut);
-        pShapes.getChildren().addAll(checkBacia, checkRiodDF, checkRiosUniao, checkFraturado, checkPoroso, checkUTM, checkTrafego);
+        pShapes.getChildren().addAll(pCheck);
         
         tab3.setContent(pOpcoesMapa);
         tab4.setContent(pShapes);
