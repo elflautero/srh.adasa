@@ -1,0 +1,13 @@
+.scroll-pane {
+     
+       -fx-font: 13px "Arial";
+       -fx-font-smoothing-type: lcd; 
+}
+
+.scroll-pane .border { 
+	
+	-fx-stroke-width: 1;
+	-fx-background-color: #3A86C8;
+	
+	
+}

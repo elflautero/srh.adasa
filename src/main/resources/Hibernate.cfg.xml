@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+		
+<hibernate-configuration>
+
+    <session-factory>
+    
+    		<!-- Configuração de conexão com o Banco de Dados -->
+    		
+		<property name="connection.url">jdbc:sqlserver://srvsqlhomolog1;databaseName=DB_SRH;integratedSecurity=true;</property>
+		<!-- <property name="connection.url">jdbc:sqlserver://SRVHOST4\PROD;databaseName=GisDB;integratedSecurity=true;</property>-->
+    	<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+    	<property name="connection.username">ADASA\fabricio.barrozo</property>
+    	<property name="connection.password">fj17000071jf</property>
+    	<property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
+		
+		
+			<!-- Enable Hibernate's automatic session context management -->
+		<property name="current_session_context_class">thread</property>
+		
+			<!-- Disable the second-level cache -->
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+		
+			<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">true</property>
+		
+		
+		<property name="hibernate.max_fetch_depth">0</property>
+		
+		
+			<!-- Drop and re-create the database schema on startup -->
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		
+		<property name="hibernate.c3p0.min_size">5</property>
+		<property name="hibernate.c3p0.max_size">20</property>
+		<property name="hibernate.c3p0.timeout">300</property>
+		<property name="hibernate.c3p0.max_statements">50</property>
+		<property name="hibernate.c3p0.idle_test_period">60</property>
+		
+		
+		<mapping class="entidades.Demanda"/>
+		<mapping class="entidades.Endereco"/>
+		
+		 <!-- MAPEAMENTO DAS ENTIDADES 
+		 
+		 
+		<mapping class="entity.Fiscal"/>
+		<mapping class="entity.Demanda"/>
+		<mapping class="entity.Endereco"/>
+		<mapping class="entity.Interferencia"/>
+		<mapping class="entity.Usuario"/>
+		<mapping class="entity.Ato"/>
+		<mapping class="entity.Superficial"/>
+		<mapping class="entity.Subterranea"/>
+		<mapping class="entity.Vistoria"/>
+		<mapping class="entity.Legislacao"/>
+		-->
+	
+    </session-factory>
+    
+</hibernate-configuration>

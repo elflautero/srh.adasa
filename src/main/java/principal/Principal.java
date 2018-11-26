@@ -27,6 +27,7 @@ public class Principal extends Application{
         }
 
     // metodo start //
+	@SuppressWarnings("restriction")
 	@Override
 	public void start(Stage stage) throws Exception {
 		
@@ -37,7 +38,7 @@ public class Principal extends Application{
         
         stage.setTitle("Welcome to JavaFX!"); 
         
-        // para o programa já  abrir de acordo com a dimensão da tela do computador
+        // para o programa jï¿½  abrir de acordo com a dimensï¿½o da tela do computador
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         
         stage.setX(primaryScreenBounds.getMinX());

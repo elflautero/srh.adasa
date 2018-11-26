@@ -3,6 +3,7 @@ package controladores.principal;
 import java.io.IOException;
 
 import controladores.fiscalizacao.ControladorFiscalizacao;
+import controladores.fiscalizacao.TabDemandaControlador;
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
@@ -47,6 +48,8 @@ public class ControladorPrincipal {
 	
 	// para chamar a parte da fiscalizacao //
 	ControladorFiscalizacao controladorFiscalizacao;
+	
+	
 	
 	@FXML Pane pMainTop;
 	@FXML Pane pCenter;
@@ -437,17 +440,14 @@ public class ControladorPrincipal {
         // -- Pane Fiscalizacao -- //
 	    pFiscalizacao.minWidthProperty().bind(pCenter.widthProperty());
 	    pFiscalizacao.maxWidthProperty().bind(pCenter.widthProperty());
-	    
-	    
+	   
 	    pFiscalizacao.setStyle("-fx-background-color: transparent;"); //
 	    
 	    AnchorPane.setTopAnchor(pFiscalizacao, 150.5);
 	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
 	    
-	    
-	    // Para abrir o pane fora do campo de visão
+	    // Para abrir o pane fora do campo de visï¿½o
 	    pFiscalizacao.setTranslateY(880.0);
-	    
 	    
 	    apMain.getChildren().add(pFiscalizacao);
 	    
@@ -460,6 +460,7 @@ public class ControladorPrincipal {
 	    
 	    pCenter.layoutXProperty().addListener(
 	    		(observable, oldValue, newValue) -> {
+	    			
 	    			pFiscalizacao.layoutXProperty().setValue(newValue);
 	    			pBrowserSEI.layoutXProperty().setValue(newValue);
 	    		
@@ -468,8 +469,10 @@ public class ControladorPrincipal {
 	   	
 	    bpCenter.layoutYProperty().addListener(
 	    		(obs, oldVal, newVal) -> {
+	    			
 	    			pFiscalizacao.setLayoutY(((double) newVal));
 	    			pBrowserSEI.setLayoutY(((double) newVal));
+	    			
 		    	    }
 	    		);
 	    
@@ -495,7 +498,7 @@ public class ControladorPrincipal {
 				apMain.heightProperty().addListener(
 			    		(observable, oldValue, newValue) -> {
 			    			googleMaps.resizeHeightMap((Double)newValue);
-				    	     
+			    			
 				    	    }
 			    		);
 				
@@ -534,7 +537,7 @@ public class ControladorPrincipal {
         
         btnFiscalizacao = GlyphsDude.createIconButton(
         		FontAwesomeIcon.TICKET,
-        		"FISCALIZAÇÃO", 
+        		"FISCALIZAÃ‡ÃƒO", 
         		"20px", 
                 "11px",  
                 ContentDisplay.LEFT);
@@ -568,6 +571,7 @@ public class ControladorPrincipal {
         btnZoomIn.setOnAction((ActionEvent evt)->{
         	googleMaps.setZoomIn();
         });
+        
         btnZoomIn.setLayoutX(10.0);
         btnZoomIn.setLayoutY(254.0);
         
@@ -591,39 +595,45 @@ public class ControladorPrincipal {
         
         Button btnTerrain = new Button("Terreno");
     	Button btnRoadMap = new Button("Rodovias");
-    	Button btnSattelite = new Button("Satélite");
-    	Button btnHybrid = new Button("Híbrido");
+    	Button btnSattelite = new Button("SatÃ©lite");
+    	Button btnHybrid = new Button("HÃ­brido");
+    	
     	btnHybrid.getStyleClass().add("clBotoesLateral");
     	
     	btnTerrain.setLayoutX(10.0);
     	btnTerrain.setLayoutY(16.0);
+    	
     	btnTerrain.getStyleClass().add("clBotoesLateral");
         
     	btnRoadMap.setLayoutX(10.0);
     	btnRoadMap.setLayoutY(55.0);
+    	
     	btnRoadMap.getStyleClass().add("clBotoesLateral");
         
     	btnSattelite.setLayoutX(10.0);
     	btnSattelite.setLayoutY(94.0);
+    	
     	btnSattelite.getStyleClass().add("clBotoesLateral");
         
     	btnHybrid.setLayoutX(10.0);
     	btnHybrid.setLayoutY(133.0);
+    	
     	btnHybrid.getStyleClass().add("clBotoesLateral");
     	
     	
     	checkBacia = new CheckBox("Bacias");
     	checkRiodDF  = new CheckBox("Rios do DF");
-    	checkRiosUniao  = new CheckBox("Rios da União");
+    	checkRiosUniao  = new CheckBox("Rios da UniÃ£o");
     	checkFraturado  = new CheckBox("Fraturado");
     	checkPoroso  = new CheckBox("Poroso");
     	checkUTM  = new CheckBox("UTM");
-    	checkTrafego  = new CheckBox("Tráfego");
+    	checkTrafego  = new CheckBox("TrÃ¡fego");
     	
     	Pane pCheck = new Pane ();
     	pCheck.setPrefSize(120, 345);
     	pCheck.setLayoutX(10.0);
     	pCheck.setLayoutY(10.0);
+    	
     	pCheck.setStyle("-fx-background-color: white;");
     	pCheck.getChildren().addAll(checkBacia, checkRiodDF, checkRiosUniao,  checkFraturado, checkPoroso,checkUTM, checkTrafego);
     	
@@ -824,20 +834,24 @@ public class ControladorPrincipal {
 					e.printStackTrace();
 				}
 				
+				
 				p.minWidthProperty().bind(pFiscalizacao.widthProperty());
 				p.minHeightProperty().bind(pFiscalizacao.heightProperty());
 				
 				p.maxWidthProperty().bind(pFiscalizacao.widthProperty());
 				p.maxHeightProperty().bind(pFiscalizacao.heightProperty());
 				
+				
 				p.setStyle("-fx-background-color: transparent;");
 				
 				pFiscalizacao.getChildren().add(p);
-        	}
-        	
-        	
-        });
-        
+				
+        		}
+        	});
+				    	
+				    
+		       
+		     
         
         btnConversor.setOnAction((ActionEvent evt)->{
         	
@@ -972,7 +986,7 @@ public class ControladorPrincipal {
 	    
 	    pRegisterExtern.setStyle("-fx-background-color: orange;"); //
 	    
-	    // Para começar fora da visão da tela
+	    // Para comeï¿½ar fora da visï¿½o da tela
 	    //bpCenter.setTranslateY(880);
 	    pRegisterExtern.setTranslateY(880);
 	    
@@ -1019,7 +1033,7 @@ public class ControladorPrincipal {
             upBrowser.setToY(2.0);
  */
 
-/* ação btnSEI para mudar o fundo para map ou site sei
+/* aï¿½ï¿½o btnSEI para mudar o fundo para map ou site sei
  
  btnSEI.setOnAction((ActionEvent evt)->{
         	
@@ -1043,7 +1057,7 @@ public class ControladorPrincipal {
         });
  
  
- */ // tentar mudar a classe css de um botão
+ */ // tentar mudar a classe css de um botï¿½o
 
 
 
