@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -12,38 +11,31 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="apDemanda" minHeight="0.0" minWidth="0.0" prefHeight="680.0" prefWidth="1140.0" stylesheets="@../../css/demanda.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fiscalizacao.TabDemandaControlador">
+<AnchorPane fx:id="apDemanda" minHeight="0.0" minWidth="0.0" prefHeight="680.0" prefWidth="1140.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fiscalizacao.TabDemandaControlador">
    <children>
-      <ScrollPane fx:id="spDemanda" prefHeight="594.0" prefWidth="1140.0" stylesheets="@../../css/demanda.css">
-        <content>
-          <AnchorPane fx:id="apDemInt" minHeight="0.0" minWidth="0.0" prefHeight="768.0" prefWidth="1127.0">
+      <AnchorPane fx:id="apExterno" maxHeight="-Infinity" prefHeight="754.0" prefWidth="1140.0">
+         <children>
+            <AnchorPane fx:id="apInterno" prefHeight="771.0" prefWidth="1124.0">
                <children>
-                  <BorderPane fx:id="bpDemanda" prefHeight="775.0" prefWidth="1133.0">
+                  <BorderPane fx:id="bpDemanda" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="775.0" prefWidth="1133.0">
                      <top>
-                        <Pane fx:id="pDemanda" maxHeight="680.0" maxWidth="1140.0" minHeight="680.0" minWidth="1140.0" prefHeight="680.0" prefWidth="1140.0" styleClass="classFontSize" BorderPane.alignment="CENTER">
+                        <Pane fx:id="pDemanda" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1140.0" styleClass="classFontSize" BorderPane.alignment="CENTER">
                            <children>
-                              <Pane layoutX="108.0" layoutY="35.0" prefHeight="160.0" prefWidth="924.0">
+                              <Pane layoutX="108.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="924.0">
                                  <children>
                                     <TextField fx:id="tfDocumento" layoutX="35.0" layoutY="29.0" prefHeight="25.0" prefWidth="520.0" />
                                     <TextField fx:id="tfDocSei" layoutX="569.0" layoutY="29.0" prefHeight="26.0" prefWidth="128.0" />
                                     <TextField fx:id="tfProcSei" layoutX="709.0" layoutY="29.0" prefHeight="26.0" prefWidth="197.0" />
-                                    
-                                                      <DatePicker fx:id="dpDataDistribuicao" layoutX="325.0" layoutY="85.0" prefHeight="25.0" prefWidth="125.0" promptText="01/01/0000" />
-                                     <DatePicker fx:id="dpDataRecebimento" layoutX="486.0" layoutY="85.0" prefHeight="25.0" prefWidth="125.0" promptText="01/01/0000" />
-                                    
-                                                      <TextField fx:id="tfResDen" layoutX="19.0" layoutY="127.0" prefHeight="25.0" prefWidth="889.0" />
+                                    <DatePicker fx:id="dpDataDistribuicao" layoutX="325.0" layoutY="85.0" prefHeight="25.0" prefWidth="125.0" promptText="01/01/0000" />
+                                    <DatePicker fx:id="dpDataRecebimento" layoutX="486.0" layoutY="85.0" prefHeight="25.0" prefWidth="125.0" promptText="01/01/0000" />
+                                    <TextField fx:id="tfResDen" layoutX="19.0" layoutY="127.0" prefHeight="25.0" prefWidth="889.0" />
                                     <Label layoutX="35.0" layoutY="6.0" prefHeight="17.0" prefWidth="106.0" text="Documento:" />
                                     <Label layoutX="570.0" layoutY="6.0" prefHeight="17.0" prefWidth="132.0" text="Número SEI:" />
                                     <Label layoutX="710.0" layoutY="6.0" prefHeight="17.0" prefWidth="158.0" text="Processo SEI:" />
-                                    
-                                                      
                                     <Label layoutX="325.0" layoutY="62.0" prefHeight="17.0" prefWidth="140.0" text="Data de Distruibuição:" />
-                                   
-                                                      <Label layoutX="486.0" layoutY="62.0" prefHeight="17.0" prefWidth="150.0" text="Data de Recebimento: " />
-                                    
-                                                      <Label layoutX="19.0" layoutY="103.0" prefHeight="17.0" prefWidth="272.0" text="Resumo da Denúncia:" />
-                                    
-                                                   </children>
+                                    <Label layoutX="486.0" layoutY="62.0" prefHeight="17.0" prefWidth="150.0" text="Data de Recebimento: " />
+                                    <Label layoutX="19.0" layoutY="103.0" prefHeight="17.0" prefWidth="272.0" text="Resumo da Denúncia:" />
+                                 </children>
                               </Pane>
                               <Pane layoutX="145.0" layoutY="201.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="850.0">
                                  <children>
@@ -57,11 +49,11 @@
                                  </children>
                               </Pane>
                               <TableView fx:id="tvLista" layoutX="126.0" layoutY="260.0" prefHeight="185.0" prefWidth="889.0">
-                                <columns>
-                                  <TableColumn fx:id="tcDocumento" prefWidth="409.0" text="Documento" />
-                                  <TableColumn fx:id="tcDocSEI" minWidth="0.0" prefWidth="232.0" text="Doc SEI" />
+                                 <columns>
+                                    <TableColumn fx:id="tcDocumento" prefWidth="409.0" text="Documento" />
+                                    <TableColumn fx:id="tcDocSEI" minWidth="0.0" prefWidth="232.0" text="Doc SEI" />
                                     <TableColumn fx:id="tcProcSEI" prefWidth="232.0" text="Proc SEI" />
-                                </columns>
+                                 </columns>
                               </TableView>
                               <Label fx:id="lblDenEnd" layoutX="198.0" layoutY="476.0" prefHeight="23.0" prefWidth="500.0" />
                               <Label layoutX="126.0" layoutY="479.0" text="Endereço:" />
@@ -72,10 +64,8 @@
                   </BorderPane>
                </children>
             </AnchorPane>
-        </content>
-         <rotationAxis>
-            <Point3D />
-         </rotationAxis>
-      </ScrollPane>
+            <ScrollBar fx:id="sbDemanda" layoutX="1126.0" max="500.0" orientation="VERTICAL" prefHeight="680.0" prefWidth="20.0" unitIncrement="50.0" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

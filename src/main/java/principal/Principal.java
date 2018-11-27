@@ -27,7 +27,6 @@ public class Principal extends Application{
         }
 
     // metodo start //
-	@SuppressWarnings("restriction")
 	@Override
 	public void start(Stage stage) throws Exception {
 		

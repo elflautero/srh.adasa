@@ -3,7 +3,6 @@ package controladores.principal;
 import java.io.IOException;
 
 import controladores.fiscalizacao.ControladorFiscalizacao;
-import controladores.fiscalizacao.TabDemandaControlador;
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
@@ -833,7 +832,6 @@ public class ControladorPrincipal {
 					System.out.println("erro na abertura do pane fiscalizacao");
 					e.printStackTrace();
 				}
-				
 				
 				p.minWidthProperty().bind(pFiscalizacao.widthProperty());
 				p.minHeightProperty().bind(pFiscalizacao.heightProperty());
