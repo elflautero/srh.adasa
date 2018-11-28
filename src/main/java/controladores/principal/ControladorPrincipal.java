@@ -76,7 +76,6 @@ public class ControladorPrincipal {
 	
 	
 	Pane pBrowserSEI = new Pane();
-	
 	Pane pFiscalizacao  = new Pane();
 	Pane p;
 	
