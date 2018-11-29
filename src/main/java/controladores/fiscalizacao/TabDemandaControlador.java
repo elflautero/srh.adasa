@@ -2,6 +2,8 @@ package controladores.fiscalizacao;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -35,28 +37,30 @@ import javafx.scene.paint.Color;
 
 public class TabDemandaControlador implements Initializable {
 	
+	TabEnderecoControlador tabEnderecoControlador = new TabEnderecoControlador();
+	
 	// --- String para primeira pesquisa --- //
 	String strPesquisa = "";
 	
-	@FXML TextField tfDocumento = new TextField();
-	@FXML TextField tfDocSei = new TextField();
-	@FXML TextField tfProcSei =  new TextField();
-	@FXML TextField tfResDen = new TextField();
-	@FXML TextField tfPesquisar = new TextField();
+	@FXML TextField tfDocumento;
+	@FXML TextField tfDocSei;
+	@FXML TextField tfProcSei;
+	@FXML TextField tfResDen;
+	@FXML TextField tfPesquisar;
 	
 	// ----- Label - endereco da demanda ------ //
 	@FXML Label lblDenEnd = new Label ();
 
-	@FXML Button btnNovo = new Button();
-	@FXML Button btnSalvar = new Button();
-	@FXML Button btnEditar = new Button();
-	@FXML Button btnExcluir = new Button();
-	@FXML Button btnCancelar = new Button();
-	@FXML Button btnPesquisar = new Button();
-	@FXML Button btnSair = new Button();
+	@FXML Button btnNovo;
+	@FXML Button btnSalvar;
+	@FXML Button btnEditar;
+	@FXML Button btnExcluir;
+	@FXML Button btnCancelar;
+	@FXML Button btnPesquisar;
+	@FXML Button btnSair;
 	
-	@FXML DatePicker dpDataDistribuicao = new DatePicker();
-	@FXML DatePicker dpDataRecebimento = new DatePicker();
+	@FXML DatePicker dpDataDistribuicao;
+	@FXML DatePicker dpDataRecebimento;
 	
 	// -- Tabela --  //
 	@FXML private TableView <Demanda> tvLista;
@@ -70,6 +74,12 @@ public class TabDemandaControlador implements Initializable {
 	
 	// capturar demanda para a TabEnderecoController
 	Demanda dGeral = new Demanda ();
+	
+	// formatar data para  mostar no label (data de atualizacao do documento)
+	DateTimeFormatter formatterDT = new DateTimeFormatterBuilder()
+		.parseCaseInsensitive()
+		.append(DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"))
+		.toFormatter();
 	
 	public void btnNovoHabilitar (ActionEvent event) {
 		
@@ -98,7 +108,7 @@ public class TabDemandaControlador implements Initializable {
 	}
 	
 	// -- botão salvar -- //
-	public void btnSalvarSalvar (ActionEvent event) {
+	public void btnSalvarHabilitar (ActionEvent event) {
 		
         obsList = FXCollections.observableArrayList();
         
@@ -123,34 +133,22 @@ public class TabDemandaControlador implements Initializable {
 					demanda.setDemDocumentoSEI(tfDocSei.getText()); 
 					demanda.setDemProcessoSEI(tfProcSei.getText());
 					
-					/*
 					if (dpDataDistribuicao.getValue() == null) {
-						demanda.setDemDistribuicao(null);}
-					else {
-						demanda.setDemDistribuicao(formatter.format(dpDataDistribuicao.getValue()));
-						}
-											
-						if (dpDataRecebimento.getValue() == null) {
-						demanda.setDemRecebimento(null);}
-					else {
-						demanda.setDemRecebimento(formatter.format(dpDataRecebimento.getValue()));
-						}
-						*/
-					
-					/*
-					if (dpDataDistribuicao.getValue() == null) {
-						demanda.setDemDistribuicao(null);}
-						else {
-							demanda.setDemDistribuicao(dpDataDistribuicao.getEditor().getText());
-							}
-											
-					if (dpDataRecebimento.getValue() == null) {
-					demanda.setDemRecebimento(null);}
-						else {
-							demanda.setDemRecebimento(dpDataRecebimento.getEditor().getText());
-							}
-					*/
 						
+						demanda.setDemDistribuicao(null);}
+					else {
+						demanda.setDemDistribuicao(dpDataDistribuicao.getValue());
+						
+						}
+						
+						if (dpDataRecebimento.getValue() == null) {
+							
+						demanda.setDemRecebimento(null);}
+						
+							else {
+								demanda.setDemRecebimento(dpDataRecebimento.getValue());
+								}
+					
 					demanda.setDemDescricao(tfResDen.getText());
 					
 					demanda.setDemAtualizacao((LocalDateTime.now()));
@@ -160,7 +158,7 @@ public class TabDemandaControlador implements Initializable {
 					dao.salvarDemanda(demanda);
 					
 					// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
-					dGeral = demanda;
+					//dGeral = demanda;
 					//main.pegarDoc(dGeral);
 						
 					obsList.add(demanda);
@@ -230,41 +228,45 @@ public class TabDemandaControlador implements Initializable {
 						demanda.setDemDocumentoSEI(tfDocSei.getText());
 						demanda.setDemProcessoSEI(tfProcSei.getText());
 						
-						/*
+						
 						if (dpDataDistribuicao.getValue() == null) {
 							demanda.setDemDistribuicao(null);}
 							else {
-								demanda.setDemDistribuicao(dpDataDistribuicao.getEditor().getText());
+								
+								demanda.setDemDistribuicao(dpDataDistribuicao.getValue());
+								
 								}
-												
+											
 						if (dpDataRecebimento.getValue() == null) {
-						demanda.setDemRecebimento(null);}
+							demanda.setDemRecebimento(null);}
 							else {
-								demanda.setDemRecebimento(dpDataRecebimento.getEditor().getText());
+								demanda.setDemRecebimento(dpDataRecebimento.getValue());
 								}
-								*/
-							
+						
+						demanda.setDemAtualizacao((LocalDateTime.now()));
+								
 						demanda.setDemDescricao(tfResDen.getText());
 						 
 						DemandaDao dDao = new DemandaDao();
 						
 						dDao.mergeDemanda(demanda);
 						
-						// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
-						//dGeral = demanda;
-						//main.pegarDoc(dGeral);
-						
 						// atualizar os dados na tabela
-						
 						obsList.remove(demanda);
 						
 						obsList.add(demanda);
+						
+						// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
+						
+						tabEnderecoControlador.setDemanda(demanda);
+						
+							//dGeral = demanda;
+							//main.pegarDoc(dGeral);
 						
 						// para trazer o resultado por id (do maior para o menor) //
 							//Comparator<Demanda> comparar = Comparator.comparing(Demanda::getDemID); //getDemID
 							//obsList.sort(comparar.reversed());
 							
-						
 						selecionarDemanda();
 						
 						modularBotoesInicial ();
@@ -336,61 +338,54 @@ public class TabDemandaControlador implements Initializable {
 	}
 	
 	
-	
-	//ControladorPrincipal controladorPrincipal;
-	
-	// métodos de remimensionar as tabs //
-		public void redimWid (Number newValue) {
-					apDemanda.setMinWidth((double) newValue);
-					
-				}
-		public void redimHei (Number newValue) {
-					apDemanda.setMinHeight((double) newValue);;
-				}
+		@FXML ScrollPane spDemanda = new ScrollPane ();
+		@FXML Pane pDemanda = new Pane ();
+		@FXML AnchorPane apSBInterno = new AnchorPane();
+		@FXML Pane psbInterno = new Pane();
+		
+		@FXML Label lblDataAtualizacao = new Label();
 		
 		
-		@FXML AnchorPane apDemanda = new AnchorPane();
-		@FXML ScrollPane spDemanda;
-		@FXML AnchorPane apExterno;
-		@FXML AnchorPane apInterno;
+		@FXML AnchorPane apPrincipal = new AnchorPane();
+		@FXML AnchorPane apPrin1 = new AnchorPane();
+		@FXML AnchorPane apPrin2 = new AnchorPane();
+		@FXML BorderPane bpPrincipal = new BorderPane();
+		@FXML ScrollBar sbPrincipal = new ScrollBar();
 		
-		@FXML Pane pDemanda;
-		
-		@FXML Label lblDataAtualizacao;
-		
-		
-		@FXML ScrollBar sbDemanda;
-		@FXML AnchorPane apSBInterno;
-		@FXML Pane psbInterno;
-		
-		@FXML BorderPane bpDemanda;
-		
+		// métodos de remimensionar as tabs //
+				public void redimWid (Number newValue) {
+						apPrincipal.setMinWidth((double) newValue);
+							
+						}
+				public void redimHei (Number newValue) {
+						apPrincipal.setMinHeight((double) newValue);;
+						}
 		
 		
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		AnchorPane.setTopAnchor(apExterno, 0.0);
-	    AnchorPane.setLeftAnchor(apExterno, 0.0);
-		AnchorPane.setRightAnchor(apExterno, 0.0);
-	    AnchorPane.setBottomAnchor(apExterno, 0.0);
+		AnchorPane.setTopAnchor(apPrin1, 0.0);
+	    AnchorPane.setLeftAnchor(apPrin1, 0.0);
+		AnchorPane.setRightAnchor(apPrin1, 0.0);
+	    AnchorPane.setBottomAnchor(apPrin1, 0.0);
 	
-	    AnchorPane.setLeftAnchor(apInterno, 0.0);
-		AnchorPane.setRightAnchor(apInterno, 0.0);
+	    AnchorPane.setLeftAnchor(apPrin2, 0.0);
+		AnchorPane.setRightAnchor(apPrin2, 0.0);
 		
-		AnchorPane.setTopAnchor(sbDemanda, 0.0);
-		AnchorPane.setBottomAnchor(sbDemanda, 2.0);
-		AnchorPane.setRightAnchor(sbDemanda, 0.0);
+		AnchorPane.setTopAnchor(sbPrincipal, 0.0);
+		AnchorPane.setBottomAnchor(sbPrincipal, 2.0);
+		AnchorPane.setRightAnchor(sbPrincipal, 0.0);
 		
-		AnchorPane.setTopAnchor(bpDemanda, 0.0);
-	    AnchorPane.setLeftAnchor(bpDemanda, 0.0);
-		AnchorPane.setRightAnchor(bpDemanda, 0.0);
-	    AnchorPane.setBottomAnchor(bpDemanda, 0.0);
+		AnchorPane.setTopAnchor(bpPrincipal, 0.0);
+	    AnchorPane.setLeftAnchor(bpPrincipal, 0.0);
+		AnchorPane.setRightAnchor(bpPrincipal, 0.0);
+	    AnchorPane.setBottomAnchor(bpPrincipal, 0.0);
 	    
 	    
-		sbDemanda.valueProperty().addListener(new ChangeListener<Number>() {
+	    sbPrincipal.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
-            	apInterno.setLayoutY(-new_val.doubleValue());
+            	apPrin2.setLayoutY(-new_val.doubleValue());
             	System.out.println(new_val);
             }
         });
@@ -518,39 +513,42 @@ public class TabDemandaControlador implements Initializable {
 				tfProcSei.setText(demanda.getDemProcessoSEI());
 				
 				if (demanda.getDemDistribuicao() == null) {
-					dpDataDistribuicao.getEditor().clear();
+					dpDataDistribuicao.setValue(null);
 	 				} else {
-	 					dpDataDistribuicao.getEditor().setText(demanda.getDemDistribuicao());
+	 					dpDataDistribuicao.setValue(demanda.getDemDistribuicao());
+	 					
 	 				}
 				
+			
 				if (demanda.getDemRecebimento() == null) {
-					dpDataRecebimento.getEditor().clear();
+					dpDataRecebimento.setValue(null);
 	 				} else {
-	 					dpDataRecebimento.getEditor().setText(demanda.getDemRecebimento());
+	 					dpDataRecebimento.setValue(demanda.getDemRecebimento()); //.getEditor().setText(demanda.getDemRecebimento());
+	 					
 	 				}
-				
+	 				
 				tfResDen.setText(demanda.getDemDescricao());
+				
 				
 				// endereço relacionado //
 				if (demanda.getDemEnderecoFK() != null) {
-					lblDenEnd.setText(demanda.getDemEnderecoFK().getDesc_Endereco() + ", " + demanda.getDemEnderecoFK().getRA_Endereco());
-					lblDenEnd.setTextFill(Color.BLACK);
+					  //lblDenEnd.setText(demanda.getDemEnderecoFK().getDesc_Endereco() + ", " + demanda.getDemEnderecoFK().getRA_Endereco());
+					//lblDenEnd.setTextFill(Color.BLACK);
 				} else {
-					lblDenEnd.setText("Sem endereço cadastrado!");
-					lblDenEnd.setTextFill(Color.RED);	
+					//lblDenEnd.setText("Sem endereço cadastrado!");
+					//lblDenEnd.setTextFill(Color.RED);	
 				}
 				
-				/*
-				// data de autalização //
-				try {lblDataAtualizacao.setText("Data de Atualização: " + formatterDT.format(denTab.getDemAtualizacao()));
+				// mostrar data de atualizacao //
+				try {lblDataAtualizacao.setText("Data de Atualização: " + formatterDT.format(demanda.getDemAtualizacao()));
 						lblDataAtualizacao.setTextFill(Color.BLACK);
 				}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 						lblDataAtualizacao.setTextFill(Color.RED);}
-				*/
 				
-				dGeral = demanda;
+				//dGeral = demanda;
 	
 				//main.pegarDoc(dGeral);
+				tabEnderecoControlador.setDemanda(demanda);
 				
 				// copiar número sei da demanda ao selecionar //
 				Clipboard clip = Clipboard.getSystemClipboard();

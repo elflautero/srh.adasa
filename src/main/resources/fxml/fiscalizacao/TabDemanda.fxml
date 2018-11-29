@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="apDemanda" minHeight="0.0" minWidth="0.0" prefHeight="680.0" prefWidth="1140.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fiscalizacao.TabDemandaControlador">
+<AnchorPane fx:id="apPrincipal" minHeight="0.0" minWidth="0.0" prefHeight="680.0" prefWidth="1140.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fiscalizacao.TabDemandaControlador">
    <children>
-      <AnchorPane fx:id="apExterno" maxHeight="-Infinity" prefHeight="754.0" prefWidth="1140.0">
+      <AnchorPane fx:id="apPrin1" maxHeight="-Infinity" prefHeight="754.0" prefWidth="1140.0">
          <children>
-            <AnchorPane fx:id="apInterno" prefHeight="771.0" prefWidth="1124.0">
+            <AnchorPane fx:id="apPrin2" prefHeight="771.0" prefWidth="1124.0">
                <children>
-                  <BorderPane fx:id="bpDemanda" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="775.0" prefWidth="1133.0">
+                  <BorderPane fx:id="bpPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="775.0" prefWidth="1133.0">
                      <top>
                         <Pane fx:id="pDemanda" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1140.0" styleClass="classFontSize" BorderPane.alignment="CENTER">
                            <children>
@@ -40,7 +40,7 @@
                               <Pane layoutX="145.0" layoutY="201.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="850.0">
                                  <children>
                                     <Button fx:id="btnNovo" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnNovoHabilitar" prefHeight="22.0" prefWidth="76.0" text="Novo" />
-                                    <Button fx:id="btnSalvar" layoutX="101.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnSalvarSalvar" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
+                                    <Button fx:id="btnSalvar" layoutX="101.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnSalvarHabilitar" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
                                     <Button fx:id="btnEditar" layoutX="188.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEditarHabilitar" prefHeight="22.0" prefWidth="76.0" text="Editar" />
                                     <Button fx:id="btnExcluir" layoutX="276.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnExcluirHabilitar" prefHeight="22.0" prefWidth="76.0" text="Excluir" />
                                     <Button fx:id="btnCancelar" layoutX="364.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnCancelarHabilitar" prefHeight="22.0" prefWidth="76.0" text="Cancelar" />
@@ -57,14 +57,14 @@
                               </TableView>
                               <Label fx:id="lblDenEnd" layoutX="198.0" layoutY="476.0" prefHeight="23.0" prefWidth="500.0" />
                               <Label layoutX="126.0" layoutY="479.0" text="Endereço:" />
-                              <Label fx:id="lblDataAtualizacao" layoutX="781.0" layoutY="453.0" prefHeight="22.0" prefWidth="234.0" />
+                              <Label fx:id="lblDataAtualizacao" layoutX="768.0" layoutY="453.0" prefHeight="22.0" prefWidth="247.0" />
                            </children>
                         </Pane>
                      </top>
                   </BorderPane>
                </children>
             </AnchorPane>
-            <ScrollBar fx:id="sbDemanda" layoutX="1126.0" max="500.0" orientation="VERTICAL" prefHeight="680.0" prefWidth="20.0" unitIncrement="50.0" />
+            <ScrollBar fx:id="sbPrincipal" layoutX="1126.0" max="500.0" orientation="VERTICAL" prefHeight="680.0" prefWidth="20.0" unitIncrement="50.0" />
          </children>
       </AnchorPane>
    </children>

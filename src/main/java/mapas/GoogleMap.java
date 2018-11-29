@@ -8,7 +8,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
@@ -16,9 +15,6 @@ import netscape.javascript.JSObject;
 
 
 public class GoogleMap extends Parent {
-	
-	
-	//TabEnderecoController tabEnd = new TabEnderecoController();
 	
 		// metodo  de chamada initMap com o mapa e webview //
 		public GoogleMap() {
@@ -125,8 +121,6 @@ public class GoogleMap extends Parent {
 	        }
 	    }
 	    
-	    
-	
 	    public void setOnMapLatLngChanged(EventHandler<MapEvent> eventHandler) {
 	        onMapLatLngChanged = eventHandler;
 	    }

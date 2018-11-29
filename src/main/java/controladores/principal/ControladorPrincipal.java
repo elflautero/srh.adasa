@@ -48,16 +48,14 @@ public class ControladorPrincipal {
 	// para chamar a parte da fiscalizacao //
 	ControladorFiscalizacao controladorFiscalizacao;
 	
-	
-	
 	@FXML Pane pMainTop;
-	@FXML Pane pCenter;
+	@FXML BorderPane bpFiscalizacao;
 	@FXML Pane pConversor;
 	@FXML Pane pConversorCentro;
 	
 	
-	TabPane tpPrincLatDir;
-	TabPane tpPrinclatEsq;
+	TabPane tpPrincLatDir = new TabPane ();
+	TabPane tpPrinclatEsq = new TabPane ();
 	
 	Button btnTerrain;
 	Button btnRoadMap;
@@ -84,9 +82,7 @@ public class ControladorPrincipal {
 	
 	@FXML AnchorPane apWebMap;
 	
-	@FXML TextField txtMainSearch = new TextField();
-	
-	@FXML Button btnConverteCoord = new Button();
+	@FXML Button btnConverteCoord;
 	
 	Button btnHome;
 	Button btnMapa;
@@ -94,17 +90,15 @@ public class ControladorPrincipal {
 	Button btnFiscalizacao;
 	Button btnSEI;
 	
-	
 	@FXML StackPane stackPMainSearch;
 	@FXML StackPane stackPaneTop;
 	
 	@FXML BorderPane bpCenter;
-	
+
 	WebView wMaps;
 	WebView wBrowser;
 	
 	static GoogleMap googleMaps;
-	
 	
 	@FXML ComboBox <String> cbConverterCoord;
 	ObservableList<String> olcbMainConverteCoord;
@@ -342,24 +336,24 @@ public class ControladorPrincipal {
         });
 		
 
-    	tfLatDD = new TextField("-15"); // <TextField fx:id="tfLat1" layoutX="28.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" />
+    	tfLatDD = new TextField("-15");
     	tfLatDD.setPrefSize(193.0, 30.0);
     	tfLatDD.setLayoutX(11.0); 
     	tfLatDD.setLayoutY(6.0);
     	
-    	tfLonDD = new TextField("-47"); // <TextField fx:id="tfLon1" layoutX="224.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" promptText="..." />
+    	tfLonDD = new TextField("-47");
     	tfLonDD.setPrefSize(193.0, 30.0);
     	tfLonDD.setLayoutX(216.0); 
     	tfLonDD.setLayoutY(6.0);
     	
     	lblCoord1 = new Label();
-    	lblCoord1.setAlignment(Pos.CENTER); // <Label fx:id="lblCoord11" layoutX="420.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: white;" />
+    	lblCoord1.setAlignment(Pos.CENTER);
     	lblCoord1.setPrefSize(193.0, 30.0);
     	lblCoord1.setLayoutX(421.0);
     	lblCoord1.setLayoutY(6.0);
     	lblCoord1.setStyle("-fx-background-color: white;");
     	
-    	lblCoord2 = new Label(); // <Label fx:id="lblCoord21" layoutX="616.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: white;" />
+    	lblCoord2 = new Label();
     	lblCoord2.setAlignment(Pos.CENTER);
     	lblCoord2.setPrefSize(193.0, 30.0);
     	lblCoord2.setLayoutX(626.0); 
@@ -370,21 +364,21 @@ public class ControladorPrincipal {
     	pConversorCentro.getChildren().addAll(tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
     	
     	
-    	lblDD = new Label(); // <Label fx:id="lblDD" layoutX="126.0" layoutY="13.0" prefHeight="30.0" prefWidth="246.0" style="-fx-background-color: white;" />
+    	lblDD = new Label();
 		lblDD.setPrefSize(246.0, 30.0);
 		lblDD.setLayoutX(126.0); 
 		lblDD.setLayoutY(13.0);
 		lblDD.setAlignment(Pos.CENTER); 
 		lblDD.setStyle("-fx-background-color: white;");
     	
-		lblDMS = new Label(); // <Label fx:id="lblDMS" layoutX="401.0" layoutY="13.0" prefHeight="30.0" prefWidth="246.0" style="-fx-background-color: white;" />
+		lblDMS = new Label();
 		lblDMS.setPrefSize(246.0, 30.0);
 		lblDMS.setLayoutX(401.0); 
 		lblDMS.setLayoutY(13.0);
 		lblDMS.setAlignment(Pos.CENTER); 
 		lblDMS.setStyle("-fx-background-color: white;");
 		
-		lblUTM = new Label(); // <Label fx:id="lblUTM" layoutX="676.0" layoutY="13.0" prefHeight="30.0" prefWidth="246.0" style="-fx-background-color: white;" />
+		lblUTM = new Label();
 		lblUTM.setPrefSize(246.0, 30.0);
 		lblUTM.setLayoutX(676.0); 
 		lblUTM.setLayoutY(13.0);
@@ -426,20 +420,21 @@ public class ControladorPrincipal {
 	    AnchorPane.setTopAnchor(bpCenter, 150.0);
 	    AnchorPane.setLeftAnchor(bpCenter, 0.0);
 	    AnchorPane.setRightAnchor(bpCenter, 0.0);
-	    AnchorPane.setBottomAnchor(bpCenter, 45.0); //-632.0
-	    
-	    
-	    pCenter.minWidthProperty().bind(bpCenter.widthProperty().subtract(300.0));
-	    pCenter.maxWidthProperty().bind(bpCenter.widthProperty().subtract(300.0));
-	    
+	    AnchorPane.setBottomAnchor(bpCenter, 115.0); //-632.0
 	    
 	    bpCenter.setDisable(true);
 	    
-        // -- Pane Fiscalizacao -- //
-	    pFiscalizacao.minWidthProperty().bind(pCenter.widthProperty());
-	    pFiscalizacao.maxWidthProperty().bind(pCenter.widthProperty());
-	   
-	    pFiscalizacao.setStyle("-fx-background-color: transparent;"); //
+	    // BorderPane 2 - Center
+	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
+	    AnchorPane.setLeftAnchor(pFiscalizacao, 150.0);
+	    AnchorPane.setRightAnchor(pFiscalizacao, 150.0);
+	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0); //-632.0
+	    
+	    
+	    AnchorPane.setTopAnchor(pBrowserSEI, 150.0);
+	    AnchorPane.setLeftAnchor(pBrowserSEI, 150.0);
+	    AnchorPane.setRightAnchor(pBrowserSEI, 150.0);
+	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0); //-632.0
 	    
 	    AnchorPane.setTopAnchor(pFiscalizacao, 150.5);
 	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
@@ -449,32 +444,11 @@ public class ControladorPrincipal {
 	    
 	    apMain.getChildren().add(pFiscalizacao);
 	    
-	    AnchorPane.setTopAnchor(pBrowserSEI, 150.0);
-	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0);
-	    
 	    pBrowserSEI.setTranslateY(880.0);
 	    
 	    apMain.getChildren().add(pBrowserSEI);
 	    
-	    pCenter.layoutXProperty().addListener(
-	    		(observable, oldValue, newValue) -> {
-	    			
-	    			pFiscalizacao.layoutXProperty().setValue(newValue);
-	    			pBrowserSEI.layoutXProperty().setValue(newValue);
-	    		
-		    	    }
-	    		);
-	   	
-	    bpCenter.layoutYProperty().addListener(
-	    		(obs, oldVal, newVal) -> {
-	    			
-	    			pFiscalizacao.setLayoutY(((double) newVal));
-	    			pBrowserSEI.setLayoutY(((double) newVal));
-	    			
-		    	    }
-	    		);
-	    
-	    
+	   
 	    StackPane.setAlignment(pConversor,Pos.CENTER);
 	    StackPane.setAlignment(pMainTop,Pos.CENTER);
 	  
@@ -557,7 +531,6 @@ public class ControladorPrincipal {
         
         
         // botao de aumentar o zoom //
-       
         btnZoomIn = GlyphsDude.createIconButton(
         		FontAwesomeIcon.PLUS,
         		"", 
@@ -816,7 +789,7 @@ public class ControladorPrincipal {
             		}
         	
         	if (p == null) {
-        		
+
 	        	p = new Pane();
 	        	
 	        	controladorFiscalizacao = new ControladorFiscalizacao();
@@ -843,13 +816,10 @@ public class ControladorPrincipal {
 				
 				pFiscalizacao.getChildren().add(p);
 				
+				
         		}
         	});
-				    	
 				    
-		       
-		     
-        
         btnConversor.setOnAction((ActionEvent evt)->{
         	
         	dblSearch =  stackPMainSearch.getTranslateY();
@@ -878,8 +848,6 @@ public class ControladorPrincipal {
 	        	weBrowser.load("https://sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI");
 	        	
 	        	spWebBrowser.setContent(wBrowser);
-	        	
-	        	pBrowserSEI.prefWidthProperty().bind(pCenter.widthProperty());
 	        	
 	        	spWebBrowser.prefWidthProperty().bind((pBrowserSEI.widthProperty()));
 	        	spWebBrowser.prefHeightProperty().bind(pBrowserSEI.heightProperty());

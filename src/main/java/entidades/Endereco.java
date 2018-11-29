@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
@@ -20,34 +22,35 @@ import org.hibernate.annotations.FetchMode;
 public class Endereco implements Serializable{
 
 	
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -8620638555874838035L;
+	
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column 
-	private int Cod_Endereco;
+	@Column (name="end_ID")  // @Column (name="dem_documento", columnDefinition="varchar(80)")
+	private int endID; 
 	
+	@Column (name="end_Logadouro", columnDefinition="varchar(95)")
+	private String endLogadouro;
 	
-	@Column (columnDefinition="varchar(90)")
-	private String Desc_Endereco;
+	@ManyToOne (fetch = FetchType.LAZY) 
+	@JoinColumn (name = "end_RA")
+	//@Column (name="end_RA")
+	private RA endRA;
+		
+	@Column (name="end_CEP", columnDefinition="varchar(20)")
+	private String endCEP;
 	
-	@Column (columnDefinition="varchar(20)")
-	private String RA_Endereco;
+	@Column (name="end_Cidade", columnDefinition="varchar(20)")
+	private String endCidade;
 	
-	@Column (columnDefinition="varchar(20)")
-	private String CEP_Endereco;
+	@Column (name="end_UF", columnDefinition="varchar(2)")
+	private String endUF;
 	
-	@Column (columnDefinition="varchar(20)")
-	private String Cid_Endereco;
+	@Column (name="end_Latitude")
+	private Double endLatitude;
 	
-	@Column (columnDefinition="varchar(2)")
-	private String UF_Endereco;
-	
-	@Column
-	private Double Lat_Endereco;
-	
-	@Column
-	private Double Lon_Endereco;
+	@Column (name="end_Longitude")
+	private Double endLongitude;
 	
 	//-- Lista de enderecos vinculados --//
 	@OneToMany (mappedBy = "demEnderecoFK", cascade = CascadeType.MERGE,
@@ -87,6 +90,97 @@ public class Endereco implements Serializable{
 	public Endereco () {
 		
 	}
+
+
+	public int getEndID() {
+		return endID;
+	}
+
+
+	public void setEndID(int endID) {
+		this.endID = endID;
+	}
+
+
+	public String getEndLogadouro() {
+		return endLogadouro;
+	}
+
+
+	public void setEndLogadouro(String endLogadouro) {
+		this.endLogadouro = endLogadouro;
+	}
+
+
+	public RA getEndRA() {
+		return endRA;
+	}
+
+
+	public void setEndRA(RA endRA) {
+		this.endRA = endRA;
+	}
+
+
+	public String getEndCEP() {
+		return endCEP;
+	}
+
+
+	public void setEndCEP(String endCEP) {
+		this.endCEP = endCEP;
+	}
+
+
+	public String getEndCidade() {
+		return endCidade;
+	}
+
+
+	public void setEndCidade(String endCidade) {
+		this.endCidade = endCidade;
+	}
+
+
+	public String getEndUF() {
+		return endUF;
+	}
+
+
+	public void setEndUF(String endUF) {
+		this.endUF = endUF;
+	}
+
+
+	public Double getEndLatitude() {
+		return endLatitude;
+	}
+
+
+	public void setEndLatitude(Double endLatitude) {
+		this.endLatitude = endLatitude;
+	}
+
+
+	public Double getEndLongitude() {
+		return endLongitude;
+	}
+
+
+	public void setEndLongitude(Double endLongitude) {
+		this.endLongitude = endLongitude;
+	}
+
+
+	public List<Demanda> getDemandas() {
+		return demandas;
+	}
+
+
+	public void setDemandas(List<Demanda> demandas) {
+		this.demandas = demandas;
+	}
+
 	
 	
 	/*
@@ -109,34 +203,7 @@ public class Endereco implements Serializable{
 	// -- GETTERS AND SETTERS - //
 	
 	
-	//-- get e set Latitude --//
-	public Double getLat_Endereco() {
-		return Lat_Endereco;
-	}
-
-	public void setLat_Endereco(Double lat_Endereco) {
-		Lat_Endereco = lat_Endereco;
-	}
-
 	
-	//-- get e set Longitude --//
-	public Double getLon_Endereco() {
-		return Lon_Endereco;
-	}
-
-	public void setLon_Endereco(Double lon_Endereco) {
-		Lon_Endereco = lon_Endereco;
-	}
-
-	
-	//-- get e set OneToMany List Demandas --//
-	public List<Demanda> getListDemandas() {
-		return demandas;
-	}
-
-	public void setListDemandas(List<Demanda> demandas) {
-		this.demandas = demandas;
-	}
 	
 	
 	/*
@@ -178,52 +245,6 @@ public class Endereco implements Serializable{
 						*/
 				
 		
-	public int getCod_Endereco() {
-		return Cod_Endereco;
-	}
-
-	public void setCod_Endereco(int cod_Endereco) {
-		Cod_Endereco = cod_Endereco;
-	}
-
-	public String getDesc_Endereco() {
-		return Desc_Endereco;
-	}
-
-	public void setDesc_Endereco(String desc_Endereco) {
-		Desc_Endereco = desc_Endereco;
-	}
-
-	public String getRA_Endereco() {
-		return RA_Endereco;
-	}
-
-	public void setRA_Endereco(String rA_Endereco) {
-		RA_Endereco = rA_Endereco;
-	}
-
-	public String getCEP_Endereco() {
-		return CEP_Endereco;
-	}
-
-	public void setCEP_Endereco(String cEP_Endereco) {
-		CEP_Endereco = cEP_Endereco;
-	}
-
-	public String getCid_Endereco() {
-		return Cid_Endereco;
-	}
-
-	public void setCid_Endereco(String cid_Endereco) {
-		Cid_Endereco = cid_Endereco;
-	}
-
-	public String getUF_Endereco() {
-		return UF_Endereco;
-	}
-
-	public void setUF_Endereco(String uF_Endereco) {
-		UF_Endereco = uF_Endereco;
-	}
+	
 	
 }

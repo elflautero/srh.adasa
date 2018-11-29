@@ -12,8 +12,8 @@
 		<property name="connection.url">jdbc:sqlserver://srvsqlhomolog1;databaseName=DB_SRH;integratedSecurity=true;</property>
 		<!-- <property name="connection.url">jdbc:sqlserver://SRVHOST4\PROD;databaseName=GisDB;integratedSecurity=true;</property>-->
     	<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-    	<property name="connection.username"></property>
-    	<property name="connection.password"></property>
+    	<property name="connection.username">ADASA\fabricio.barrozo</property>
+    	<property name="connection.password">fj17000071jf</property>
     	<property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
 		
 		
@@ -43,6 +43,7 @@
 		
 		<mapping class="entidades.Demanda"/>
 		<mapping class="entidades.Endereco"/>
+		<mapping class="entidades.RA"/>
 		
 		 <!-- MAPEAMENTO DAS ENTIDADES 
 		 
