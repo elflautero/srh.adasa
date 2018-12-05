@@ -55,9 +55,14 @@
                                     <TableColumn fx:id="tcProcSEI" prefWidth="232.0" text="Proc SEI" />
                                  </columns>
                               </TableView>
-                              <Label fx:id="lblDenEnd" layoutX="198.0" layoutY="476.0" prefHeight="23.0" prefWidth="500.0" />
-                              <Label layoutX="126.0" layoutY="479.0" text="Endereço:" />
                               <Label fx:id="lblDataAtualizacao" layoutX="768.0" layoutY="453.0" prefHeight="22.0" prefWidth="247.0" />
+                              <Pane layoutX="123.0" layoutY="485.0" prefHeight="59.0" prefWidth="895.0">
+                                 <children>
+                                    <Label fx:id="lblDenEnd" layoutX="79.0" layoutY="19.0" prefHeight="23.0" prefWidth="728.0" />
+                                    <Label layoutX="14.0" layoutY="21.0" text="Endereço:" />
+                                    <Button fx:id="btnEndDetalhes" layoutX="821.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnEndDetalhesHabilitar" text="Detalhes" />
+                                 </children>
+                              </Pane>
                            </children>
                         </Pane>
                      </top>

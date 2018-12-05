@@ -1,11 +1,14 @@
 package controladores.fiscalizacao;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import controladores.principal.ControladorPrincipal;
 
 import dao.DemandaDao;
 import entidades.Demanda;
@@ -14,8 +17,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -33,11 +39,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 
 public class TabDemandaControlador implements Initializable {
 	
+	// transmitir para os outros controladores o objeto do crud //
 	TabEnderecoControlador tabEnderecoControlador = new TabEnderecoControlador();
+	EditarEnderecoControlador edEndCon = new EditarEnderecoControlador();
 	
 	// --- String para primeira pesquisa --- //
 	String strPesquisa = "";
@@ -58,6 +67,11 @@ public class TabDemandaControlador implements Initializable {
 	@FXML Button btnCancelar;
 	@FXML Button btnPesquisar;
 	@FXML Button btnSair;
+	
+	
+	@FXML Button btnEndDetalhes;
+
+	
 	
 	@FXML DatePicker dpDataDistribuicao;
 	@FXML DatePicker dpDataRecebimento;
@@ -80,6 +94,7 @@ public class TabDemandaControlador implements Initializable {
 		.parseCaseInsensitive()
 		.append(DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"))
 		.toFormatter();
+	
 	
 	public void btnNovoHabilitar (ActionEvent event) {
 		
@@ -112,7 +127,7 @@ public class TabDemandaControlador implements Initializable {
 		
         obsList = FXCollections.observableArrayList();
         
-		try { // filtro para não salvar documento sem n de documento ou processo
+		try { // filtro para não salvar documento sem numero de documento ou processo
 			
 			if (tfDocSei.getText().isEmpty()  ||
 				tfProcSei.getText().isEmpty()	) 
@@ -156,6 +171,9 @@ public class TabDemandaControlador implements Initializable {
 					DemandaDao dao = new DemandaDao();
 					
 					dao.salvarDemanda(demanda);
+					
+					tabEnderecoControlador.setDemanda(demanda);
+					edEndCon.setDemanda(demanda);
 					
 					// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
 					//dGeral = demanda;
@@ -259,6 +277,7 @@ public class TabDemandaControlador implements Initializable {
 						// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
 						
 						tabEnderecoControlador.setDemanda(demanda);
+						edEndCon.setDemanda(demanda);
 						
 							//dGeral = demanda;
 							//main.pegarDoc(dGeral);
@@ -386,7 +405,6 @@ public class TabDemandaControlador implements Initializable {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
             	apPrin2.setLayoutY(-new_val.doubleValue());
-            	System.out.println(new_val);
             }
         });
 		
@@ -523,7 +541,7 @@ public class TabDemandaControlador implements Initializable {
 				if (demanda.getDemRecebimento() == null) {
 					dpDataRecebimento.setValue(null);
 	 				} else {
-	 					dpDataRecebimento.setValue(demanda.getDemRecebimento()); //.getEditor().setText(demanda.getDemRecebimento());
+	 					dpDataRecebimento.setValue(demanda.getDemRecebimento());
 	 					
 	 				}
 	 				
@@ -532,11 +550,29 @@ public class TabDemandaControlador implements Initializable {
 				
 				// endereço relacionado //
 				if (demanda.getDemEnderecoFK() != null) {
-					  //lblDenEnd.setText(demanda.getDemEnderecoFK().getDesc_Endereco() + ", " + demanda.getDemEnderecoFK().getRA_Endereco());
-					//lblDenEnd.setTextFill(Color.BLACK);
+					lblDenEnd.setText(demanda.getDemEnderecoFK().getEndLogadouro() 
+							+ ",  Região Administrativa: " + demanda.getDemEnderecoFK().getEndRA().getRaNome()
+							+ ",  Cep: " + demanda.getDemEnderecoFK().getEndCEP()
+							+ ",  Cidade: " + demanda.getDemEnderecoFK().getEndCidade()
+							+ ",  UF: " + demanda.getDemEnderecoFK().getEndUF()
+							);
+					 		/*
+							ControladorPrincipal.capturarGoogleMaps().setMarkerPosition(
+									demanda.getDemEnderecoFK().getEndLatitude() + 1,
+									demanda.getDemEnderecoFK().getEndLongitude());
+							
+							ControladorPrincipal.capturarGoogleMaps().setMapCenter(
+									demanda.getDemEnderecoFK().getEndLatitude(),
+									demanda.getDemEnderecoFK().getEndLongitude()
+									);
+							
+							apPrincipal.setStyle("-fx-background-color: rgba(255, 255, 255, 0.5);");
+							*/
+					
+					lblDenEnd.setTextFill(Color.BLACK);
 				} else {
-					//lblDenEnd.setText("Sem endereço cadastrado!");
-					//lblDenEnd.setTextFill(Color.RED);	
+					lblDenEnd.setText("Sem endereço cadastrado!");
+					lblDenEnd.setTextFill(Color.RED);	
 				}
 				
 				// mostrar data de atualizacao //
@@ -545,10 +581,9 @@ public class TabDemandaControlador implements Initializable {
 				}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 						lblDataAtualizacao.setTextFill(Color.RED);}
 				
-				//dGeral = demanda;
-	
-				//main.pegarDoc(dGeral);
+				//Levar a demanda para cadastrar o endereco //
 				tabEnderecoControlador.setDemanda(demanda);
+				edEndCon.setDemanda(demanda);
 				
 				// copiar número sei da demanda ao selecionar //
 				Clipboard clip = Clipboard.getSystemClipboard();
@@ -570,7 +605,35 @@ public class TabDemandaControlador implements Initializable {
 			
 	}); // fim do selection model
 		
-}
+	}
+	
+	public void btnEndDetalhesHabilitar (ActionEvent event) {
+		
+			Pane pEndereco = new Pane();
+			edEndCon = new EditarEnderecoControlador();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/EditarEndereco.fxml"));
+			loader.setRoot(pEndereco);
+			loader.setController(edEndCon);
+			
+			try {
+				loader.load();
+			} catch (IOException e) {
+				System.out.println("erro leitura do pane - chamada legislação");
+				e.printStackTrace();
+			}
+			
+			Scene scene = new Scene(pEndereco);
+			Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
+			stage.setWidth(964);
+			stage.setHeight(500);
+	        stage.setScene(scene);
+	        stage.setMaximized(false);
+	        stage.setResizable(false);
+	        stage.setAlwaysOnTop(true); 
+	        stage.show();
+		}
+
+
 	
 	// -- método habilitar e desabilitar botões -- //
 	private void modularBotoesInicial () {

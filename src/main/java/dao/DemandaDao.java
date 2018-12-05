@@ -1,8 +1,14 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 import entidades.Demanda;
 import entidades.HibernateUtil;
@@ -16,6 +22,7 @@ public void salvarDemanda (Demanda demanda) {
 		s.beginTransaction();
 		s.save(demanda);
 		s.getTransaction().commit();
+		s.flush();
 		s.close();
 		
 	}
@@ -23,19 +30,26 @@ public void salvarDemanda (Demanda demanda) {
 	@SuppressWarnings("unchecked")
 	public List<Demanda> listarDemandas(String strPesquisa) {
 		
-		//List<Demanda> list = new ArrayList<Demanda>();
+		List<Demanda> list = new ArrayList<Demanda>();
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		
+		/*
 		List<Demanda> list = s.createQuery(
-				"SELECT d FROM Demanda AS d LEFT OUTER JOIN FETCH d.demEnderecoFK WHERE (d.demDocumento LIKE '%"+strPesquisa+"%' "
+				"SELECT d FROM Demanda AS d "
+				+ "LEFT OUTER JOIN FETCH d.demEnderecoFK "
+				+ "WHERE (d.demDocumento LIKE '%"+strPesquisa+"%' "
 						+ "OR d.demDocumentoSEI LIKE '%"+strPesquisa+"%' OR d.demProcessoSEI LIKE '%"+strPesquisa+"%')"
 				).list();
 		
+		
+		*/
 		s.beginTransaction();
 		
-		/*
-		Criteria crit = s.createCriteria(Demanda.class);
+		Criteria crit = s.createCriteria(Demanda.class, "d");
+		crit.createAlias("d.demEnderecoFK" , "end", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("end.endRA", "ra", JoinType.LEFT_OUTER_JOIN);
+		
 		
 		Criterion demDoc = Restrictions.like("demDocumento", '%' + strPesquisa + '%');
 		Criterion demDocSei = Restrictions.like("demDocumentoSEI", '%' + strPesquisa + '%');
@@ -46,8 +60,8 @@ public void salvarDemanda (Demanda demanda) {
 		crit.add(orExp);
 		
 		//crit.add(Restrictions.like("demDocumento", '%' + strPesquisa + '%'));
-		list = crit.list();4
-		*/
+		list = crit.list();
+		
 		
 		// SQL list = s.createSQLQuery("SELECT * FROM Demanda WHERE Documento_Denuncia LIKE '%strPesquisa%'").list();
 		//list = s.createQuery("from Demanda d where d.Documento_Denuncia= : strPesquisa").setString("strPesquisa",strPesquisa).list();

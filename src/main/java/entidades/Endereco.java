@@ -32,7 +32,7 @@ public class Endereco implements Serializable{
 	@Column (name="end_Logadouro", columnDefinition="varchar(95)")
 	private String endLogadouro;
 	
-	@ManyToOne (fetch = FetchType.LAZY) 
+	@ManyToOne (fetch = FetchType.EAGER) 
 	@JoinColumn (name = "end_RA")
 	//@Column (name="end_RA")
 	private RA endRA;
@@ -54,7 +54,7 @@ public class Endereco implements Serializable{
 	
 	//-- Lista de enderecos vinculados --//
 	@OneToMany (mappedBy = "demEnderecoFK", cascade = CascadeType.MERGE,
-			fetch = FetchType.LAZY, targetEntity = Demanda.class)
+			fetch = FetchType.EAGER, targetEntity = Demanda.class)
 	@Fetch(FetchMode.SUBSELECT) 
 	private List<Demanda> demandas = new ArrayList<Demanda>();
 	
@@ -90,7 +90,6 @@ public class Endereco implements Serializable{
 	public Endereco () {
 		
 	}
-
 
 	public int getEndID() {
 		return endID;
