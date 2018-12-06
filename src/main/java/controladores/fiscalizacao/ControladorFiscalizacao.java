@@ -11,19 +11,14 @@ public class ControladorFiscalizacao {
 	@FXML Pane pFiscalizacao;
 	@FXML TabPane tpFiscalizacao;
 	
-	
 	TabDemandaControlador tabDemandaControlador = new TabDemandaControlador();
-	
 	
 	@FXML 
     private void initialize() {
 		
-		
 		tpFiscalizacao.setStyle("-fx-background-color: transparent;");
-		
 		tpFiscalizacao.prefWidthProperty().bind(pFiscalizacao.widthProperty());
 		tpFiscalizacao.prefHeightProperty().bind(pFiscalizacao.heightProperty());
-		
 		
 		/*
 		if (tabDemandaControlador == null) {
@@ -31,7 +26,6 @@ public class ControladorFiscalizacao {
 			tabDemandaControlador = new TabDemandaControlador();
 		}
 		*/
-		
 		
 		pFiscalizacao.widthProperty().addListener(new ChangeListener<Number>() {
 	    	   
@@ -56,8 +50,6 @@ public class ControladorFiscalizacao {
 		    	
 		    }
 		});
-		
-		
 		
 	}
 

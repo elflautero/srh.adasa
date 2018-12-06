@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import controladores.principal.ControladorPrincipal;
 import dao.EnderecoDao;
 import entidades.Demanda;
 import entidades.Endereco;
@@ -29,8 +30,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import mapas.MapEvent;
 import principal.Alerta;
+import principal.FormatoData;
 
 
 public class TabEnderecoControlador implements Initializable {
@@ -40,8 +44,6 @@ public class TabEnderecoControlador implements Initializable {
 	public void setDemanda (Demanda demanda) {
 		
 		TabEnderecoControlador.demanda = demanda;
-		//System.out.println("tabEndereco, demanda id: " + demanda.getDemID());
-		//lblDoc.setText(demanda.getDemDocumento().toString()); // não está funcionando
 		
 	}
 	
@@ -77,6 +79,8 @@ public class TabEnderecoControlador implements Initializable {
 	@FXML Pane pEndereco;
 	
 	@FXML Button btnEndMaps;
+	
+	@FXML Label lblDataAtualizacao;
 	
 	
 	@FXML Button btnDenAtualizar;
@@ -138,46 +142,51 @@ public class TabEnderecoControlador implements Initializable {
 
 	};
 	
+	@FXML
+	ChoiceBox<String> cbListaDemandas = new ChoiceBox<String>();
+	
+	ObservableList<String> olListaDemandas;
 	
 	@FXML
 	ChoiceBox<String> cbEndRA = new ChoiceBox<String>();
-		ObservableList<String> olEndRA = FXCollections
-			.observableArrayList(
-					
-					"Águas Claras"	,
-					"Brazlândia"	,
-					"Candangolândia"	,
-					"Ceilândia"	,
-					"Cruzeiro"	,
-					"Fercal"	,
-					"Gama"	,
-					"Guará"	,
-					"Itapoã"	,
-					"Jardim Botânico"	,
-					"Lago Norte"	,
-					"Lago Sul"	,
-					"Núcleo Bandeirante"	,
-					"Paranoá"	,
-					"Park Way"	,
-					"Planaltina"	,
-					"Plano Piloto"	,
-					"Recanto das Emas"	,
-					"Riacho Fundo"	,
-					"Riacho Fundo II"	,
-					"Samambaia"	,
-					"Santa Maria"	,
-					"São Sebastião"	,
-					"SCIA/Estrutural"	,
-					"SIA"	,
-					"Sobradinho"	,
-					"Sobradinho II"	,
-					"Sudoeste/Octogonal"	,
-					"Taguatinga"	,
-					"Varjão"	,
-					"Vicente Pires"	
+	
+	ObservableList<String> olEndRA = FXCollections
+	.observableArrayList(
+			
+			"Águas Claras"	,
+			"Brazlândia"	,
+			"Candangolândia"	,
+			"Ceilândia"	,
+			"Cruzeiro"	,
+			"Fercal"	,
+			"Gama"	,
+			"Guará"	,
+			"Itapoã"	,
+			"Jardim Botânico"	,
+			"Lago Norte"	,
+			"Lago Sul"	,
+			"Núcleo Bandeirante"	,
+			"Paranoá"	,
+			"Park Way"	,
+			"Planaltina"	,
+			"Plano Piloto"	,
+			"Recanto das Emas"	,
+			"Riacho Fundo"	,
+			"Riacho Fundo II"	,
+			"Samambaia"	,
+			"Santa Maria"	,
+			"São Sebastião"	,
+			"SCIA/Estrutural"	,
+			"SIA"	,
+			"Sobradinho"	,
+			"Sobradinho II"	,
+			"Sudoeste/Octogonal"	,
+			"Taguatinga"	,
+			"Varjão"	,
+			"Vicente Pires"	
 
 
-					); 	
+			); 	
 		
 		//-- combobox - unidade federal --//
 		@FXML
@@ -497,7 +506,10 @@ public class TabEnderecoControlador implements Initializable {
 	}
 	
 	public void btnEndMapsHab (ActionEvent event) {
-			
+			//ControladorPrincipal.capturarGoogleMaps ()
+		
+		
+		
 	}
 	
 	public void btnEndCoordHab (ActionEvent event) {
@@ -575,6 +587,9 @@ public class TabEnderecoControlador implements Initializable {
 	    	(ObservableValue<? extends String> observable, String oldValue, String newValue) ->
 	    		
 	    		strRA = (String) newValue );
+	    
+	    olListaDemandas = FXCollections.observableArrayList();
+	    cbListaDemandas.setItems(olListaDemandas);
 	    			
 	}
 	
@@ -684,6 +699,42 @@ public class TabEnderecoControlador implements Initializable {
 						demanda = end.getDemandas().get(0);
 					}
 					
+					FormatoData d = new FormatoData();
+					
+					// mostrar data de atualizacao //
+					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(end.getEndAtualizacao()));
+							lblDataAtualizacao.setTextFill(Color.BLACK);
+					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
+							lblDataAtualizacao.setTextFill(Color.RED);}
+					
+					olListaDemandas.clear();
+					
+					for (int i = 0; i<end.getDemandas().size(); i++) {
+						
+						if (end.getDemandas().get(i).getDemID() != 0) {
+							
+							olListaDemandas.add(end.getDemandas().get(i).getDemDocumento() 
+									+ "     Sei nº " + end.getDemandas().get(i).getDemDocumentoSEI()
+									+ "     Processo nº " + end.getDemandas().get(i).getDemProcessoSEI()
+									
+									);
+						}
+						
+					}
+					
+					try {
+						
+					cbListaDemandas.setValue(
+							end.getDemandas().get(0).getDemDocumento() 
+							+ "     Sei nº " + end.getDemandas().get(0).getDemDocumentoSEI()
+							+ "     Processo nº " + end.getDemandas().get(0).getDemProcessoSEI()
+							);
+					}
+					catch (Exception e) {
+						// não está funcionando. mostrar na choicebox essa mensagem
+						cbListaDemandas.setValue("não há demanda relacionada");
+						System.out.println("catch - não há demanda relacionada com o endereço");
+					}
 					
 					//eGeral = new Endereco(endTab);
 					

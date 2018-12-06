@@ -1,6 +1,7 @@
 package entidades;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +53,14 @@ public class Endereco implements Serializable{
 	@Column (name="end_Longitude")
 	private Double endLongitude;
 	
+	@Column (name="end_Atualizacao")
+	private LocalDateTime endAtualizacao;
+	
 	//-- Lista de enderecos vinculados --//
 	@OneToMany (mappedBy = "demEnderecoFK", cascade = CascadeType.MERGE,
 			fetch = FetchType.EAGER, targetEntity = Demanda.class)
 	@Fetch(FetchMode.SUBSELECT) 
 	private List<Demanda> demandas = new ArrayList<Demanda>();
-	
 	
 	/*
 		//-- Lista de interferencias vinculadas --//
@@ -180,6 +183,13 @@ public class Endereco implements Serializable{
 		this.demandas = demandas;
 	}
 
+	public LocalDateTime getEndAtualizacao() {
+		return endAtualizacao;
+	}
+
+	public void setEndAtualizacao(LocalDateTime endAtualizacao) {
+		this.endAtualizacao = endAtualizacao;
+	}
 	
 	
 	/*

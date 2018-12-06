@@ -1,8 +1,13 @@
 package controladores.fiscalizacao;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import org.hibernate.id.ForeignGenerator;
 
 import dao.EnderecoDao;
 import entidades.Demanda;
@@ -16,16 +21,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
@@ -35,11 +34,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import principal.Alerta;
+import principal.FormatoData;
 
 
 public class EditarEnderecoControlador implements Initializable {
@@ -49,22 +47,18 @@ public class EditarEnderecoControlador implements Initializable {
 	public void setDemanda (Demanda demanda) {
 		
 		EditarEnderecoControlador.demanda = demanda;
-		//lblDoc.setText(demanda.getDemDocumento().toString()); // não está funcionando
-		
-	System.out.println("setDemanda  "
-			+ "\n demanda ID: " + demanda.getDemID()
-			);
-	if (demanda.getDemEnderecoFK() == null) {
-		System.out.println("setDemanda - endereço nulo");
-	} else {
-		System.out.println(" setDemanda endereco id " + demanda.getDemEnderecoFK().getEndID());
-	}
 		
 	}
 	
 	public static Demanda getDemanda () {
 		return demanda;
 	}
+	
+	// formatar data para  mostar no label (data de atualizacao do documento)
+		DateTimeFormatter formatterDT = new DateTimeFormatterBuilder()
+			.parseCaseInsensitive()
+			.append(DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"))
+			.toFormatter();
 	
 	@FXML public Label lblDoc = new Label(); // publico para receber valor do MainController, metodo pegarDoc()
 	@FXML Pane tabEndereco;
@@ -100,6 +94,13 @@ public class EditarEnderecoControlador implements Initializable {
 	@FXML Button btnEndLatLon;
 	
 	@FXML Pane pEndCoord;
+	@FXML Pane p_lblDemanda;
+	
+	
+	@FXML Label lblDataAtualizacao;
+	
+	
+	Label lblDemanda;
 	
 	//-- TableView endereco --//
 	@FXML private TableView <Endereco> tvLista;
@@ -254,25 +255,24 @@ public class EditarEnderecoControlador implements Initializable {
 			Alerta a = new Alerta ();
 			a.alertar(new Alert(Alert.AlertType.ERROR, "Coordenadas inválidas!!!", ButtonType.OK));
 			
-			
 		} 
 		
-		else if (demanda == null) {
-			
-			Alerta a = new Alerta ();
-			a.alertar(new Alert(Alert.AlertType.ERROR, "Não há demanda selecionada!!!", ButtonType.OK));
-			
-		} 
+			else if (demanda == null) {
+				
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.ERROR, "Não há demanda selecionada!!!", ButtonType.OK));
+				
+			} 
 		
-			else {
-			
-			
-				if (tfEnd.getText().isEmpty()) {
-					
-					Alerta a = new Alerta ();
-					a.alertar(new Alert(Alert.AlertType.ERROR, "Informe o logadouro do empreendimento!!!", ButtonType.OK));
-					
-				} else {
+				else {
+				
+				
+					if (tfEnd.getText().isEmpty()) {
+						
+						Alerta a = new Alerta ();
+						a.alertar(new Alert(Alert.AlertType.ERROR, "Informe o logadouro do empreendimento!!!", ButtonType.OK));
+						
+					} else {
 					
 						RA ra = new RA ();
 						ra.setRaID(intRA);
@@ -289,9 +289,10 @@ public class EditarEnderecoControlador implements Initializable {
 							
 							try {
 								
-							
 								end.setEndLatitude(Double.parseDouble(tfEndLat.getText()));
 								end.setEndLongitude(Double.parseDouble(tfEndLon.getText()));
+								
+								end.setEndAtualizacao((LocalDateTime.now()));
 										
 										
 										Demanda dem = new Demanda ();
@@ -305,26 +306,17 @@ public class EditarEnderecoControlador implements Initializable {
 											endDao.salvarEndereco(end); //solução para recuperar o id do endereço
 											endDao.mergeEndereco(end); // assim adiciona o id end na demanda dem
 										
-										System.out.println(
-												
-												"bntSalvar "
-												+ "\n demanda salva id "  + dem.getDemID()
-												+ "\n endereco salvo id " + end.getEndID()
-												+ "\n endereco salvo na demanda - id " + demanda.getDemEnderecoFK().getEndID()
-												);
-										
-										
 										//-- modular botoes--//
 										modularBotoesInicial ();
 										
 										obsList.remove(end);
 										obsList.add(end);
 										
+										
 										selecionarEndereco();
 										
 										modularBotoesInicial();
 										
-
 										Alerta a = new Alerta ();
 										a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro salvo com sucesso!!!", ButtonType.OK));
 										
@@ -360,20 +352,18 @@ public class EditarEnderecoControlador implements Initializable {
 		} else {
 			
 			if (tfEndLat.getText().isEmpty()|| tfEndLon.getText().isEmpty() ) {
-				
 				Alerta a = new Alerta ();
 				a.alertar(new Alert(Alert.AlertType.ERROR, "Coordenadas inválidas!!!", ButtonType.OK));
 				// colocar para não aceitar texto e somente número
+				} 
 				
-			} 
+				else if (demanda == null) {
+					Alerta a = new Alerta ();
+					a.alertar(new Alert(Alert.AlertType.ERROR, "Não foi selecionado uma demanda!!!", ButtonType.OK));
+				}
 			
-			else if (demanda == null) {
-				
-				Alerta a = new Alerta ();
-				a.alertar(new Alert(Alert.AlertType.ERROR, "Não foi selecionado uma demanda!!!", ButtonType.OK));
-			}
-			
-			else {
+				else {
+					
 					RA ra = new RA ();
 					ra.setRaID(intRA);
 					ra.setRaNome(strRA);
@@ -390,55 +380,48 @@ public class EditarEnderecoControlador implements Initializable {
 					end.setEndLatitude(Double.parseDouble(tfEndLat.getText()));
 					end.setEndLongitude(Double.parseDouble(tfEndLon.getText()));
 					
+					end.setEndAtualizacao((LocalDateTime.now()));
+					
 					Demanda dem = new Demanda();
 					
-					
-					if (demanda.equals(null) ) {
-						dem = end.getDemandas().get(0);
-						System.out.println(
-								"bnt editar - demanda nula id " + dem.getDemID()
-								);
-						 
-						
-										}
-					else {
-						dem = demanda;
-						System.out.println(
-								"btn Editar demanda do método getDemanda" + dem.getDemID()
-								);
-					}
-					
+					dem = demanda;
 					dem.setDemEnderecoFK(end);
-					end.getDemandas().remove(dem);
+					
 					
 					for (int i = 0 ; i < end.getDemandas().size(); i++) {
-						System.out.println("demanda size "+ end.getDemandas().size() + " removendo uma demanda " + end.getDemandas().get(i).getDemID());
+						System.out.println("antes da remoção " + end.getDemandas().get(i).getDemID());
 					}
 					
+					
+					// para não dar repeticao de objetos //
+					for (int i = 0 ; i < end.getDemandas().size(); i++) {
+						if (end.getDemandas().get(i).getDemID() == (dem.getDemID())) {
+							end.getDemandas().remove(end.getDemandas().get(i));
+						}
+					}
+					
+					// adicionar a demanda editada //
 					end.getDemandas().add(dem);
 					
-					EnderecoDao enderecoDao = new EnderecoDao();
-					
 					for (int i = 0 ; i < end.getDemandas().size(); i++) {
-						System.out.println("demandas listadas para editar" + end.getDemandas().get(i).getDemID());
+						System.out.println("  xxxxxxx  depois da remoção " + end.getDemandas().get(i).getDemID());
 					}
+					
+					// dao //
+					EnderecoDao enderecoDao = new EnderecoDao();
 				
 					enderecoDao.mergeEndereco(end);
 					
-					// atualizar dados na tabela
-					if (obsList != null) {
-						obsList.remove(end);
-					}
-					
+					// atualizar a tableview //
+					obsList.remove(end);
 					obsList.add(end);
 					
 					modularBotoesInicial (); 
 					
-					
 					Alerta a = new Alerta ();
 					a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro editado com sucesso!!!", ButtonType.OK));
-					
-			}
+						
+				}
 		
 		}	
 		
@@ -466,16 +449,6 @@ public class EditarEnderecoControlador implements Initializable {
 					}
 		
 					catch (Exception e) {
-						
-						// não entendi o porquê deste alerta
-						
-						/*
-						Alert a = new Alert (Alert.AlertType.ERROR);
-						a.setTitle("Alerta!!!");
-						a.setContentText("Há denúncia associada a este endereço!" + "[ " + e + " ]");
-						a.setHeaderText(null);
-						a.show();
-						*/
 						
 						Alerta a = new Alerta ();
 						a.alertar(new Alert(Alert.AlertType.ERROR, "Há denúncia associada a este endereço!", ButtonType.OK));
@@ -533,20 +506,8 @@ public class EditarEnderecoControlador implements Initializable {
 	@FXML BorderPane bpPrincipal = new BorderPane();
 	@FXML ScrollBar sbPrincipal = new ScrollBar();
 	
-	/*
-	// métodos de remimensionar as tabs //
-			public void redimWid (Number newValue) {
-					apPrincipal.setMinWidth((double) newValue);
-						
-					}
-			public void redimHei (Number newValue) {
-					apPrincipal.setMinHeight((double) newValue);;
-					}
-					*/
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
 		
 	    // para trazer o valor da entidade principal, no caso Endereco
 	    tcDesEnd.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endLogadouro")); // endLogadouro
@@ -586,16 +547,10 @@ public class EditarEnderecoControlador implements Initializable {
 	    		
 	    		strRA = (String) newValue );
 	    
-	    // Se houver endereco, abrir ja preenchendo os campos //
+	    // Se houver endereco cadastrado para a demanda, abrir mostrando o endereco //
 	    try {
 	    	
-		    tfEnd.setText(demanda.getDemEnderecoFK().getEndLogadouro());
-		    cbEndRA.setValue(demanda.getDemEnderecoFK().getEndRA().getRaNome());
-		    tfEndCep.setText(demanda.getDemEnderecoFK().getEndCEP());
-		    tfEndCid.setText(demanda.getDemEnderecoFK().getEndCidade());
-		    cbEndUF.setValue(demanda.getDemEnderecoFK().getEndUF());
-		    tfEndLat.setText(demanda.getDemEnderecoFK().getEndLatitude().toString());
-		    tfEndLon.setText(demanda.getDemEnderecoFK().getEndLongitude().toString());
+	    	listarEnderecos(demanda.getDemEnderecoFK().getEndLogadouro());
 	    
 	    } catch (Exception e ) {
 	    	// Alert a = new Alert(Alert.AlertType.CONFIRMATION, title, ButtonType.OK, ButtonType.CANCEL); //
@@ -603,9 +558,22 @@ public class EditarEnderecoControlador implements Initializable {
 	    	a.alertar(new Alert(Alert.AlertType.CONFIRMATION, "Cadastre um endereço para esta demanda!!!", ButtonType.OK));
 	    }
 	    
+	    tvLista.setItems(obsList);
+	    
 	    // ao abrir fechar os campos para edicao //
 	    modularBotoesInicial();
-	    			
+	    // ativar na tableview a possibilidade e selecionar uma opcao //
+	    selecionarEndereco();
+	    
+		lblDemanda = new Label();
+		lblDemanda.setText(demanda.getDemDocumento());
+		
+		lblDemanda.setPrefSize(lblDoc.getPrefWidth(), lblDoc.getPrefHeight());	
+		lblDemanda.setLayoutX(lblDoc.getLayoutX());
+		lblDemanda.setLayoutY(lblDoc.getLayoutY());
+		
+		p_lblDemanda.getChildren().add(lblDemanda);
+	 			
 	}
 	
 	//-- Modular os botoes na inicializacao do programa --//
@@ -710,6 +678,15 @@ public class EditarEnderecoControlador implements Initializable {
 					btnCancelar.setDisable(false);
 					
 					
+					FormatoData d = new FormatoData();
+					
+					// mostrar data de atualizacao //
+					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(end.getEndAtualizacao()));
+							lblDataAtualizacao.setTextFill(Color.BLACK);
+					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
+							lblDataAtualizacao.setTextFill(Color.RED);}
+					
+					// atualizar o valor da demanda //
 					/*
 					if (end.getDemandas().size() != 0) { // colocar regra de só pode enditar escolhendo uma demanda...
 						demanda = end.getDemandas().get(0);

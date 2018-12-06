@@ -40,6 +40,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import principal.FormatoData;
 
 
 public class TabDemandaControlador implements Initializable {
@@ -68,11 +69,8 @@ public class TabDemandaControlador implements Initializable {
 	@FXML Button btnPesquisar;
 	@FXML Button btnSair;
 	
-	
 	@FXML Button btnEndDetalhes;
 
-	
-	
 	@FXML DatePicker dpDataDistribuicao;
 	@FXML DatePicker dpDataRecebimento;
 	
@@ -86,14 +84,6 @@ public class TabDemandaControlador implements Initializable {
 	
 	@FXML DatePicker dpDoc;
 	
-	// capturar demanda para a TabEnderecoController
-	Demanda dGeral = new Demanda ();
-	
-	// formatar data para  mostar no label (data de atualizacao do documento)
-	DateTimeFormatter formatterDT = new DateTimeFormatterBuilder()
-		.parseCaseInsensitive()
-		.append(DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"))
-		.toFormatter();
 	
 	
 	public void btnNovoHabilitar (ActionEvent event) {
@@ -575,8 +565,10 @@ public class TabDemandaControlador implements Initializable {
 					lblDenEnd.setTextFill(Color.RED);	
 				}
 				
+				FormatoData d = new FormatoData();
+				
 				// mostrar data de atualizacao //
-				try {lblDataAtualizacao.setText("Data de Atualização: " + formatterDT.format(demanda.getDemAtualizacao()));
+				try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(demanda.getDemAtualizacao()));
 						lblDataAtualizacao.setTextFill(Color.BLACK);
 				}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 						lblDataAtualizacao.setTextFill(Color.RED);}
@@ -625,7 +617,7 @@ public class TabDemandaControlador implements Initializable {
 			Scene scene = new Scene(pEndereco);
 			Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
 			stage.setWidth(964);
-			stage.setHeight(500);
+			stage.setHeight(600);
 	        stage.setScene(scene);
 	        stage.setMaximized(false);
 	        stage.setResizable(false);
