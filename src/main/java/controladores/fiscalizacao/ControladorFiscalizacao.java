@@ -1,7 +1,5 @@
 package controladores.fiscalizacao;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
@@ -20,40 +18,42 @@ public class ControladorFiscalizacao {
 		tpFiscalizacao.prefWidthProperty().bind(pFiscalizacao.widthProperty());
 		tpFiscalizacao.prefHeightProperty().bind(pFiscalizacao.heightProperty());
 		
-		/*
-		if (tabDemandaControlador == null) {
-			
-			tabDemandaControlador = new TabDemandaControlador();
-		}
-		*/
-		
-		pFiscalizacao.widthProperty().addListener(new ChangeListener<Number>() {
-	    	   
-		    @Override 
-		    public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-		    	
-		    	
-		    	System.out.println("largura p fiscalizacao "  + pFiscalizacao.getWidth());
-		    	tabDemandaControlador.redimWid (newValue);
-		    	
-		    }
-		});
-		
-		pFiscalizacao.heightProperty().addListener(new ChangeListener<Number>() {
-	    	   
-		    @Override 
-		    public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-		    	
-		    	
-		    	System.out.println("altura p fiscalizacao "  + pFiscalizacao.getHeight());
-		    	tabDemandaControlador.redimHei (newValue);
-		    	
-		    }
-		});
-		
 	}
 
 }
+
+/*
+if (tabDemandaControlador == null) {
+	
+	tabDemandaControlador = new TabDemandaControlador();
+}
+*/
+
+/*
+pFiscalizacao.widthProperty().addListener(new ChangeListener<Number>() {
+	   
+    @Override 
+    public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+    	
+    	
+    	System.out.println("largura p fiscalizacao "  + pFiscalizacao.getWidth());
+    	//tabDemandaControlador.redimWid (newValue);
+    	
+    }
+});
+
+pFiscalizacao.heightProperty().addListener(new ChangeListener<Number>() {
+	   
+    @Override 
+    public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+    	
+    	
+    	System.out.println("altura p fiscalizacao "  + pFiscalizacao.getHeight());
+    	//tabDemandaControlador.redimHei (newValue);
+    	
+    }
+});
+*/
 
 
 /*

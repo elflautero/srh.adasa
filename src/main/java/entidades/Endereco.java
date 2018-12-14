@@ -22,10 +22,8 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 public class Endereco implements Serializable{
 
-	
 	private static final long serialVersionUID = -8620638555874838035L;
 	
-
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column (name="end_ID")  // @Column (name="dem_documento", columnDefinition="varchar(80)")
 	private int endID; 
@@ -33,11 +31,6 @@ public class Endereco implements Serializable{
 	@Column (name="end_Logadouro", columnDefinition="varchar(95)")
 	private String endLogadouro;
 	
-	@ManyToOne (fetch = FetchType.EAGER) 
-	@JoinColumn (name = "end_RA")
-	//@Column (name="end_RA")
-	private RA endRA;
-		
 	@Column (name="end_CEP", columnDefinition="varchar(20)")
 	private String endCEP;
 	
@@ -47,14 +40,18 @@ public class Endereco implements Serializable{
 	@Column (name="end_UF", columnDefinition="varchar(2)")
 	private String endUF;
 	
-	@Column (name="end_Latitude")
-	private Double endLatitude;
+	@Column (name="end_DD_Latitude")
+	private Double endDDLatitude;
 	
-	@Column (name="end_Longitude")
-	private Double endLongitude;
+	@Column (name="end_DD_Longitude")
+	private Double endDDLongitude;
 	
 	@Column (name="end_Atualizacao")
 	private LocalDateTime endAtualizacao;
+	
+	@ManyToOne (fetch = FetchType.EAGER) 
+	@JoinColumn (name="end_RA_FK")
+	private RA endRAFK;
 	
 	//-- Lista de enderecos vinculados --//
 	@OneToMany (mappedBy = "demEnderecoFK", cascade = CascadeType.MERGE,
@@ -62,13 +59,13 @@ public class Endereco implements Serializable{
 	@Fetch(FetchMode.SUBSELECT) 
 	private List<Demanda> demandas = new ArrayList<Demanda>();
 	
-	/*
+	
 		//-- Lista de interferencias vinculadas --//
-		@OneToMany (mappedBy = "inter_End_CodigoFK", cascade = CascadeType.MERGE,
+		@OneToMany (mappedBy = "interEnderecoFK", cascade = CascadeType.MERGE,
 				fetch = FetchType.LAZY, targetEntity = Interferencia.class)
 		@Fetch(FetchMode.SUBSELECT) 
 		private List<Interferencia> interferencias = new ArrayList<Interferencia>();
-	
+		/*
 				//-- Lista de usuários vinculados --//
 				@OneToMany (mappedBy = "usEndCodigoFK", cascade = CascadeType.MERGE,
 						fetch = FetchType.LAZY, targetEntity = Usuario.class)
@@ -114,13 +111,12 @@ public class Endereco implements Serializable{
 	}
 
 
-	public RA getEndRA() {
-		return endRA;
+	public RA getEndRAFK() {
+		return endRAFK;
 	}
 
-
-	public void setEndRA(RA endRA) {
-		this.endRA = endRA;
+	public void setEndRAFK(RA endRAFK) {
+		this.endRAFK = endRAFK;
 	}
 
 
@@ -154,23 +150,23 @@ public class Endereco implements Serializable{
 	}
 
 
-	public Double getEndLatitude() {
-		return endLatitude;
+	public Double getEndDDLatitude() {
+		return endDDLatitude;
 	}
 
 
-	public void setEndLatitude(Double endLatitude) {
-		this.endLatitude = endLatitude;
+	public void setEndDDLatitude(Double endLatitude) {
+		this.endDDLatitude = endLatitude;
 	}
 
 
-	public Double getEndLongitude() {
-		return endLongitude;
+	public Double getEndDDLongitude() {
+		return endDDLongitude;
 	}
 
 
-	public void setEndLongitude(Double endLongitude) {
-		this.endLongitude = endLongitude;
+	public void setEndDDLongitude(Double endLongitude) {
+		this.endDDLongitude = endLongitude;
 	}
 
 

@@ -3,18 +3,13 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
-import entidades.Demanda;
 import entidades.Endereco;
 import entidades.HibernateUtil;
-import entidades.RA;
 
 
 public class EnderecoDao {
@@ -59,7 +54,7 @@ public class EnderecoDao {
 		
 		Criteria crit = s.createCriteria(Endereco.class, "e");
 		crit.createAlias("e.demandas", "d", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("e.endRA", "ra");
+		crit.createAlias("e.endRAFK", "ra");
 		crit.add(Restrictions.like("endLogadouro", '%' + strPesquisa + '%'))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		list = crit.list();

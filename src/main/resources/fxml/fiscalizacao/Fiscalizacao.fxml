@@ -24,8 +24,8 @@
           </Tab>
           
           <Tab styleClass="tabPaneClass" text="Interferência">
-             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
+            <content>
+            	<fx:include fx:id="tabInterferencia" source="TabInterferencia.fxml" />
              </content>
           </Tab>
           

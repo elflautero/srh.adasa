@@ -22,7 +22,7 @@
                      <top>
                         <Pane fx:id="pEndereco" maxHeight="682.0" maxWidth="1140.0" minHeight="682.0" minWidth="1113.0" prefHeight="682.0" prefWidth="1113.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Pane layoutX="102.0" layoutY="14.0" prefHeight="495.0" prefWidth="934.0" styleClass="classFontSize" stylesheets="@../../../../../../fiscal/src/main/resources/css/application.css">
+                              <Pane layoutX="102.0" layoutY="14.0" prefHeight="495.0" prefWidth="934.0" styleClass="classFontSize">
                                  <children>
                                     <TextField fx:id="tfEnd" layoutX="24.0" layoutY="86.0" prefHeight="25.0" prefWidth="446.0" />
                                     <ChoiceBox fx:id="cbEndRA" layoutX="482.0" layoutY="86.0" prefHeight="25.0" prefWidth="140.0" />
@@ -60,16 +60,15 @@
                                     </TableView>
                                     <Button fx:id="btnEndMaps" layoutX="685.0" layoutY="168.0" mnemonicParsing="false" onAction="#btnEndMapsHab" prefHeight="25.0" prefWidth="25.0" />
                                     <Label fx:id="lblEndereco" layoutX="207.0" layoutY="38.0" prefHeight="17.0" prefWidth="252.0" />
-                                    <Pane layoutX="26.0" layoutY="3.0" prefHeight="49.0" prefWidth="886.0" style="-fx-background-color: #E9E9E9;">
+                                    <Pane fx:id="p_lblDemanda" layoutX="17.0" prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #E9E9E9;">
                                        <children>
-                                          <Label fx:id="lblDoc" layoutX="99.0" layoutY="7.0" prefHeight="26.0" prefWidth="727.0">
+                                          <Label fx:id="lblDemanda1" layoutX="109.0" layoutY="12.0" prefHeight="26.0" prefWidth="727.0">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="24.0" layoutY="11.0" prefHeight="26.0" prefWidth="78.0" text="Documento:" />
-                                          <Button fx:id="btnEndCoord" layoutX="837.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndCoordHab" prefHeight="26.0" prefWidth="26.0" />
-                                          <ChoiceBox fx:id="cbListaDemandas" layoutX="102.0" layoutY="12.0" prefHeight="26.0" prefWidth="724.0" />
+                                          <Label layoutX="29.0" layoutY="12.0" prefHeight="26.0" prefWidth="78.0" text="Documento:" />
+                                          <Button fx:id="btnEndCoord" layoutX="846.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnEndCoordHab" prefHeight="26.0" prefWidth="26.0" />
                                        </children>
                                     </Pane>
                                     <Label fx:id="lblDataAtualizacao" layoutX="663.0" layoutY="457.0" prefHeight="22.0" prefWidth="247.0" />

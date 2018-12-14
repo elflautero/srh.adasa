@@ -2,13 +2,10 @@ package controladores.fiscalizacao;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.hibernate.id.ForeignGenerator;
-
+import controladores.principal.ControladorPrincipal;
 import dao.EnderecoDao;
 import entidades.Demanda;
 import entidades.Endereco;
@@ -54,21 +51,13 @@ public class EditarEnderecoControlador implements Initializable {
 		return demanda;
 	}
 	
-	// formatar data para  mostar no label (data de atualizacao do documento)
-		DateTimeFormatter formatterDT = new DateTimeFormatterBuilder()
-			.parseCaseInsensitive()
-			.append(DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"))
-			.toFormatter();
-	
-	@FXML public Label lblDoc = new Label(); // publico para receber valor do MainController, metodo pegarDoc()
+	@FXML Label lblDoc;
 	@FXML Pane tabEndereco;
 	@FXML Button btnBuscarDoc;
 	@FXML TextField tfEnd;
 	
-	
 	@FXML TextField tfEndCep;
 	@FXML TextField  tfEndCid;
-	
 	
 	@FXML TextField tfLinkEnd;
 	@FXML TextField tfEndLat;
@@ -281,7 +270,7 @@ public class EditarEnderecoControlador implements Initializable {
 						Endereco end = new Endereco();
 							
 							end.setEndLogadouro(tfEnd.getText());
-							end.setEndRA(ra);
+							end.setEndRAFK(ra);
 								
 							end.setEndCEP(tfEndCep.getText());
 							end.setEndCidade(tfEndCid.getText());
@@ -289,8 +278,8 @@ public class EditarEnderecoControlador implements Initializable {
 							
 							try {
 								
-								end.setEndLatitude(Double.parseDouble(tfEndLat.getText()));
-								end.setEndLongitude(Double.parseDouble(tfEndLon.getText()));
+								end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
+								end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
 								
 								end.setEndAtualizacao((LocalDateTime.now()));
 										
@@ -373,12 +362,12 @@ public class EditarEnderecoControlador implements Initializable {
 					end = tvLista.getSelectionModel().getSelectedItem();
 						
 					end.setEndLogadouro(tfEnd.getText());
-					end.setEndRA(ra);
+					end.setEndRAFK(ra);
 					end.setEndCEP(tfEndCep.getText());
 					end.setEndCidade(tfEndCid.getText());
 					end.setEndUF(cbEndUF.getValue());
-					end.setEndLatitude(Double.parseDouble(tfEndLat.getText()));
-					end.setEndLongitude(Double.parseDouble(tfEndLon.getText()));
+					end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
+					end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
 					
 					end.setEndAtualizacao((LocalDateTime.now()));
 					
@@ -386,12 +375,6 @@ public class EditarEnderecoControlador implements Initializable {
 					
 					dem = demanda;
 					dem.setDemEnderecoFK(end);
-					
-					
-					for (int i = 0 ; i < end.getDemandas().size(); i++) {
-						System.out.println("antes da remoção " + end.getDemandas().get(i).getDemID());
-					}
-					
 					
 					// para não dar repeticao de objetos //
 					for (int i = 0 ; i < end.getDemandas().size(); i++) {
@@ -403,9 +386,6 @@ public class EditarEnderecoControlador implements Initializable {
 					// adicionar a demanda editada //
 					end.getDemandas().add(dem);
 					
-					for (int i = 0 ; i < end.getDemandas().size(); i++) {
-						System.out.println("  xxxxxxx  depois da remoção " + end.getDemandas().get(i).getDemID());
-					}
 					
 					// dao //
 					EnderecoDao enderecoDao = new EnderecoDao();
@@ -493,7 +473,10 @@ public class EditarEnderecoControlador implements Initializable {
 	}
 	
 	public void btnEndMapsHab (ActionEvent event) {
-			
+		
+		tfEndLat.setText( ControladorPrincipal.capturarGoogleMaps().getLat() );
+		tfEndLon.setText( ControladorPrincipal.capturarGoogleMaps().getLon());
+		
 	}
 	
 	public void btnEndCoordHab (ActionEvent event) {
@@ -515,7 +498,7 @@ public class EditarEnderecoControlador implements Initializable {
 	    
 		tcEndRA.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Endereco, String>, ObservableValue<String>>() {
 		    public ObservableValue<String> call(TableColumn.CellDataFeatures<Endereco, String> e) {
-		    	return new SimpleStringProperty(e.getValue().getEndRA().getRaNome());
+		    	return new SimpleStringProperty(e.getValue().getEndRAFK().getRaNome());
 		       
 		    }
 		});
@@ -616,12 +599,12 @@ public class EditarEnderecoControlador implements Initializable {
     		
     		e.getEndID();
     		e.getEndLogadouro();
-    		e.getEndRA();
+    		e.getEndRAFK();
     		e.getEndCEP();
     		e.getEndCidade();
     		e.getEndUF();
-    		e.getEndLatitude();
-    		e.getEndLongitude();
+    		e.getEndDDLatitude();
+    		e.getEndDDLongitude();
     		
     		obsList.add(e);
     		
@@ -660,15 +643,15 @@ public class EditarEnderecoControlador implements Initializable {
 					// -- preencher os campos -- //
 					tfEnd.setText(end.getEndLogadouro());
 					
-					cbEndRA.setValue(end.getEndRA().getRaNome()); 
+					cbEndRA.setValue(end.getEndRAFK().getRaNome()); 
 					
 					tfEndCep.setText(end.getEndCEP());
 					tfEndCid.setText(end.getEndCidade());
 					
 					cbEndUF.setValue(end.getEndUF());
 					
-					tfEndLat.setText(end.getEndLatitude().toString());
-					tfEndLon.setText(end.getEndLongitude().toString());
+					tfEndLat.setText(end.getEndDDLatitude().toString());
+					tfEndLon.setText(end.getEndDDLongitude().toString());
 					
 					// -- habilitar e desabilitar botoes -- //
 					btnNovo.setDisable(true);
@@ -699,8 +682,8 @@ public class EditarEnderecoControlador implements Initializable {
 					//main.pegarEnd(eGeral);
 					
 					
-					Double lat = Double.parseDouble(tfEndLat.getText());
-					Double  lng = Double.parseDouble(tfEndLon.getText() );
+					//Double lat = Double.parseDouble(tfEndLat.getText());
+					//Double  lng = Double.parseDouble(tfEndLon.getText() );
 					
 					/*
 					if (wv1 == null) {
@@ -722,7 +705,6 @@ public class EditarEnderecoControlador implements Initializable {
 				
 					}
 					*/
-					//System.out.println("demanda selecionada " + demanda.getDemDocumento());
 					
 				}
 				

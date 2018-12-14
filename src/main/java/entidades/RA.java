@@ -26,7 +26,7 @@ public class RA implements Serializable {
 	@Column (name="ra_ID")
 	private int raID;
 	
-	@OneToMany (mappedBy = "endRA", cascade = CascadeType.MERGE,
+	@OneToMany (mappedBy = "endRAFK", cascade = CascadeType.MERGE,
 			fetch = FetchType.LAZY, targetEntity = Endereco.class)
 	@Fetch(FetchMode.SUBSELECT) 
 	private List<Endereco> enderecos = new ArrayList<Endereco>();

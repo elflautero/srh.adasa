@@ -774,18 +774,16 @@ public class ControladorPrincipal {
         	
         	dblFiscal =  pFiscalizacao.getTranslateY();
         	
-        	System.out.println(pFiscalizacao.getWidth());
-        	
         	if(dblFiscal.equals(0.0)){
             	
             	downFiscal.play(); 
-            	pBrowserSEI.setTranslateY(880.0);//downBrowser.play();
+            	pBrowserSEI.setTranslateY(880.0);
         		} 
             	
             	else {
             			
             		upFiscal.play();
-            		pBrowserSEI.setTranslateY(880.0); //downBrowser.play();
+            		pBrowserSEI.setTranslateY(880.0);
             		}
         	
         	if (p == null) {

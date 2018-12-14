@@ -28,6 +28,27 @@ public class GoogleMap extends Parent {
 	        
 		}
 		
+		// coordenadas para os cadastros de endereco e interferencias //
+		String lat;
+		String lon;
+		
+			 public String getLat() {
+					return lat;
+				}
+	
+				public void setLat(String lat) {
+					this.lat = lat;
+				}
+	
+				public String getLon() {
+					return lon;
+				}
+	
+				public void setLon(String lon) {
+					this.lon = lon;
+				}
+		
+				
 		public void resizeWidthMap (Double wMap) {
 			
 	        webView.setMaxWidth(wMap);
@@ -42,7 +63,9 @@ public class GoogleMap extends Parent {
 	       
 		}
 		
-	    // inicializacao do webview e mapa html javascript //
+	   
+
+		// inicializacao do webview e mapa html javascript //
 	    void initMap()
 	    {
 	        webView = new WebView();
@@ -152,9 +175,19 @@ public class GoogleMap extends Parent {
 	    	ControladorPrincipal.lblDMS.setText(dms);
 	    	ControladorPrincipal.lblUTM.setText(utm);
 	    	
-	    	System.out.println(dd + " e " + dms + " e " + utm);
+	    	//System.out.println(dd + " e " + dms + " e " + utm);
 	    }
 	    
+	    
+	    public void setCoords(String lat, String lon) {
+	    	this.lat = lat;
+	    	this.lon = lon;
+	    	
+	    	//System.out.println("lat e lon para cadastros " + this.lat + "," + this.lon);
+	    	
+	    }
+
+
 	    public void convDD (String typeCoord, String lat, String lon) {
 	    
 	    	invokeJS("obterUTMDMS(\'" + ""+ typeCoord + ""  + "\', \'" + "" + lat + "" + "\', \'" + ""+ lon + "" + "\')");

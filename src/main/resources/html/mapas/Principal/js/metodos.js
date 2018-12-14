@@ -197,6 +197,7 @@ function obterUTMDMSMapClick (lat,lon) {
 		}
 	
  	app.setAllCoords(lat + ',' + lon, latLon, toUTM);
+ 	app.setCoords(lat, lon);
  	
 }
 

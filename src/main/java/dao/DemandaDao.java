@@ -48,7 +48,7 @@ public void salvarDemanda (Demanda demanda) {
 		
 		Criteria crit = s.createCriteria(Demanda.class, "d");
 		crit.createAlias("d.demEnderecoFK" , "end", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("end.endRA", "ra", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("end.endRAFK", "ra", JoinType.LEFT_OUTER_JOIN);
 		
 		
 		Criterion demDoc = Restrictions.like("demDocumento", '%' + strPesquisa + '%');

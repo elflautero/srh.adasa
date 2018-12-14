@@ -3,12 +3,8 @@ package controladores.fiscalizacao;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import controladores.principal.ControladorPrincipal;
 
 import dao.DemandaDao;
 import entidades.Demanda;
@@ -17,7 +13,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,7 +41,7 @@ import principal.FormatoData;
 public class TabDemandaControlador implements Initializable {
 	
 	// transmitir para os outros controladores o objeto do crud //
-	TabEnderecoControlador tabEnderecoControlador = new TabEnderecoControlador();
+	TabEnderecoControlador tabEndCon = new TabEnderecoControlador();
 	EditarEnderecoControlador edEndCon = new EditarEnderecoControlador();
 	
 	// --- String para primeira pesquisa --- //
@@ -162,7 +157,7 @@ public class TabDemandaControlador implements Initializable {
 					
 					dao.salvarDemanda(demanda);
 					
-					tabEnderecoControlador.setDemanda(demanda);
+					tabEndCon.setDemanda(demanda);
 					edEndCon.setDemanda(demanda);
 					
 					// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
@@ -266,7 +261,7 @@ public class TabDemandaControlador implements Initializable {
 						
 						// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
 						
-						tabEnderecoControlador.setDemanda(demanda);
+						tabEndCon.setDemanda(demanda);
 						edEndCon.setDemanda(demanda);
 						
 							//dGeral = demanda;
@@ -360,17 +355,7 @@ public class TabDemandaControlador implements Initializable {
 		@FXML AnchorPane apPrin2 = new AnchorPane();
 		@FXML BorderPane bpPrincipal = new BorderPane();
 		@FXML ScrollBar sbPrincipal = new ScrollBar();
-		
-		// métodos de remimensionar as tabs //
-				public void redimWid (Number newValue) {
-						apPrincipal.setMinWidth((double) newValue);
-							
-						}
-				public void redimHei (Number newValue) {
-						apPrincipal.setMinHeight((double) newValue);;
-						}
-		
-		
+
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		AnchorPane.setTopAnchor(apPrin1, 0.0);
@@ -390,7 +375,7 @@ public class TabDemandaControlador implements Initializable {
 		AnchorPane.setRightAnchor(bpPrincipal, 0.0);
 	    AnchorPane.setBottomAnchor(bpPrincipal, 0.0);
 	    
-	    
+	    // para rolar a tab //
 	    sbPrincipal.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
@@ -408,36 +393,6 @@ public class TabDemandaControlador implements Initializable {
 		// --- habilitar e desabilitar botões ---- //
 				modularBotoesInicial();
 		
-		
-		/*
-		apInterno.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-	        public void handle(MouseEvent e) {
-	        	
-	            System.out.println("clicou anchor pane");
-	            
-	            
-	            
-	            
-	    		 
-	        }
-	        
-	    });
-	    */
-		/*
-		apInterno.setOnScroll(new EventHandler<ScrollEvent>() {
-
-			@Override
-			public void handle(ScrollEvent event) {
-				System.out.println("scroll event");
-				System.out.println(event.getY());
-				
-				apInterno.setTranslateY(apInterno.getTranslateY() + 20);
-				
-			}
-
-		    });
-		*/
 		
 		
 		tcDocumento.setCellValueFactory(new PropertyValueFactory<Demanda,String>("demDocumento"));
@@ -541,7 +496,7 @@ public class TabDemandaControlador implements Initializable {
 				// endereço relacionado //
 				if (demanda.getDemEnderecoFK() != null) {
 					lblDenEnd.setText(demanda.getDemEnderecoFK().getEndLogadouro() 
-							+ ",  Região Administrativa: " + demanda.getDemEnderecoFK().getEndRA().getRaNome()
+							+ ",  Região Administrativa: " + demanda.getDemEnderecoFK().getEndRAFK().getRaNome()
 							+ ",  Cep: " + demanda.getDemEnderecoFK().getEndCEP()
 							+ ",  Cidade: " + demanda.getDemEnderecoFK().getEndCidade()
 							+ ",  UF: " + demanda.getDemEnderecoFK().getEndUF()
@@ -574,7 +529,7 @@ public class TabDemandaControlador implements Initializable {
 						lblDataAtualizacao.setTextFill(Color.RED);}
 				
 				//Levar a demanda para cadastrar o endereco //
-				tabEnderecoControlador.setDemanda(demanda);
+				tabEndCon.setDemanda(demanda);
 				edEndCon.setDemanda(demanda);
 				
 				// copiar número sei da demanda ao selecionar //
@@ -734,3 +689,35 @@ double utmL = eUTM.getNorthing();
 
 System.out.println( utmE + " e " + utmL);
 */
+
+
+/*
+apInterno.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+    public void handle(MouseEvent e) {
+    	
+        System.out.println("clicou anchor pane");
+        
+        
+        
+        
+		 
+    }
+    
+});
+*/
+/*
+apInterno.setOnScroll(new EventHandler<ScrollEvent>() {
+
+	@Override
+	public void handle(ScrollEvent event) {
+		System.out.println("scroll event");
+		System.out.println(event.getY());
+		
+		apInterno.setTranslateY(apInterno.getTranslateY() + 20);
+		
+	}
+
+    });
+*/
+
