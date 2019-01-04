@@ -65,26 +65,26 @@ public class Endereco implements Serializable{
 				fetch = FetchType.LAZY, targetEntity = Interferencia.class)
 		@Fetch(FetchMode.SUBSELECT) 
 		private List<Interferencia> interferencias = new ArrayList<Interferencia>();
-		/*
+		
 				//-- Lista de usuários vinculados --//
-				@OneToMany (mappedBy = "usEndCodigoFK", cascade = CascadeType.MERGE,
+				@OneToMany (mappedBy = "usEnderecoFK", cascade = CascadeType.MERGE,
 						fetch = FetchType.LAZY, targetEntity = Usuario.class)
 				@Fetch(FetchMode.SUBSELECT)
 				private List<Usuario> usuarios = new ArrayList<Usuario>();
-		
+	/*
 						//-- Lista de fiscais vinculados --//
 						@OneToMany (mappedBy = "fis_End_Codigo", cascade = CascadeType.MERGE,
 								fetch = FetchType.LAZY, targetEntity = Fiscal.class)
 						@Fetch(FetchMode.SUBSELECT) 
 						private List<Fiscal> fiscais = new ArrayList<Fiscal>();
-				
+				*/
 								//-- Lista de vistorias vinculados --//
-								@OneToMany (mappedBy = "visEndCodigoFK", cascade = CascadeType.MERGE,
+								@OneToMany (mappedBy = "visEnderecoFK", cascade = CascadeType.MERGE,
 										fetch = FetchType.LAZY, targetEntity = Vistoria.class)
 								@Fetch(FetchMode.SUBSELECT) 
 								private List<Vistoria> vistorias = new ArrayList<Vistoria>();
 		
-				*/
+	
 	
 	//-- Construtor padrão -- //
 	public Endereco () {
@@ -186,6 +186,16 @@ public class Endereco implements Serializable{
 	public void setEndAtualizacao(LocalDateTime endAtualizacao) {
 		this.endAtualizacao = endAtualizacao;
 	}
+	
+	
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+
 	
 	
 	/*

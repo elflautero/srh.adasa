@@ -52,7 +52,9 @@
 		<mapping class="entidades.TipoInterferencia"/>
 		<mapping class="entidades.Subterranea"/>
 		<mapping class="entidades.Superficial"/>
-		
+		<mapping class="entidades.Usuario"/>
+		<mapping class="entidades.Vistoria"/>
+		<mapping class="entidades.Ato"/>
 		
 		 <!-- MAPEAMENTO DAS ENTIDADES 
 		 

@@ -79,8 +79,6 @@ public class TabDemandaControlador implements Initializable {
 	
 	@FXML DatePicker dpDoc;
 	
-	
-	
 	public void btnNovoHabilitar (ActionEvent event) {
 		
 		tfDocumento.setText("");

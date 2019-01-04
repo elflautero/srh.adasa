@@ -39,6 +39,8 @@ import principal.FormatoData;
 public class TabEnderecoControlador implements Initializable {
 	
 	TabInterferenciaControlador tabIntCon = new TabInterferenciaControlador();
+	TabUsuarioControlador tabUsCon = new TabUsuarioControlador();
+	TabVistoriaControlador tabVisCon = new TabVistoriaControlador();
 	
 	static Demanda demanda = new Demanda ();
 	
@@ -117,37 +119,8 @@ public class TabEnderecoControlador implements Initializable {
 	
 	final int [] listaRA = new int [] {
 			
-			20	,
-			4	,
-			19	,
-			9	,
-			11	,
-			31	,
-			2	,
-			10	,
-			28	,
-			27	,
-			18	,
-			16	,
-			8	,
-			7	,
-			24	,
-			6	,
-			1	,
-			15	,
-			17	,
-			21	,
-			12	,
-			13	,
-			14	,
-			25	,
-			29	,
-			5	,
-			26	,
-			22	,
-			3	,
-			23	,
-			30	,
+			20	,4	,19	,9	,11	,31	,2	,10	,28	,27	,18	,16	,8	,7	,24	,6	,
+			1	,15	,17	,21	,12	,13	,14	,25	,29	,5	,26	,22	,3	,23	,30	,
 
 	};
 	
@@ -305,6 +278,9 @@ public class TabEnderecoControlador implements Initializable {
 											
 										// levar o endereco salvo para a tabinterferencia //	
 										tabIntCon.setEndereco(end);
+										tabUsCon.setEndereco(end);
+										tabVisCon.setEndereco(end);
+										
 										
 										//-- modular botoes--//
 										modularBotoesInicial ();
@@ -334,7 +310,7 @@ public class TabEnderecoControlador implements Initializable {
 			
 	}
 	
-public void btnEditarHab (ActionEvent event) {
+	public void btnEditarHab (ActionEvent event) {
 	
 	
 	if (tfEnd.isDisable()) {
@@ -402,6 +378,8 @@ public void btnEditarHab (ActionEvent event) {
 				enderecoDao.mergeEndereco(end);
 				
 				tabIntCon.setEndereco(end);
+				tabUsCon.setEndereco(end);
+				tabVisCon.setEndereco(end);
 				
 				// atualizar a tableview //
 				obsList.remove(end);
@@ -418,85 +396,87 @@ public void btnEditarHab (ActionEvent event) {
 	
 }
 
-public void btnExcluirHab (ActionEvent event) {
+	public void btnExcluirHab (ActionEvent event) {
 	
-	Endereco end = tvLista.getSelectionModel().getSelectedItem();
-	
-	int id = end.getEndID();
-	
-	EnderecoDao endDao = new EnderecoDao();
-	
-		try {
-			
-			endDao.removerEndereco(id);
-			
-			tabIntCon.setEndereco(null);
-			
-			obsList.remove(end);
-			
-			modularBotoesInicial();
-			
-			Alerta a = new Alerta ();
-			a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro deletado com sucesso!!!", ButtonType.OK));
-			
-	
-				}
-	
-				catch (Exception e) {
-					
-					Alerta a = new Alerta ();
-					a.alertar(new Alert(Alert.AlertType.ERROR, "Há denúncia associada a este endereço!", ButtonType.OK));
-					
-				}
+		Endereco end = tvLista.getSelectionModel().getSelectedItem();
+		
+		int id = end.getEndID();
+		
+		EnderecoDao endDao = new EnderecoDao();
+		
+			try {
+				
+				endDao.removerEndereco(id);
+				
+				tabIntCon.setEndereco(null);
+				tabUsCon.setEndereco(null);
+				tabVisCon.setEndereco(null);
+				
+				obsList.remove(end);
+				
+				modularBotoesInicial();
+				
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro deletado com sucesso!!!", ButtonType.OK));
+				
+		
+					}
+		
+					catch (Exception e) {
+						
+						Alerta a = new Alerta ();
+						a.alertar(new Alert(Alert.AlertType.ERROR, "Há denúncia associada a este endereço!", ButtonType.OK));
+						
+					}
 		
 }
 
 	
-public void btnCancelarHab (ActionEvent event) {
+	public void btnCancelarHab (ActionEvent event) {
 	
-	modularBotoesInicial ();
-	
-	tfEnd.setText("");
-	
-	cbEndRA.setValue(null);
-	
-	tfEndCep.setText("");
-	
-	cbEndUF.setValue(null);
-	
-	tfLinkEnd.setText("");
-	tfEndLat.setText("");
-	tfEndLon.setText("");
-	
-}
-
-public void btnPesquisarHab (ActionEvent event) {
-	
-	
-	strPesquisa = tfPesquisar.getText();
-	
-	listarEnderecos (strPesquisa);
-	
-	selecionarEndereco () ;
-	
-	modularBotoesInicial (); 
+		modularBotoesInicial ();
+		
+		tfEnd.setText("");
+		
+		cbEndRA.setValue(null);
+		
+		tfEndCep.setText("");
+		
+		cbEndUF.setValue(null);
+		
+		tfLinkEnd.setText("");
+		tfEndLat.setText("");
+		tfEndLon.setText("");
 	
 }
 
-public void btnEndLatLonHab (ActionEvent event) {
+	public void btnPesquisarHab (ActionEvent event) {
+	
+	
+		strPesquisa = tfPesquisar.getText();
+		
+		listarEnderecos (strPesquisa);
+		
+		selecionarEndereco () ;
+		
+		modularBotoesInicial (); 
 	
 }
 
-public void btnEndMapsHab (ActionEvent event) {
-	
-	tfEndLat.setText( ControladorPrincipal.capturarGoogleMaps().getLat() );
-	tfEndLon.setText( ControladorPrincipal.capturarGoogleMaps().getLon());
-	
-}
+	public void btnEndLatLonHab (ActionEvent event) {
+		
+	}
 
-public void btnEndCoordHab (ActionEvent event) {
-	
-}
+	public void btnEndMapsHab (ActionEvent event) {
+		
+		tfEndLat.setText( ControladorPrincipal.capturarGoogleMaps().getLat() );
+		tfEndLon.setText( ControladorPrincipal.capturarGoogleMaps().getLon());
+		
+	}
+
+	public void btnEndCoordHab (ActionEvent event) {
+		
+	}
 	
 @FXML AnchorPane apPrincipal = new AnchorPane();
 @FXML AnchorPane apPrin1 = new AnchorPane();
@@ -584,7 +564,7 @@ public void btnEndCoordHab (ActionEvent event) {
 	    lblDemanda2 = new Label();
 	    lblDemanda2.setStyle("-fx-font-weight: bold;");
 		lblDemanda2.setPrefSize(727, 26);	
-		lblDemanda2.setLayoutX(102);
+		lblDemanda2.setLayoutX(109);
 		lblDemanda2.setLayoutY(12);
 		
 		p_lblDemanda.getChildren().add(lblDemanda2);
@@ -688,6 +668,8 @@ public void btnEndCoordHab (ActionEvent event) {
 					tfEndLon.setText(end.getEndDDLongitude().toString());
 					
 					tabIntCon.setEndereco(end);
+					tabUsCon.setEndereco(end);
+					tabVisCon.setEndereco(end);
 					
 					// -- habilitar e desabilitar botoes -- //
 					btnNovo.setDisable(true);
@@ -709,6 +691,15 @@ public void btnEndCoordHab (ActionEvent event) {
 							lblDataAtualizacao.setTextFill(Color.BLACK);
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);}
+					
+					// setar a demanda 0 do endereco selecionado // 
+					setDemanda (end.getDemandas().get(0));               // *****  colocar try catch (para quando nao houver demanda associada //
+					
+					
+					// setar na interferencia (tabinterferencia) este endereco selecinado //
+					tabIntCon.setEndereco(end);
+					tabUsCon.setEndereco(end);
+					tabVisCon.setEndereco(end);
 					
 					//eGeral = new Endereco(endTab);
 					

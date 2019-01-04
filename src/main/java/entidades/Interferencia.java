@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 
 @Entity
 public class Interferencia implements Serializable {
@@ -79,6 +81,9 @@ public class Interferencia implements Serializable {
 	
 	@Column (name="inter_DD_Longitude")
 	private Double interDDLongitude;
+	
+	@Column (name="inter_GeoLatLon")
+	private Geometry interGeoLatLon;
 	
 	@Column (name="inter_Logadouro", columnDefinition="varchar (250)")
 	private String interLogadouro;
@@ -172,6 +177,14 @@ public class Interferencia implements Serializable {
 
 		public void setIntAtualizacao(LocalDateTime intAtualizacao) {
 			this.intAtualizacao = intAtualizacao;
+		}
+
+		public Geometry getInterGeoLatLon() {
+			return interGeoLatLon;
+		}
+
+		public void setInterGeoLatLon(Geometry interGeoLatLon) {
+			this.interGeoLatLon = interGeoLatLon;
 		}
 		
 	

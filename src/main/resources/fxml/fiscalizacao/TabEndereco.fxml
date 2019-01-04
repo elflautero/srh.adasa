@@ -24,13 +24,13 @@
                            <children>
                               <Pane layoutX="102.0" layoutY="14.0" prefHeight="495.0" prefWidth="934.0" styleClass="classFontSize">
                                  <children>
-                                    <TextField fx:id="tfEnd" layoutX="24.0" layoutY="86.0" prefHeight="25.0" prefWidth="446.0" />
-                                    <ChoiceBox fx:id="cbEndRA" layoutX="482.0" layoutY="86.0" prefHeight="25.0" prefWidth="140.0" />
+                                    <TextField fx:id="tfEnd" layoutX="24.0" layoutY="86.0" prefHeight="25.0" prefWidth="424.0" />
+                                    <ChoiceBox fx:id="cbEndRA" layoutX="460.0" layoutY="86.0" prefHeight="25.0" prefWidth="164.0" />
                                     <TextField fx:id="tfEndCep" layoutX="637.0" layoutY="86.0" prefHeight="25.0" prefWidth="100.0" />
                                     <TextField fx:id="tfEndCid" layoutX="746.0" layoutY="86.0" prefHeight="25.0" prefWidth="100.0" />
                                     <ChoiceBox fx:id="cbEndUF" layoutX="853.0" layoutY="86.0" prefHeight="25.0" prefWidth="55.0" />
                                     <Label layoutX="23.0" layoutY="63.0" prefHeight="17.0" prefWidth="292.0" text="Endereço do  Empreendimento:" />
-                                    <Label layoutX="482.0" layoutY="65.0" prefHeight="17.0" prefWidth="100.0" text="RA:" />
+                                    <Label layoutX="461.0" layoutY="65.0" prefHeight="17.0" prefWidth="100.0" text="RA:" />
                                     <Label layoutX="637.0" layoutY="65.0" prefHeight="17.0" prefWidth="60.0" text="Cep:" />
                                     <Label layoutX="746.0" layoutY="65.0" prefHeight="17.0" prefWidth="80.0" text="Cidade:" />
                                     <Label layoutX="853.0" layoutY="64.0" prefHeight="17.0" prefWidth="45.0" text="UF:" />

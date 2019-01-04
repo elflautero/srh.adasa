@@ -22,7 +22,7 @@ public class Superficial implements Serializable{
 	
 	//-- OneToOne superficial e interferência --//
 			@OneToOne
-			@JoinColumn (name = "intSupFK") // mudar o nome para sup_Inter_FK
+			@JoinColumn (name = "sup_Interferencia_FK") // mudar o nome para sup_Inter_FK
 			private Interferencia supInterFK;
 	
 	@Column (name="sup_Captacao", columnDefinition="varchar(15)")

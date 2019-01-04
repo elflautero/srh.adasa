@@ -44,7 +44,7 @@ public class TabSubterraneaController implements Initializable {
 		// adicionar o id escolhido no combobox
 		subSistema.setSubID(subSistemaID);;
 		
-		sub.setSubPoco(cbTipoCaptacao.getValue());
+		sub.setSubTipoCaptacao(cbTipoCaptacao.getValue());
 		
 		sub.setSubSubSistemaFK(subSistema);
 		
@@ -62,7 +62,7 @@ public class TabSubterraneaController implements Initializable {
 	
 	public void imprimirSubterranea (Subterranea sub) {
 		
-		cbTipoCaptacao.setValue(sub.getSubPoco());
+		cbTipoCaptacao.setValue(sub.getSubTipoCaptacao());
 		
 		// mostrar a descricao do subsistema //
 		cbSubSis.setValue(sub.getSubSubSistemaFK().getSubDescricao());
@@ -75,6 +75,8 @@ public class TabSubterraneaController implements Initializable {
 		
 		dpDataSubterranea.setValue(sub.getSubDataOperacao());
 		
+		System.out.println(sub.getSubSubSistemaFK().getSubDescricao());
+		
 	}
 	
 	@FXML Pane tabSubterranea = new Pane ();
@@ -84,21 +86,24 @@ public class TabSubterraneaController implements Initializable {
 		ObservableList<String> olSubSis = FXCollections
 			.observableArrayList(
 					
-					"S/A",
-					"A ",
-					"R3/Q3",
-					"R4",
-					"F",
-					"PPC",
-					"F/Q/M",
-					"P1",
-					"P2",
-					"P3",
-					"P4",
-					"Bambuí",
-					"Araxá"
+					"S/A       ",
+					"A         ",
+					"R3/Q3     ",
+					"R4        ",
+					"F         ",
+					"PPC       ",
+					"F/Q/M     ",
+					"P1        ",
+					"P2        ",
+					"P3        ",
+					"P4        ",
+					"BAMBUÍ    ",
+					"ARAXÁ     "
 					
 					); 
+		
+		int subSistemaID = 1;
+		final int [] listaSubsistema = new int [] { 1,2,3,4,5,6,7,8,9,10,11,12,13 };
 		
 	
 		@FXML
@@ -119,8 +124,6 @@ public class TabSubterraneaController implements Initializable {
 							); 
 		
 	
-	int subSistemaID = 1;
-	final int [] listaSubsistema = new int [] { 1,2,3,4,5,6,7,8,9,10,11,12,13 };
 	
 	SubSistema subSistema = new SubSistema ();
 	

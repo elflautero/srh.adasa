@@ -24,11 +24,11 @@ public class Subterranea implements Serializable {
 	
 		//-- OneToOne subterrâneo e interferência --//
 		@OneToOne 
-		@JoinColumn (name = "intSubFK")  // mudar o nome para sub_Inter_FK
+		@JoinColumn (name = "sup_Interferencia_FK")  // mudar o nome para sub_Inter_FK
 		private Interferencia subInterFK;
 	
-	@Column (name="sub_Poco", columnDefinition="varchar (10)")
-	private String subPoco;
+	@Column (name="sub_Tipo_Captacao", columnDefinition="varchar (10)")
+	private String subTipoCaptacao;
 
 	@Column (name="sub_Caesb", columnDefinition="varchar(3)")
 	private String subCaesb;  // tem caesb () sim () não
@@ -95,12 +95,12 @@ public class Subterranea implements Serializable {
 		this.subInterFK = subInterSub;
 	}
 
-	public String getSubPoco() {
-		return subPoco;
+	public String getSubTipoCaptacao() {
+		return subTipoCaptacao;
 	}
 
-	public void setSubPoco(String subPoco) {
-		this.subPoco = subPoco;
+	public void setSubTipoCaptacao(String subTipoCaptacao) {
+		this.subTipoCaptacao = subTipoCaptacao;
 	}
 
 	public String getSubCaesb() {

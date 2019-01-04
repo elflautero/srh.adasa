@@ -26,17 +26,17 @@ public class Demanda implements Serializable {
 	private int demID;
 	
 	@ManyToOne (fetch = FetchType.LAZY) 
-	@JoinColumn (name = "dem_EnderecoFK") // MUDAR PARA demEnderecoFK nas próximas criações de tabelas...
+	@JoinColumn (name = "dem_Endereco_FK")
 	private Endereco demEnderecoFK;
 	
 	@Column (name="dem_Documento", columnDefinition="varchar(80)")
 	private String demDocumento;
 	
-	@Column (name="dem_Documento_sei", columnDefinition="varchar(25)")
+	@Column (name="dem_Documento_SEI", columnDefinition="varchar(25)")
 	private String demDocumentoSEI; 
 				// demDocumentoSEI
 	
-	@Column (name="dem_Processo_sei", columnDefinition="varchar(25)")
+	@Column (name="dem_Processo_SEI", columnDefinition="varchar(25)")
 	private String demProcessoSEI;
 	
 	@Column (name="dem_Descricao", columnDefinition="varchar(200)")

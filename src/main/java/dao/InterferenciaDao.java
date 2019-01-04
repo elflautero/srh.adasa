@@ -71,15 +71,19 @@ public void salvaInterferencia (Interferencia interferencia) {
 		List<Interferencia> listOutros = s.createQuery(
 					"SELECT i FROM Interferencia AS i "
 				+ 	"JOIN FETCH i.interEnderecoFK AS e "
-					+ 	"JOIN FETCH e.endRAFK "
-					+ 	"JOIN FETCH e.demandas "
-				+	"LEFT OUTER JOIN FETCH i.intSubFK "		
+							
+				+ 	"LEFT OUTER JOIN FETCH e.endRAFK "
+				+ 	"LEFT OUTER JOIN FETCH e.demandas "
+				
+				+	"LEFT OUTER JOIN FETCH i.intSubFK AS sub "
+				+	"LEFT OUTER JOIN FETCH sub.subSubSistemaFK "
+				
 				+	"LEFT OUTER JOIN FETCH i.intSupFK "
 				+	"LEFT OUTER JOIN FETCH i.interTipoInterferenciaFK "
 				+	"LEFT OUTER JOIN FETCH i.interBaciaFK "
 				+	"LEFT OUTER JOIN FETCH i.interUHFK "
 				
-				+ 	"WHERE ( i.interLogadouro LIKE '%"+strPesquisa+"%')" // OR i.inter_Tipo LIKE '%"+strPesquisa+"%'
+				+ 	"WHERE ( e.endLogadouro LIKE '%"+strPesquisa+"%')" // OR i.inter_Tipo LIKE '%"+strPesquisa+"%'   // i.interLogadouro
 				).list();
 		/*} catch (Exception e) {
 			

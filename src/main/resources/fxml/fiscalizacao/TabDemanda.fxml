@@ -21,7 +21,7 @@
                      <top>
                         <Pane fx:id="pDemanda" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1140.0" styleClass="classFontSize" BorderPane.alignment="CENTER">
                            <children>
-                              <Pane layoutX="108.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="924.0">
+                              <Pane layoutX="108.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="924.0">
                                  <children>
                                     <TextField fx:id="tfDocumento" layoutX="35.0" layoutY="29.0" prefHeight="25.0" prefWidth="520.0" />
                                     <TextField fx:id="tfDocSei" layoutX="569.0" layoutY="29.0" prefHeight="26.0" prefWidth="128.0" />
@@ -37,7 +37,7 @@
                                     <Label layoutX="19.0" layoutY="103.0" prefHeight="17.0" prefWidth="272.0" text="Resumo da Denúncia:" />
                                  </children>
                               </Pane>
-                              <Pane layoutX="145.0" layoutY="201.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="850.0">
+                              <Pane layoutX="145.0" layoutY="236.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="850.0">
                                  <children>
                                     <Button fx:id="btnNovo" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnNovoHabilitar" prefHeight="22.0" prefWidth="76.0" text="Novo" />
                                     <Button fx:id="btnSalvar" layoutX="101.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnSalvarHabilitar" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
@@ -48,15 +48,15 @@
                                     <TextField fx:id="tfPesquisar" layoutX="451.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
                                  </children>
                               </Pane>
-                              <TableView fx:id="tvLista" layoutX="126.0" layoutY="260.0" prefHeight="185.0" prefWidth="889.0">
+                              <TableView fx:id="tvLista" layoutX="126.0" layoutY="295.0" prefHeight="185.0" prefWidth="889.0">
                                  <columns>
                                     <TableColumn fx:id="tcDocumento" prefWidth="409.0" text="Documento" />
                                     <TableColumn fx:id="tcDocSEI" minWidth="0.0" prefWidth="232.0" text="Doc SEI" />
                                     <TableColumn fx:id="tcProcSEI" prefWidth="232.0" text="Proc SEI" />
                                  </columns>
                               </TableView>
-                              <Label fx:id="lblDataAtualizacao" layoutX="768.0" layoutY="453.0" prefHeight="22.0" prefWidth="247.0" />
-                              <Pane layoutX="123.0" layoutY="485.0" prefHeight="59.0" prefWidth="895.0">
+                              <Label fx:id="lblDataAtualizacao" layoutX="768.0" layoutY="488.0" prefHeight="22.0" prefWidth="247.0" />
+                              <Pane layoutX="123.0" layoutY="520.0" prefHeight="59.0" prefWidth="895.0">
                                  <children>
                                     <Label fx:id="lblDenEnd" layoutX="79.0" layoutY="19.0" prefHeight="23.0" prefWidth="728.0" />
                                     <Label layoutX="14.0" layoutY="21.0" text="Endereço:" />
