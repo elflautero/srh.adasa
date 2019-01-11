@@ -50,8 +50,7 @@ public class EditarEnderecoControlador implements Initializable {
 	public static Demanda getDemanda () {
 		return demanda;
 	}
-	
-	@FXML Label lblDoc;
+
 	@FXML Pane tabEndereco;
 	@FXML Button btnBuscarDoc;
 	@FXML TextField tfEnd;
@@ -83,13 +82,16 @@ public class EditarEnderecoControlador implements Initializable {
 	@FXML Button btnEndLatLon;
 	
 	@FXML Pane pEndCoord;
-	@FXML Pane p_lblDemanda;
+	
+	
 	
 	
 	@FXML Label lblDataAtualizacao;
 	
 	
-	Label lblDemanda;
+	@FXML Pane p_lblDemanda;
+	@FXML Label lblDemanda1;
+	Label lblDemanda2;
 	
 	//-- TableView endereco --//
 	@FXML private TableView <Endereco> tvLista;
@@ -548,14 +550,15 @@ public class EditarEnderecoControlador implements Initializable {
 	    // ativar na tableview a possibilidade e selecionar uma opcao //
 	    selecionarEndereco();
 	    
-		lblDemanda = new Label();
-		lblDemanda.setText(demanda.getDemDocumento());
+		lblDemanda2 = new Label();
+		lblDemanda2.setText(demanda.getDemDocumento());
 		
-		lblDemanda.setPrefSize(lblDoc.getPrefWidth(), lblDoc.getPrefHeight());	
-		lblDemanda.setLayoutX(lblDoc.getLayoutX());
-		lblDemanda.setLayoutY(lblDoc.getLayoutY());
+		lblDemanda2.setPrefSize(lblDemanda1.getPrefWidth(), lblDemanda1.getPrefHeight());	
+		lblDemanda2.setLayoutX(lblDemanda1.getLayoutX());
+		lblDemanda2.setLayoutY(lblDemanda1.getLayoutY());
+		lblDemanda2.setStyle("-fx-font-weight: bold;");
 		
-		p_lblDemanda.getChildren().add(lblDemanda);
+		p_lblDemanda.getChildren().add(lblDemanda2);
 	 			
 	}
 	

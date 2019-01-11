@@ -6,9 +6,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
+import controladores.principal.ControladorPrincipal;
 import dao.InterferenciaDao;
 import entidades.BaciasHidrograficas;
 import entidades.Endereco;
@@ -241,12 +245,26 @@ public class TabInterferenciaControlador  implements Initializable{
 										
 											interferencia.setInterEnderecoFK(endereco);
 											
+											
+											GeometryFactory geoFac = new GeometryFactory();
+											
+											Point p = geoFac.createPoint(new Coordinate(
+													Double.parseDouble(tfIntLon.getText()),
+													Double.parseDouble(tfIntLat.getText()
+													)));
+											
+											p.setSRID(4674);
+												
+											interferencia.setInterGeom(p);
+											
+											/*
 											GeometryFactory geoFac = new GeometryFactory();
 											
 											interferencia.setInterGeoLatLon(geoFac.createPoint(new Coordinate(
 													Double.parseDouble(tfIntLon.getText()),
 													Double.parseDouble(tfIntLat.getText())
 													)));
+													*/
 											
 										Subterranea sub = new Subterranea ();
 										
@@ -321,12 +339,26 @@ public class TabInterferenciaControlador  implements Initializable{
 											
 												interferencia.setInterEnderecoFK(endereco);
 												
+												
+												GeometryFactory geoFac = new GeometryFactory();
+												
+												Point p = geoFac.createPoint(new Coordinate(
+														Double.parseDouble(tfIntLon.getText()),
+														Double.parseDouble(tfIntLat.getText()
+														)));
+												
+												p.setSRID(4674);
+													
+												interferencia.setInterGeom(p);
+												
+												/*
 												GeometryFactory geoFac = new GeometryFactory();
 												
 												interferencia.setInterGeoLatLon(geoFac.createPoint(new Coordinate(
 														Double.parseDouble(tfIntLon.getText()),
 														Double.parseDouble(tfIntLat.getText())
 														)));
+														*/
 												
 											Superficial sup = new Superficial ();
 											
@@ -391,12 +423,26 @@ public class TabInterferenciaControlador  implements Initializable{
 							
 							GeometryFactory geoFac = new GeometryFactory();
 							
-							interferencia.setInterGeoLatLon(geoFac.createPoint(new Coordinate(
+							Point p = geoFac.createPoint(new Coordinate(
+									Double.parseDouble(tfIntLon.getText()),
+									Double.parseDouble(tfIntLat.getText()
+									)));
+							
+							p.setSRID(4674);
+								
+							interferencia.setInterGeom(p);
+							
+							/*
+							GeometryFactory geoFac = new GeometryFactory();
+							
+							
+							
+							interferencia.setInterGeoLatLon(geoFac.createPoint(
+									new Coordinate(
 									Double.parseDouble(tfIntLon.getText()),
 									Double.parseDouble(tfIntLat.getText())
 									)));
-							
-						
+							*/
 							
 							InterferenciaDao interferenciaDao = new InterferenciaDao ();
 							interferenciaDao.salvaInterferencia(interferencia);
@@ -500,10 +546,14 @@ public class TabInterferenciaControlador  implements Initializable{
 											
 											GeometryFactory geoFac = new GeometryFactory();
 											
-											interferencia.setInterGeoLatLon(geoFac.createPoint(new Coordinate(
+											Point p = geoFac.createPoint(new Coordinate(
 													Double.parseDouble(tfIntLon.getText()),
-													Double.parseDouble(tfIntLat.getText())
+													Double.parseDouble(tfIntLat.getText()
 													)));
+											
+											//p.setSRID(4674);
+												
+											interferencia.setInterGeom(p);
 											
 										Subterranea sub = new Subterranea ();
 										
@@ -587,10 +637,23 @@ public class TabInterferenciaControlador  implements Initializable{
 												
 												GeometryFactory geoFac = new GeometryFactory();
 												
+												Point p = geoFac.createPoint(new Coordinate(
+														Double.parseDouble(tfIntLon.getText()),
+														Double.parseDouble(tfIntLat.getText()
+														)));
+												
+												//p.setSRID(4674);
+												
+												interferencia.setInterGeom(p);
+												
+												/*
+												GeometryFactory geoFac = new GeometryFactory();
+												
 												interferencia.setInterGeoLatLon(geoFac.createPoint(new Coordinate(
 														Double.parseDouble(tfIntLon.getText()),
 														Double.parseDouble(tfIntLat.getText())
 														)));
+														*/
 												
 											Superficial sup = new Superficial ();
 											
@@ -661,10 +724,24 @@ public class TabInterferenciaControlador  implements Initializable{
 							
 							GeometryFactory geoFac = new GeometryFactory();
 							
+							Point p = geoFac.createPoint(new Coordinate(
+									Double.parseDouble(tfIntLon.getText()),
+									Double.parseDouble(tfIntLat.getText()
+									)));
+							
+							//p.setSRID(4674);
+							
+							interferencia.setInterGeom(p);
+							
+							
+							/*
+							GeometryFactory geoFac = new GeometryFactory();
+							
 							interferencia.setInterGeoLatLon(geoFac.createPoint(new Coordinate(
 									Double.parseDouble(tfIntLon.getText()),
 									Double.parseDouble(tfIntLat.getText())
 									)));
+									*/
 							
 							InterferenciaDao interferenciaDao = new InterferenciaDao ();
 							
@@ -967,6 +1044,9 @@ public class TabInterferenciaControlador  implements Initializable{
 	
 	public void btnIntMapsHab (ActionEvent event) throws IOException {
 		
+		tfIntLat.setText( ControladorPrincipal.capturarGoogleMaps().getLat() );
+		tfIntLon.setText( ControladorPrincipal.capturarGoogleMaps().getLon());
+		
 	}
 	
 	public void abrirTabs (int ti) throws IOException {
@@ -1089,10 +1169,11 @@ public class TabInterferenciaControlador  implements Initializable{
 					
 					setEndereco(inter.getInterEnderecoFK());
 					
-					/*
+					
 					// estudando geometry
 					System.out.println(
 							
+							/*
 							inter.getInterBaciaFK().getBaciaShape() 
 							+ " \n vamos ver"
 							+ "\n num point - qunatidade de pontos " + inter.getInterBaciaFK().getBaciaShape().getNumPoints()
@@ -1108,11 +1189,15 @@ public class TabInterferenciaControlador  implements Initializable{
 							+ "\n GeoLatLon Lon x " + inter.getInterGeoLatLon().getCoordinate().x
 							
 							+ "\n GeoLatLon Lat y" + inter.getInterGeoLatLon().getCoordinate().y
+							*/
+							//"srid xxxxxxxxxxxxxx  " + inter.getInterBaciaFK().getBaciaShape().getSRID()
+							
+							 "\n srid do ponto  " + inter.getInterGeom().getSRID()
 							
 							);
 					
 					
-					*/
+					
 					/*
 					// mudar o endereco da interferencia de acordo com a selecao do usuario
 					eGeralInt = intTab.getEnderecoInterferenciaObjetoTabelaFK();

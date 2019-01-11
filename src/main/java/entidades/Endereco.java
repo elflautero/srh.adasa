@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 @Entity
 public class Endereco implements Serializable{
 
@@ -53,9 +55,12 @@ public class Endereco implements Serializable{
 	@JoinColumn (name="end_RA_FK")
 	private RA endRAFK;
 	
+	@Column(name="end_Geom")
+	private Geometry endGeom;
+	
 	//-- Lista de enderecos vinculados --//
 	@OneToMany (mappedBy = "demEnderecoFK", cascade = CascadeType.MERGE,
-			fetch = FetchType.EAGER, targetEntity = Demanda.class)
+			fetch = FetchType.LAZY, targetEntity = Demanda.class)
 	@Fetch(FetchMode.SUBSELECT) 
 	private List<Demanda> demandas = new ArrayList<Demanda>();
 	
@@ -86,7 +91,7 @@ public class Endereco implements Serializable{
 		
 	
 	
-	//-- Construtor padrão -- //
+	//-- construtor padrao -- //
 	public Endereco () {
 		
 	}
@@ -195,6 +200,32 @@ public class Endereco implements Serializable{
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
 	}
+
+	public Geometry getEndGeom() {
+		return endGeom;
+	}
+
+	public void setEndGeom(Geometry endGeom) {
+		this.endGeom = endGeom;
+	}
+
+	public List<Interferencia> getInterferencias() {
+		return interferencias;
+	}
+
+	public void setInterferencias(List<Interferencia> interferencias) {
+		this.interferencias = interferencias;
+	}
+
+	public List<Vistoria> getVistorias() {
+		return vistorias;
+	}
+
+	public void setVistorias(List<Vistoria> vistorias) {
+		this.vistorias = vistorias;
+	}
+	
+	
 
 	
 	

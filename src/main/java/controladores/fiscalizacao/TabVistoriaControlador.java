@@ -14,8 +14,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -23,7 +25,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -39,39 +42,82 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 
-
 public class TabVistoriaControlador implements Initializable {
 	
 TabAtoControlador tabAtoControlador = new TabAtoControlador ();
+
+	//@FXML Pane pVistoria;
 	
-	@FXML Button btnNovo;
-	@FXML Button btnSalvar;
-	@FXML Button btnEditar;
-	@FXML Button btnExcluir;
-	@FXML Button btnCancelar;
-	@FXML Button btnPesquisar;
+	Button btnNovo = new Button("Novo");
+	Button btnSalvar = new Button("Salvar");
+	Button btnEditar = new Button("Editar");
+	Button btnExcluir = new Button("Excluir");
+	Button btnCancelar = new Button("Cancelar");
+	Button btnPesquisar = new Button("Pesquisar");
+	TextField tfPesquisar = new TextField();
 	
-	@FXML TextField tfNumVistoria;
-	@FXML TextField tfNumVisSEI;
 	
-	@FXML TextField tfPesquisar;
+	TextField tfNumVis = new TextField();
+	TextField tfNumSei = new TextField();
 	
-	@FXML DatePicker dpDataFiscalizacao;
-	@FXML DatePicker dpDataCriacaoAto;
 	
-	@FXML Button btnIfracoes;
-	@FXML Button btnPenalidades;
-	@FXML Button btnAtenuantes;
-	@FXML Button btnAgravantes;
+	DatePicker dpDataFiscalizacao  = new DatePicker();
+	DatePicker dpDataCriacaoAto  = new DatePicker();
 	
-	@FXML Button btnAjudaRelatorio;
-	@FXML Button btnRecomendacoes;
 	
-	@FXML Button btnPesquisarObjeto;
-	@FXML Button  btnPesquisarApresentacao;
-	@FXML Button btnPesquisarRelato;
-	@FXML Button btnRelatorio;
+	Button btnIfracoes;
+	Button btnPenalidades;
+	Button btnAtenuantes;
+	Button btnAgravantes;
 	
+	Button btnAjudaRelatorio;
+	Button btnRecomendacoes;
+	
+	Button btnPesquisarObjeto;
+	Button  btnPesquisarApresentacao;
+	Button btnPesquisarRelato;
+	Button btnRelatorio;
+	
+	CheckBox checkInfra1 = new CheckBox();
+	CheckBox checkInfra2 = new CheckBox();
+	CheckBox checkInfra3 = new CheckBox();
+	CheckBox checkInfra4 = new CheckBox();
+	CheckBox checkInfra5 = new CheckBox();
+	CheckBox checkInfra6 = new CheckBox();
+	CheckBox checkInfra7 = new CheckBox();
+	
+	CheckBox checkPena1 = new CheckBox();
+	CheckBox checkPena2 = new CheckBox();
+	CheckBox checkPena3 = new CheckBox();
+	CheckBox checkPena4 = new CheckBox();
+	CheckBox checkPena5 = new CheckBox();
+	CheckBox checkPena6 = new CheckBox();
+	CheckBox checkPena7 = new CheckBox();
+	
+	CheckBox checkAten1 = new CheckBox();
+	CheckBox checkAten2 = new CheckBox();
+	CheckBox checkAten3 = new CheckBox();
+	CheckBox checkAten4 = new CheckBox();
+	CheckBox checkAten5 = new CheckBox();
+	CheckBox checkAten6 = new CheckBox();
+	CheckBox checkAten7 = new CheckBox();
+	CheckBox checkAten8 = new CheckBox();
+	CheckBox checkAten9 = new CheckBox();
+	
+	CheckBox checkAgra1 = new CheckBox();
+	CheckBox checkAgra2 = new CheckBox();
+	CheckBox checkAgra3 = new CheckBox();
+	CheckBox checkAgra4 = new CheckBox();
+	CheckBox checkAgra5 = new CheckBox();
+	CheckBox checkAgra6 = new CheckBox();
+	CheckBox checkAgra7 = new CheckBox();
+	CheckBox checkAgra8 = new CheckBox();
+	CheckBox checkAgra9 = new CheckBox();
+	CheckBox checkAgra10 = new CheckBox();
+	CheckBox checkAgra11 = new CheckBox();
+	CheckBox checkAgra12 = new CheckBox();
+	
+	/*
 	
 	@FXML CheckBox checkInfra1;
 	@FXML CheckBox checkInfra2;
@@ -111,7 +157,7 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	@FXML CheckBox checkAgra10;
 	@FXML CheckBox checkAgra11;
 	@FXML CheckBox checkAgra12;
-	
+	*/
 	
 	String strInfracoes;
 	String strPenalidades;
@@ -120,17 +166,9 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	
 	String strPesquisa = "";
 	
-	// TableView Endereço //
-		@FXML private TableView <Vistoria> tvVistoria;
-		
-		@FXML TableColumn<Vistoria, String> tcNumero;
-		@FXML TableColumn<Vistoria, String> tcSEI;
-		@FXML TableColumn<Vistoria, String> tcData;
+	
 
-	HTMLEditor htmlObjeto;
-	HTMLEditor htmlApresentacao; // = new HTMLEditor();
-	HTMLEditor htmlRelato; //  = new HTMLEditor();
-	HTMLEditor htmlRecomendacao; //   = new HTMLEditor();
+	/*
 
 	//-- pane para os editores html --//
 	@FXML Pane paneObjeto; // = new Pane();
@@ -138,16 +176,7 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	@FXML Pane paneRelato; // = new Pane();
 	@FXML Pane paneRecomendacao; // = new Pane();
 	
-	
-	
-	@FXML AnchorPane apPrincipal = new AnchorPane();
-	@FXML AnchorPane apPrin1 = new AnchorPane();
-	@FXML AnchorPane apPrin2 = new AnchorPane();
-	@FXML BorderPane bpPrincipal = new BorderPane();
-	@FXML ScrollBar sbPrincipal = new ScrollBar();
-	
-
-public void checkInfraHab (ActionEvent event) {
+	public void checkInfraHab (ActionEvent event) {
 		
 		int count = 0;
 		String strCheckInfra = "";
@@ -353,60 +382,7 @@ public void checkInfraHab (ActionEvent event) {
 	}
 	
 	
-	static Endereco endereco = new Endereco ();
-
-	public void setEndereco (Endereco endereco) {
 	
-	TabVistoriaControlador.endereco = endereco;
-	
-	
-	TabVistoriaControlador.lblEndereco2.setText(
-			endereco.getEndLogadouro() 
-			+ ", Cidade: " + endereco.getEndCidade()
-			+ ", CEP: " + endereco.getEndCEP()
-			);
-	}
-
-	public static Endereco getEndereco () {
-		
-		return endereco;
-	}
-	
-	@FXML Pane p_lbl_Endereco;
-	@FXML Label lblEndereco1;
-	static Label lblEndereco2;
-
-	ObservableList<Vistoria> obsList = FXCollections.observableArrayList();
-	
-	
-	public void btnNovoHab (ActionEvent event) {
-		
-		tfNumVistoria.setText(null);
-		tfNumVisSEI.setText(null);
-		dpDataFiscalizacao.getEditor().clear(); // limpar datepicker
-		dpDataCriacaoAto.getEditor().clear();
-		
-		htmlObjeto.setHtmlText("<p><font face='Times New Roman'> </font></p>");
-		htmlApresentacao.setHtmlText("<p><font face='Times New Roman'> </font></p>");
-		htmlRelato.setHtmlText("<p><font face='Times New Roman'> </font></p>");
-		htmlRecomendacao.setHtmlText("<p><font face='Times New Roman'> </font></p>");
-		
-		tfNumVistoria.setDisable(false);
-		tfNumVisSEI.setDisable(false);
-		dpDataFiscalizacao.setDisable(false);
-		dpDataCriacaoAto.setDisable(false);
-		
-		btnNovo.setDisable(true);
-		btnSalvar.setDisable(false);
-		
-		btnEditar.setDisable(true);
-		btnExcluir.setDisable(true);
-		
-		abrirEditorHTML();
-		abrirCheckBox();
-		LimparCheckBox();
-		
-	}
 	
 	public void btnSalvarHab (ActionEvent event) {
 		
@@ -712,7 +688,7 @@ public void checkInfraHab (ActionEvent event) {
 		}
 		*/
 		
-		
+		/*
 		try {
 			strEndereco = endereco.getEndLogadouro();
 		} catch (Exception e) {
@@ -740,53 +716,425 @@ public void checkInfraHab (ActionEvent event) {
 		
 	}
 	
-	public void initialize(URL url, ResourceBundle rb) {
-		
-		AnchorPane.setTopAnchor(apPrin1, 0.0);
-	    AnchorPane.setLeftAnchor(apPrin1, 0.0);
-		AnchorPane.setRightAnchor(apPrin1, 0.0);
-	    AnchorPane.setBottomAnchor(apPrin1, 0.0);
 	
-	    AnchorPane.setLeftAnchor(apPrin2, 0.0);
-		AnchorPane.setRightAnchor(apPrin2, 0.0);
+	// métodos de remimensionar as tabs //
+	public void redimWid (Number newValue) {
+				apPrincipal.setPrefWidth( (Double) newValue);
+			
+				System.out.println("tab vis metodo set min wid  valor " + newValue);
+			}
+	public void redimHei (Number newValue) {
+				apPrincipal.setMinHeight((double) newValue);;
+			}
+	
+	
+*/
+	
+	/*
+	@FXML private AnchorPane;
+	private AnchorPane apPrin1 = new AnchorPane();
+	private AnchorPane apPrin2  = new AnchorPane();
+	private BorderPane bpPrincipal = new BorderPane();
+	*/
+	
+	//@FXML AnchorPane apPrin1 = new AnchorPane();
+	//@FXML AnchorPane apPrin2 = new AnchorPane();
+	//@FXML ScrollBar sbPrincipal = new ScrollBar();
+
+	
+	public void btnNovoHab () {
 		
-		AnchorPane.setTopAnchor(sbPrincipal, 0.0);
-		AnchorPane.setBottomAnchor(sbPrincipal, 2.0);
-		AnchorPane.setRightAnchor(sbPrincipal, 0.0);
+		tfNumVis.setText(null);
+		tfNumSei.setText(null);
+		dpDataFiscalizacao.getEditor().clear(); // limpar datepicker
+		dpDataCriacaoAto.getEditor().clear();
 		
-		AnchorPane.setTopAnchor(bpPrincipal, 0.0);
-	    AnchorPane.setLeftAnchor(bpPrincipal, 0.0);
-		AnchorPane.setRightAnchor(bpPrincipal, 0.0);
-	    AnchorPane.setBottomAnchor(bpPrincipal, 0.0);
-	    
-	    // para rolar a tab //
-	    sbPrincipal.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            	apPrin2.setLayoutY(-new_val.doubleValue());
-            
-            }
-        });
-	    
-	    relatarHTML ();
-	    
-	 // Label para preencher com a demanda a ser trabalhada //
-	    lblEndereco2 = new Label();
-	    lblEndereco2.setStyle("-fx-font-weight: bold;");
-	    lblEndereco2.setPrefSize(728, 25);	
-	    lblEndereco2.setLayoutX(131);
-	    lblEndereco2.setLayoutY(13);
+		htmlObjeto.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+		htmlApresentacao.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+		htmlRelato.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+		htmlRecomendacao.setHtmlText("<p><font face='Times New Roman'> </font></p>");
 		
-		p_lbl_Endereco.getChildren().add(lblEndereco2);
+		tfNumVis.setDisable(false);
+		tfNumSei.setDisable(false);
+		dpDataFiscalizacao.setDisable(false);
+		dpDataCriacaoAto.setDisable(false);
 		
-		tcNumero.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visIdentificacao"));  // visIdentificacao
-		tcSEI.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visSEI"));  
-		tcData.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visDataFiscalizacao")); 
+		btnNovo.setDisable(true);
+		btnSalvar.setDisable(false);
 		
-		tvVistoria.setItems(obsList);
+		btnEditar.setDisable(true);
+		btnExcluir.setDisable(true);
+		
+		//abrirEditorHTML();
+		//abrirCheckBox();
+		//LimparCheckBox();
+		
+		System.out.println("btn novo clicado");
 		
 	}
 	
+	
+	static Endereco endereco = new Endereco ();
+
+	public void setEndereco (Endereco endereco) {
+	
+		TabVistoriaControlador.endereco = endereco;
+	
+		TabVistoriaControlador.lblEndereco.setText(
+				endereco.getEndLogadouro() 
+				+ ", Cidade: " + endereco.getEndCidade()
+				+ ", CEP: " + endereco.getEndCEP()
+				);
+		
+		System.out.println("endereco tab vis" + endereco.getEndLogadouro());
+	}
+
+	public static Endereco getEndereco () {
+		
+		return endereco;
+	}
+
+	static Label lblEndereco = new Label();
+	
+	@FXML Pane pVistoria;
+	AnchorPane apPrincipal = new AnchorPane();
+	BorderPane bpPrincipal = new BorderPane();
+	ScrollPane spPrincipal = new ScrollPane();
+
+	Pane pEndereco = new Pane();
+	Pane pDadosBasicos = new Pane();
+	Pane pPersistencia = new Pane();
+	
+	Pane pInfracao = new Pane();
+	Pane pPenalidade = new Pane();
+	Pane pAtenuantes = new Pane();
+	Pane pAgravantes = new Pane();
+	
+	HTMLEditor htmlObjeto = new HTMLEditor();
+	HTMLEditor htmlApresentacao = new HTMLEditor();
+	HTMLEditor htmlRelato = new HTMLEditor();
+	HTMLEditor htmlRecomendacao = new HTMLEditor();
+	
+	Pane p1 = new Pane ();
+	
+	// TableView Endereço //
+	TableView <Vistoria> tvVistoria = new TableView<>();
+			
+	TableColumn<Vistoria, String> tcNumero = new TableColumn<>();
+	TableColumn<Vistoria, String> tcSEI = new TableColumn<>();
+	TableColumn<Vistoria, String> tcData = new TableColumn<>();
+	ObservableList<Vistoria> obsList = FXCollections.observableArrayList();
+	
+	@SuppressWarnings("unchecked")
+	public void initialize(URL url, ResourceBundle rb) {
+		
+		pVistoria.getChildren().add(apPrincipal);
+		
+		apPrincipal.minWidthProperty().bind(pVistoria.widthProperty());
+		apPrincipal.minHeightProperty().bind(pVistoria.heightProperty());
+		
+		apPrincipal.getChildren().add(spPrincipal);
+		
+		spPrincipal.setHbarPolicy(ScrollBarPolicy.NEVER);
+		spPrincipal.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		
+	    AnchorPane.setLeftAnchor(spPrincipal, 0.0);
+		AnchorPane.setRightAnchor(spPrincipal, 0.0);
+		AnchorPane.setTopAnchor(spPrincipal, 0.0);
+		AnchorPane.setBottomAnchor(spPrincipal, 47.0);
+		
+		spPrincipal.setPrefSize(200, 200);
+		
+	    bpPrincipal.minWidthProperty().bind(spPrincipal.widthProperty());
+	    bpPrincipal.setPrefHeight(1200);
+
+	    spPrincipal.setContent(bpPrincipal);
+	    
+	    p1.setMaxSize(1140, 2084);
+	    p1.setMinSize(1140, 2084);
+	    
+	    tcNumero.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visIdentificacao"));  // visIdentificacao
+		tcSEI.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visSEI"));  
+		tcData.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visDataFiscalizacao")); 
+		
+		tcNumero.setPrefWidth(409);
+		tcSEI.setPrefWidth(232);
+		tcData.setPrefWidth(232);
+		
+		tcNumero.setText("Número da Vistoria");
+		tcSEI.setText("SEI");
+		tcData.setText("Data da Fiscalizacão");
+		
+		tvVistoria.setPrefSize(900, 185);
+		tvVistoria.setLayoutX(130);
+		tvVistoria.setLayoutY(201);
+		
+		tvVistoria.getColumns().addAll(tcNumero, tcSEI, tcData);
+		tvVistoria.setItems(obsList);
+		
+	    bpPrincipal.setTop(p1);
+	    BorderPane.setAlignment(p1, Pos.CENTER);
+	    
+	    chamarEditoresHTML ();
+	    chamarLegislacao ();
+	    chamarEndereco ();
+	    chamarDadosBasicos ();
+		chamarPersistencia ();
+	    
+	    p1.getChildren().addAll(
+	    		
+	    		pEndereco, pDadosBasicos, pPersistencia, tvVistoria
+	    	
+	    		);
+	   
+	   
+	    btnNovo.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnNovoHab();
+	        }
+	    });
+	   
+		
+	}
+	
+	public void chamarEditoresHTML () {
+		
+		Label lblObjeto = new Label ("OBJETO:");
+		lblObjeto.setPrefSize(140, 25);
+		lblObjeto.setLayoutX(133);
+		lblObjeto.setLayoutY(558);
+		
+		htmlObjeto.setPrefSize(820, 200);
+	    htmlObjeto.setLayoutX(170);
+	    htmlObjeto.setLayoutY(587);
+	    
+	    Label lblApre = new Label ("APRESENTAÇÃO:");
+	    lblApre.setPrefSize(140, 25);
+	    lblApre.setLayoutX(133);
+	    lblApre.setLayoutY(792);
+	    
+	    htmlApresentacao.setPrefSize(820, 200);
+	    htmlApresentacao.setLayoutX(170);
+	    htmlApresentacao.setLayoutY(823);
+		 
+	    Label lblRel= new Label ("RELATO:");
+	    lblRel.setPrefSize(140, 25);
+	    lblRel.setLayoutX(133);
+	    lblRel.setLayoutY(1027);
+	    
+	    htmlRelato.setPrefSize(820, 673);
+	    htmlRelato.setLayoutX(170);
+	    htmlRelato.setLayoutY(1057);
+	    
+	    Label lblRecom = new Label ("RECOMENDAÇÕES:");
+	    lblRecom.setPrefSize(140, 25);
+	    lblRecom.setLayoutX(133);
+	    lblRecom.setLayoutY(1736);
+	    
+	    htmlRecomendacao.setPrefSize(820, 200);
+	    htmlRecomendacao.setLayoutX(170);
+	    htmlRecomendacao.setLayoutY(1765);
+	    
+	    
+		htmlObjeto.setOnKeyPressed(event -> {
+			    if (event.getCode() == KeyCode.SPACE  
+			            || event.getCode() == KeyCode.TAB ) {
+			        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+			        event.consume();
+			    }
+			});
+		
+		htmlApresentacao.setOnKeyPressed(event -> {
+		    if (event.getCode() == KeyCode.SPACE  
+		            || event.getCode() == KeyCode.TAB ) {
+		        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+		        event.consume();
+		    }
+		});
+		
+		htmlRelato.setOnKeyPressed(event -> {
+		    if (event.getCode() == KeyCode.SPACE  
+		            || event.getCode() == KeyCode.TAB ) {
+		        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+		        event.consume();
+		    }
+		});
+		
+		htmlRecomendacao.setOnKeyPressed(event -> {
+		    if (event.getCode() == KeyCode.SPACE  
+		            || event.getCode() == KeyCode.TAB ) {
+		        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+		        event.consume();
+		    }
+		});
+		
+	    
+	    p1.getChildren().addAll(
+	    		
+	    		lblObjeto, lblApre, lblRecom, lblRel,
+	    		htmlObjeto, htmlApresentacao, htmlRelato, htmlRecomendacao
+	    		
+	    		);
+	    
+	}
+	
+	public void chamarEndereco () {
+		
+		pEndereco = new Pane();
+		pEndereco.setStyle("-fx-background-color: #E9E9E9;");
+		
+		pEndereco.setPrefSize(900, 50);
+		pEndereco.setLayoutX(130);
+		pEndereco.setLayoutY(21);
+		 
+		lblEndereco.setPrefSize(719, 25);
+		lblEndereco.setLayoutX(126);
+		lblEndereco.setLayoutY(13);
+		lblEndereco.setStyle("-fx-font-weight: bold;");
+		lblEndereco.setStyle("-fx-background-color: #E9E9E9;");
+		
+		Label l1 = new Label("Endereco: ");
+		    l1.setPrefSize(67, 25);
+		    l1.setLayoutX(56);
+		    l1.setLayoutY(13);
+		    
+		    
+		pEndereco.getChildren().addAll(l1, lblEndereco);
+
+	}
+	
+	public void chamarLegislacao () {
+		
+		pInfracao.setPrefSize(900, 25);
+		pInfracao.setLayoutX(130);
+		pInfracao.setLayoutY(400);
+		
+		pPenalidade.setPrefSize(900, 25);
+		pPenalidade.setLayoutX(130);
+		pPenalidade.setLayoutY(440);
+		
+		pAtenuantes.setPrefSize(900, 25);
+		pAtenuantes.setLayoutX(130);
+		pAtenuantes.setLayoutY(480);
+		
+		pAgravantes.setPrefSize(900, 25);
+		pAgravantes.setLayoutX(130);
+		pAgravantes.setLayoutY(520);
+		
+		pInfracao.setStyle("-fx-background-color: blue;");
+		pPenalidade.setStyle("-fx-background-color: blue;");
+		pAtenuantes.setStyle("-fx-background-color: blue;");
+		pAgravantes.setStyle("-fx-background-color: blue;");
+		
+		p1.getChildren().addAll(
+	    		
+	    		pInfracao, pPenalidade, pAtenuantes, pAgravantes
+	    		
+	    		);
+		
+	}
+	
+	public void chamarDadosBasicos () {
+		
+	 	pDadosBasicos  = new Pane();
+	 	pDadosBasicos.setStyle("-fx-background-color: #E9E9E9;");
+	    pDadosBasicos.setPrefSize(900, 50);
+	    pDadosBasicos.setLayoutX(130);
+	    pDadosBasicos.setLayoutY(86);
+	    
+	    Label lblNumVis= new Label("Número do Ato:");
+	 	lblNumVis.setPrefSize(100, 25);
+	 	lblNumVis.setLayoutX(34);
+	 	lblNumVis.setLayoutY(13);
+	    
+	    tfNumVis.setPrefSize(100, 25);
+	    tfNumVis.setLayoutX(134);
+	    tfNumVis.setLayoutY(13);
+	    
+	    Label lblNumSEI = new Label("SEI: ");
+	    lblNumSEI.setPrefSize(45,25);
+	    lblNumSEI.setLayoutX(234);
+	    lblNumSEI.setLayoutY(13);
+	    
+	    tfNumSei.setPrefSize(90, 25);
+	    tfNumSei.setLayoutX(279);
+	    tfNumSei.setLayoutY(13);
+	    
+	    Label lblDataFiscalizacao = new Label("Número do Ato:");
+	    lblDataFiscalizacao.setPrefSize(131, 25);
+	    lblDataFiscalizacao.setLayoutX(379);
+	    lblDataFiscalizacao.setLayoutY(13);
+
+	    dpDataFiscalizacao.setPrefSize(120, 25);
+	    dpDataFiscalizacao.setLayoutX(510);
+	    dpDataFiscalizacao.setLayoutY(13);
+
+	    Label lblDataCriacao = new Label("Data de Criação: ");
+	    lblDataCriacao.setPrefSize(107, 25);
+	    lblDataCriacao.setLayoutX(641);
+	    lblDataCriacao.setLayoutY(13);
+
+	    dpDataCriacaoAto.setPrefSize(120, 25);
+	    dpDataCriacaoAto.setLayoutX(747);
+	    dpDataCriacaoAto.setLayoutY(13);
+
+		pDadosBasicos.getChildren().addAll( 
+				lblNumVis, tfNumVis,
+				lblNumSEI, tfNumSei,
+				lblDataFiscalizacao, dpDataFiscalizacao,
+				lblDataCriacao, dpDataCriacaoAto
+				
+				);
+	}
+	 
+    public void chamarPersistencia () {
+    	
+    	pPersistencia  = new Pane();
+   	    pPersistencia.setPrefSize(900, 50);
+   	    pPersistencia.setLayoutX(130);
+   	    pPersistencia.setLayoutY(145);
+   
+		btnNovo.setPrefSize(76, 25);
+		btnNovo.setLayoutX(42);
+		btnNovo.setLayoutY(12);
+	
+	    btnSalvar.setPrefSize(76, 25);
+	    btnSalvar.setLayoutX(129);
+	    btnSalvar.setLayoutY(12);
+	
+	    btnEditar.setPrefSize(76, 25);
+	    btnEditar.setLayoutX(216);
+	    btnEditar.setLayoutY(12);
+	
+	    btnExcluir.setPrefSize(76, 25);
+	    btnExcluir.setLayoutX(303);
+	    btnExcluir.setLayoutY(12);
+	    
+	    btnCancelar.setPrefSize(76, 25);
+	    btnCancelar.setLayoutX(390);
+	    btnCancelar.setLayoutY(12);
+	    
+	    btnPesquisar.setPrefSize(76, 25);
+	    btnPesquisar.setLayoutX(783);
+	    btnPesquisar.setLayoutY(12);
+	    
+	    tfPesquisar.setPrefSize(295, 25);
+	    tfPesquisar.setLayoutX(477);
+	    tfPesquisar.setLayoutY(12);
+	    
+	    pPersistencia.getChildren().addAll( 
+	    		btnNovo, btnSalvar, btnEditar, btnExcluir,
+	    		btnCancelar, tfPesquisar, btnPesquisar
+	    		
+	    		);
+	    
+	    
+    }
+	
+	
+	/*
 	
 	public void listarVistorias (String strPesquisa) {
  		
@@ -1080,6 +1428,8 @@ public void checkInfraHab (ActionEvent event) {
 					
 					setEndereco(vis.getVisEnderecoFK());
 					
+					tabAtoControlador.setVistoria(vis);
+					
 					//-- pegar a vistoria selecionada --//
 					//Vistoria visG = new Vistoria(vis);
 					
@@ -1361,10 +1711,9 @@ public void checkInfraHab (ActionEvent event) {
 	                 }
           });
           
-          */
-			
+         
 	 }
-	 
+	 /*
 	 public void btnPenalidadesHab (ActionEvent event) {
 		 
 		 CheckBox cp1 = new CheckBox();
@@ -1453,7 +1802,7 @@ public void checkInfraHab (ActionEvent event) {
        });
        
        */
-			    
+		/*	    
 	 }
 	 
 	 public void btnAtenuantesHab (ActionEvent event) {
@@ -1558,6 +1907,7 @@ public void checkInfraHab (ActionEvent event) {
        });
        
        */
+	/*
      
 	 }
 	 
@@ -1676,7 +2026,7 @@ public void checkInfraHab (ActionEvent event) {
          	  
            }
        });*/
-      
+      /*
 	 }
 	 
 	 public void btnAjudaRelatorioHab (ActionEvent event) {
@@ -1690,59 +2040,59 @@ public void checkInfraHab (ActionEvent event) {
 	 public void btnRelatorioHab (ActionEvent event) {
 		 
 	 }
+	
 	 
 	 public void relatarHTML () {
 			
 			
-			htmlObjeto = new HTMLEditor();
+		  		htmlObjeto = new HTMLEditor();
+		  		
+		  			htmlObjeto.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+		  			
+		  			/*
+					htmlObjeto.setOnKeyPressed(event -> {
+					    if (event.getCode() == KeyCode.SPACE  
+					            || event.getCode() == KeyCode.TAB ) {
+					        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+					        event.consume();
+					    }
+					});
+					
+					
+		  			htmlObjeto.setPrefSize(800.0, 200.0);
+		  		
+		  			paneObjeto.getChildren().add(htmlObjeto);
+					
+				htmlApresentacao  = new HTMLEditor();
 			
-				htmlObjeto.setPrefSize(800, 200);
-				
-				htmlObjeto.setOnKeyPressed(event -> {
-				    if (event.getCode() == KeyCode.SPACE  
-				            || event.getCode() == KeyCode.TAB ) {
-				        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
-				        event.consume();
-				    }
-				});
-				
-				htmlObjeto.setHtmlText("<p><font face='Times New Roman'> </font></p>");
-				
-				StackPane root = new StackPane();
-				root.getChildren().add(htmlObjeto);
-				paneObjeto.getChildren().add(htmlObjeto);
+					htmlApresentacao.setPrefSize(800, 200);
+					
+					htmlApresentacao.setOnKeyPressed(event -> {
+					    if (event.getCode() == KeyCode.SPACE  
+					            || event.getCode() == KeyCode.TAB ) {
+					        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+					        event.consume();
+					    }
+					});
+					htmlApresentacao.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+					
+					StackPane rootAp = new StackPane();
+					rootAp.getChildren().add(htmlApresentacao);
+				    paneApresentacao.getChildren().add(htmlApresentacao);
 		    
-		   
-			htmlApresentacao  = new HTMLEditor();
+		    
+			    htmlRelato  = new HTMLEditor();
 			
-				htmlApresentacao.setPrefSize(800, 200);
-				
-				htmlApresentacao.setOnKeyPressed(event -> {
-				    if (event.getCode() == KeyCode.SPACE  
-				            || event.getCode() == KeyCode.TAB ) {
-				        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
-				        event.consume();
-				    }
-				});
-				htmlApresentacao.setHtmlText("<p><font face='Times New Roman'> </font></p>");
-				
-				StackPane rootAp = new StackPane();
-				rootAp.getChildren().add(htmlApresentacao);
-			    paneApresentacao.getChildren().add(htmlApresentacao);
-		    
-		    
-			htmlRelato  = new HTMLEditor();
-			
-				htmlRelato.setPrefSize(800, 673);
-				
-				htmlRelato.setOnKeyPressed(event -> {
-				    if (event.getCode() == KeyCode.SPACE  
-				            || event.getCode() == KeyCode.TAB ) {
-				        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
-				        event.consume();
-				    }
-				});
-				htmlRelato.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+					htmlRelato.setPrefSize(800, 673);
+					
+					htmlRelato.setOnKeyPressed(event -> {
+					    if (event.getCode() == KeyCode.SPACE  
+					            || event.getCode() == KeyCode.TAB ) {
+					        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+					        event.consume();
+					    }
+					});
+					htmlRelato.setHtmlText("<p><font face='Times New Roman'> </font></p>");
 				
 				
 				StackPane rootRel = new StackPane();
@@ -1769,4 +2119,9 @@ public void checkInfraHab (ActionEvent event) {
 
 		}
 
+	
+		 */
+	
+	 
+	 
 }

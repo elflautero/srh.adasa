@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,6 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -380,7 +382,8 @@ public class TabDemandaControlador implements Initializable {
             	apPrin2.setLayoutY(-new_val.doubleValue());
             }
         });
-		
+	    
+	    
 		// para concluir pesquisa com a tecla do enter
 		tfPesquisar.setOnKeyReleased(event -> {
 	  		  if (event.getCode() == KeyCode.ENTER){
@@ -390,8 +393,6 @@ public class TabDemandaControlador implements Initializable {
 		
 		// --- habilitar e desabilitar botões ---- //
 				modularBotoesInicial();
-		
-		
 		
 		tcDocumento.setCellValueFactory(new PropertyValueFactory<Demanda,String>("demDocumento"));
 		tcDocSEI.setCellValueFactory(new PropertyValueFactory<Demanda,String>("demDocumentoSEI"));
@@ -475,6 +476,7 @@ public class TabDemandaControlador implements Initializable {
 				
 				if (demanda.getDemDistribuicao() == null) {
 					dpDataDistribuicao.setValue(null);
+					
 	 				} else {
 	 					dpDataDistribuicao.setValue(demanda.getDemDistribuicao());
 	 					
@@ -483,6 +485,7 @@ public class TabDemandaControlador implements Initializable {
 			
 				if (demanda.getDemRecebimento() == null) {
 					dpDataRecebimento.setValue(null);
+					
 	 				} else {
 	 					dpDataRecebimento.setValue(demanda.getDemRecebimento());
 	 					

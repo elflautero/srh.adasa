@@ -3,6 +3,7 @@ package controladores.principal;
 import java.io.IOException;
 
 import controladores.fiscalizacao.ControladorFiscalizacao;
+import controladores.modelosHTML.ControladorModelosHTML;
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
@@ -16,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -38,6 +40,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import mapas.GoogleMap;
 
@@ -47,6 +50,8 @@ public class ControladorPrincipal {
 	
 	// para chamar a parte da fiscalizacao //
 	ControladorFiscalizacao controladorFiscalizacao;
+	ControladorModelosHTML controladorModelosHTML;
+	
 	
 	@FXML Pane pMainTop;
 	@FXML BorderPane bpFiscalizacao;
@@ -75,6 +80,7 @@ public class ControladorPrincipal {
 	
 	Pane pBrowserSEI = new Pane();
 	Pane pFiscalizacao  = new Pane();
+	
 	Pane p;
 	
 	@FXML ScrollPane spWebMap;
@@ -89,6 +95,7 @@ public class ControladorPrincipal {
 	Button btnConversor;
 	Button btnFiscalizacao;
 	Button btnSEI;
+	Button btnEditorHTML;
 	
 	@FXML StackPane stackPMainSearch;
 	@FXML StackPane stackPaneTop;
@@ -420,7 +427,7 @@ public class ControladorPrincipal {
 	    AnchorPane.setTopAnchor(bpCenter, 150.0);
 	    AnchorPane.setLeftAnchor(bpCenter, 0.0);
 	    AnchorPane.setRightAnchor(bpCenter, 0.0);
-	    AnchorPane.setBottomAnchor(bpCenter, 115.0); //-632.0
+	    AnchorPane.setBottomAnchor(bpCenter, 115.0);
 	    
 	    bpCenter.setDisable(true);
 	    
@@ -428,16 +435,15 @@ public class ControladorPrincipal {
 	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
 	    AnchorPane.setLeftAnchor(pFiscalizacao, 150.0);
 	    AnchorPane.setRightAnchor(pFiscalizacao, 150.0);
-	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0); //-632.0
-	    
+	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
 	    
 	    AnchorPane.setTopAnchor(pBrowserSEI, 150.0);
 	    AnchorPane.setLeftAnchor(pBrowserSEI, 150.0);
 	    AnchorPane.setRightAnchor(pBrowserSEI, 150.0);
-	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0); //-632.0
+	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0);
 	    
-	    AnchorPane.setTopAnchor(pFiscalizacao, 150.5);
-	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
+	   // AnchorPane.setTopAnchor(pFiscalizacao, 150.5);
+	   // AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
 	    
 	    // Para abrir o pane fora do campo de vis�o
 	    pFiscalizacao.setTranslateY(880.0);
@@ -518,6 +524,18 @@ public class ControladorPrincipal {
         btnFiscalizacao.setLayoutX(10.0);
         btnFiscalizacao.setLayoutY(96.0);
         
+        btnEditorHTML = GlyphsDude.createIconButton(
+           		FontAwesomeIcon.HTML5,
+           		"EDITOR HTML", 
+           		"15px", 
+                   "11px",  
+                   ContentDisplay.LEFT);
+           
+           btnEditorHTML.getStyleClass().add("clBotoesLateral");
+           btnEditorHTML.setLayoutX(10.0);
+           btnEditorHTML.setLayoutY(177.0);
+           
+        
         btnConversor = GlyphsDude.createIconButton(
         		FontAwesomeIcon.GLOBE,
         		"CONVERSOR", 
@@ -561,7 +579,6 @@ public class ControladorPrincipal {
         });
         btnZoomOut.setLayoutX(10.0);
         btnZoomOut.setLayoutY(308.0);
-        
         
         
         Button btnTerrain = new Button("Terreno");
@@ -656,7 +673,7 @@ public class ControladorPrincipal {
         pOrgaos2.getStyleClass().add("panesLaterais");
         
         
-        pOrgaos.getChildren().addAll(btnHome, btnSEI, btnFiscalizacao, btnConversor);
+        pOrgaos.getChildren().addAll(btnHome, btnSEI, btnFiscalizacao, btnConversor, btnEditorHTML);
         
         tab1.setContent(pOrgaos);
         tab2.setContent(pOrgaos2);
@@ -772,7 +789,7 @@ public class ControladorPrincipal {
         
         btnFiscalizacao.setOnAction((ActionEvent evt)->{
         	
-        	dblFiscal =  pFiscalizacao.getTranslateY();
+        	dblFiscal = pFiscalizacao.getTranslateY();
         	
         	if(dblFiscal.equals(0.0)){
             	
@@ -809,11 +826,9 @@ public class ControladorPrincipal {
 				p.maxWidthProperty().bind(pFiscalizacao.widthProperty());
 				p.maxHeightProperty().bind(pFiscalizacao.heightProperty());
 				
-				
 				p.setStyle("-fx-background-color: transparent;");
 				
 				pFiscalizacao.getChildren().add(p);
-				
 				
         		}
         	});
@@ -879,6 +894,33 @@ public class ControladorPrincipal {
 	            
 	            }
 	            
+        });
+        
+        btnEditorHTML.setOnAction((ActionEvent evt)->{
+        	
+        	Pane pEndereco = new Pane();
+        	controladorModelosHTML = new ControladorModelosHTML();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modelosHTML/ModelosHTML.fxml"));
+			loader.setRoot(pEndereco);
+			loader.setController(controladorModelosHTML);
+			
+			try {
+				loader.load();
+			} catch (IOException e) {
+				System.out.println("erro leitura do pane - chamada legislação");
+				e.printStackTrace();
+			}
+			
+			Scene scene = new Scene(pEndereco);
+			Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
+			stage.setWidth(1177);
+			stage.setHeight(800);
+	        stage.setScene(scene);
+	        stage.setMaximized(false);
+	        stage.setResizable(false);
+	        stage.setAlwaysOnTop(true); 
+	        stage.show();
+        	
         });
         
         	

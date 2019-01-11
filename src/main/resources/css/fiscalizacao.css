@@ -46,3 +46,34 @@
 	-fx-border-width: 3 0 0 0;
 	
 }
+
+.html-editor {
+	
+	-fx-font: 14 cambria;
+	-fx-border-color: #45637C;
+	-fx-border-style: solid;
+	-fx-border-width: 2;   
+
+}
+
+.html-editor .button, .html-editor .toggle-button {
+	
+	-fx-background-color: lightblue;
+}
+
+.html-editor-background {
+	
+	-fx-color-label-visible: true;
+
+}
+
+.html-editor-foreground {
+	
+	-fx-color-label-visible: true;
+	
+}
+
+.text {
+    -fx-font-smoothing-type: lcd; 
+} 
+

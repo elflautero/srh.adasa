@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+
 import controladores.principal.ControladorPrincipal;
 import dao.EnderecoDao;
 import entidades.Demanda;
@@ -38,10 +42,12 @@ import principal.FormatoData;
 
 public class TabEnderecoControlador implements Initializable {
 	
+	// para transmitir o endereco para  outras tabs //
 	TabInterferenciaControlador tabIntCon = new TabInterferenciaControlador();
 	TabUsuarioControlador tabUsCon = new TabUsuarioControlador();
 	TabVistoriaControlador tabVisCon = new TabVistoriaControlador();
 	
+	// para trazer a demanda cadastrada e relacionado com o endereco //
 	static Demanda demanda = new Demanda ();
 	
 	public void setDemanda (Demanda demanda) {
@@ -69,8 +75,6 @@ public class TabEnderecoControlador implements Initializable {
 	@FXML TextField tfEndCep;
 	@FXML TextField  tfEndCid;
 	
-	
-	@FXML TextField tfLinkEnd;
 	@FXML TextField tfEndLat;
 	@FXML TextField tfEndLon;
 	
@@ -109,10 +113,6 @@ public class TabEnderecoControlador implements Initializable {
 	@FXML Pane p_lblDemanda;
 	@FXML Label lblDemanda1; // captura layout x y, tamanho e largura para lblDemanda2
 	static Label lblDemanda2;
-	
-	//-- combobox -Regiao Administrativa --//	
-	
-	//List <String> listaRA = new ArrayList<> ();
 	
 	int intRA = 1;
 	String strRA = "Plano Piloto";
@@ -194,7 +194,6 @@ public class TabEnderecoControlador implements Initializable {
 		
 		cbEndUF.setValue("DF");
 		
-		tfLinkEnd.setText("");
 		tfEndLat.setText("");
 		tfEndLon.setText("");
 		
@@ -208,8 +207,7 @@ public class TabEnderecoControlador implements Initializable {
 		cbEndUF.setDisable(false);
 		tfEndLat.setDisable(false);
 		tfEndLon.setDisable(false);
-		tfLinkEnd.setDisable(false);
-		
+	
 		btnSalvar.setDisable(false);
 		btnEditar.setDisable(true);
 		btnExcluir.setDisable(true);
@@ -261,6 +259,17 @@ public class TabEnderecoControlador implements Initializable {
 								
 								end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
 								end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
+								
+								GeometryFactory geoFac = new GeometryFactory();
+								
+								Point p = geoFac.createPoint(new Coordinate(
+										Double.parseDouble(tfEndLon.getText()),
+										Double.parseDouble(tfEndLat.getText()
+										)));
+								
+								p.setSRID(4674);
+									
+								end.setEndGeom(p);
 								
 								end.setEndAtualizacao((LocalDateTime.now()));
 										
@@ -322,7 +331,7 @@ public class TabEnderecoControlador implements Initializable {
 		cbEndUF.setDisable(false);
 		tfEndLat.setDisable(false);
 		tfEndLon.setDisable(false);
-		tfLinkEnd.setDisable(false);
+	
 			
 	} else {
 		
@@ -352,8 +361,20 @@ public class TabEnderecoControlador implements Initializable {
 				end.setEndCEP(tfEndCep.getText());
 				end.setEndCidade(tfEndCid.getText());
 				end.setEndUF(cbEndUF.getValue());
+				
 				end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
 				end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
+				
+				GeometryFactory geoFac = new GeometryFactory();
+				
+				Point p = geoFac.createPoint(new Coordinate(
+						Double.parseDouble(tfEndLon.getText()),
+						Double.parseDouble(tfEndLat.getText()
+						)));
+				
+				p.setSRID(4674);
+					
+				end.setEndGeom(p);
 				
 				end.setEndAtualizacao((LocalDateTime.now()));
 				
@@ -431,7 +452,6 @@ public class TabEnderecoControlador implements Initializable {
 		
 }
 
-	
 	public void btnCancelarHab (ActionEvent event) {
 	
 		modularBotoesInicial ();
@@ -444,7 +464,6 @@ public class TabEnderecoControlador implements Initializable {
 		
 		cbEndUF.setValue(null);
 		
-		tfLinkEnd.setText("");
 		tfEndLat.setText("");
 		tfEndLon.setText("");
 	
@@ -478,16 +497,15 @@ public class TabEnderecoControlador implements Initializable {
 		
 	}
 	
-@FXML AnchorPane apPrincipal = new AnchorPane();
-@FXML AnchorPane apPrin1 = new AnchorPane();
-@FXML AnchorPane apPrin2 = new AnchorPane();
-@FXML BorderPane bpPrincipal = new BorderPane();
-@FXML ScrollBar sbPrincipal = new ScrollBar();
+	@FXML AnchorPane apPrincipal = new AnchorPane();
+	@FXML AnchorPane apPrin1 = new AnchorPane();
+	@FXML AnchorPane apPrin2 = new AnchorPane();
+	@FXML BorderPane bpPrincipal = new BorderPane();
+	@FXML ScrollBar sbPrincipal = new ScrollBar();
 
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		
 		
 		AnchorPane.setTopAnchor(apPrin1, 0.0);
 	    AnchorPane.setLeftAnchor(apPrin1, 0.0);
@@ -515,7 +533,7 @@ public class TabEnderecoControlador implements Initializable {
         });
 	    
 	    // para trazer o valor da entidade principal, no caso Endereco
-	    tcDesEnd.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endLogadouro")); // endLogadouro
+	    tcDesEnd.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endLogadouro"));
 		// para trazer valor de outra entidade, no caso RA
 	    
 		tcEndRA.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Endereco, String>, ObservableValue<String>>() {
@@ -581,8 +599,6 @@ public class TabEnderecoControlador implements Initializable {
 		cbEndUF.setDisable(true);
 		tfEndLat.setDisable(true);
 		tfEndLon.setDisable(true);
-		tfLinkEnd.setDisable(true);
-		tfLinkEnd.setText("");
 		
 		btnSalvar.setDisable(true);
 		btnEditar.setDisable(true);
@@ -683,6 +699,8 @@ public class TabEnderecoControlador implements Initializable {
 						demanda = end.getDemandas().get(0);
 					}
 					*/
+					
+					System.out.println("srid Endereco " + end.getEndGeom().getSRID());
 					
 					FormatoData d = new FormatoData();
 					

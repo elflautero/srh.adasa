@@ -21,7 +21,7 @@
                <children>
                   <BorderPane fx:id="bpPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="775.0" prefWidth="1133.0">
                      <top>
-                        <Pane fx:id="pUsuario" maxHeight="680.0" maxWidth="1140.0" minHeight="680.0" minWidth="1090.0" prefHeight="680.0" prefWidth="1090.0" styleClass="classFontSize" stylesheets="@../../../../../../fiscal/src/main/resources/css/application.css" BorderPane.alignment="CENTER">
+                        <Pane fx:id="pUsuario" maxHeight="680.0" maxWidth="1140.0" minHeight="680.0" minWidth="1090.0" prefHeight="680.0" prefWidth="1090.0" BorderPane.alignment="CENTER">
                            <children>
                               <Pane fx:id="p_lbl_Endereco" layoutX="111.0" layoutY="14.0" prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #E9E9E9;">
                                  <children>

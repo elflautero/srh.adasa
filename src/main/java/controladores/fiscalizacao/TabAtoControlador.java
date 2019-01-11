@@ -1,12 +1,14 @@
 package controladores.fiscalizacao;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import dao.AtoDao;
 import entidades.Ato;
 import entidades.Vistoria;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,17 +25,45 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.web.HTMLEditor;
+import principal.FormatoData;
 
 
 public class TabAtoControlador implements Initializable {
 
+	static Vistoria vistoria = new Vistoria ();
+
+	public void setVistoria (Vistoria vistoria) {
+	
+	TabAtoControlador.vistoria = vistoria;
+	
+	
+		TabAtoControlador.lblVistoria2.setText(
+			"Vistoria n°: " + vistoria.getVisSEI()
+			+ ", Data da fiscalização: " + vistoria.getVisDataFiscalizacao()
+		);
+			
+	}
+
+	public static Vistoria getVistoria () {
+		
+		return vistoria;
+	}
+	
+	@FXML Pane p_lbl_Vistoria;
+	@FXML Label lblVistoria1;
+	static Label lblVistoria2;
+	
+	@FXML Label lblDataAtualizacao;
 	
 String strPesquisa = "";
 	
@@ -62,6 +92,7 @@ String strPesquisa = "";
 	
 	// TableView Endereço //
 	@FXML private TableView <Ato> tvLista;
+	ObservableList<Ato> obsList = FXCollections.observableArrayList();
 	
 	@FXML TableColumn<Ato, String> tcTipo;
 	@FXML TableColumn<Ato, String> tcNumero;
@@ -83,7 +114,7 @@ String strPesquisa = "";
 	//  objeto para passar os valor pelo MainControoler para outro controller //
 	public Vistoria visGeral;
 	
-	HTMLEditor htmlCaracterizar;
+	HTMLEditor htmlCaracterizar = new HTMLEditor();
   	@FXML Pane paneCaracterizar;
   	
   	int u = 0;
@@ -124,10 +155,39 @@ String strPesquisa = "";
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
             	apPrin2.setLayoutY(-new_val.doubleValue());
+            	
             }
         });
 	    
 	    
+	 // Label para preencher com a demanda a ser trabalhada //
+	    lblVistoria2 = new Label();
+	    lblVistoria2.setStyle("-fx-font-weight: bold;");
+	    lblVistoria2.setPrefSize(727, 25);	
+	    lblVistoria2.setLayoutX(109);
+	    lblVistoria2.setLayoutY(12);
+		
+		p_lbl_Vistoria.getChildren().add(lblVistoria2); 
+		
+		tcTipo.setCellValueFactory(new PropertyValueFactory<Ato, String>("atoTipo")); 
+		tcNumero.setCellValueFactory(new PropertyValueFactory<Ato, String>("atoIdentificacao")); 
+		tcSEI.setCellValueFactory(new PropertyValueFactory<Ato, String>("atoSEI")); 
+		
+		modularBotoes();
+		
+		// -- inicitalizar a caracterizacao -- //
+		Platform.runLater(() ->{
+		
+			caracterizarHTML();
+			fecharEditorHTML();
+		
+		});
+		
+		cbAtoTipo.setItems(olAtoTipo);
+		
+		
+		
+		tvLista.setItems(obsList);
 	    
 		
 	}
@@ -136,7 +196,7 @@ String strPesquisa = "";
 		
 	}
 	
-	ObservableList<Ato> obsList;
+	
 	
 public void btnNovoHab (ActionEvent event) {
 		
@@ -153,6 +213,8 @@ public void btnNovoHab (ActionEvent event) {
 		dpDataCriacaoAto.setValue(null);
 		
 		htmlCaracterizar.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+		
+		
 		abrirEditorHTML();
 		
 		btnNovo.setDisable(true);
@@ -165,9 +227,7 @@ public void btnNovoHab (ActionEvent event) {
 
 	public void btnSalvarHab (ActionEvent event) {
 		
-		obsList = FXCollections.observableArrayList();
-		
-		if (visGeral == null) {
+		if (vistoria == null) {
 			
 			Alert a = new Alert (Alert.AlertType.ERROR);
 			a.setTitle("Alerta!!!");
@@ -197,6 +257,8 @@ public void btnNovoHab (ActionEvent event) {
 				ato.setAtoIdentificacao(tfAto.getText());
 				ato.setAtoSEI(tfAtoSEI.getText());
 				
+				ato.setAtoAtualizacao(LocalDateTime.now());
+				
 				if (dpDataFiscalizacao.getValue() == null) {
 					ato.setAtoDataFiscalizacao(null);}
 					else {
@@ -211,7 +273,7 @@ public void btnNovoHab (ActionEvent event) {
 				
 				ato.setAtoCaracterizacao(htmlCaracterizar.getHtmlText());
 				
-				ato.setAtoVistoriaFK(visGeral);
+				ato.setAtoVistoriaFK(vistoria);
 				
 				AtoDao atoDao = new  AtoDao();
 				
@@ -265,6 +327,7 @@ public void btnNovoHab (ActionEvent event) {
 			ato.setAtoTipo(cbAtoTipo.getValue());
 			ato.setAtoIdentificacao(tfAto.getText());
 			ato.setAtoSEI(tfAtoSEI.getText());
+			ato.setAtoAtualizacao(LocalDateTime.now());
 			
 			if (dpDataFiscalizacao.getValue() == null) {
 				ato.setAtoDataFiscalizacao(null);}
@@ -387,8 +450,6 @@ public void btnPesquisarHab (ActionEvent event) {
 	 	// --- conexão - listar endereços --- //
 		AtoDao atoDao = new AtoDao();
 		List<Ato> atoList = atoDao.listAto(strPesquisaAto);
-		obsList = FXCollections.observableArrayList();
-		
 		
 		if (!obsList.isEmpty()) {
 			obsList.clear();
@@ -450,11 +511,25 @@ public void btnPesquisarHab (ActionEvent event) {
 	 				}
  				
  				htmlCaracterizar.setHtmlText(ato.getAtoCaracterizacao());
+ 				
+ 				FormatoData d = new FormatoData();
+				
+				// mostrar data de atualizacao //
+				try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(ato.getAtoAtualizacao()));
+						lblDataAtualizacao.setTextFill(Color.BLACK);
+				}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
+						lblDataAtualizacao.setTextFill(Color.RED);}
  					
  				//-- mudar a vistoria de acordo com a seleçao --//
 				//visGeral = ato.getAtoVistoriaFK();
+ 				
+ 				vistoria = ato.getAtoVistoriaFK();
 				
-				lblVisAto.setText(visGeral.getVisIdentificacao() + " |  SEI: "  + visGeral.getVisSEI());
+ 				
+ 				lblVistoria2.setText(
+ 						"Vistoria n°: " + vistoria.getVisSEI()
+ 						+ ", Data da fiscalização: " + vistoria.getVisDataFiscalizacao()
+ 				);
 				
 				// copiar número do ato  sei ao selecionar //
 				Clipboard clip = Clipboard.getSystemClipboard();
@@ -477,6 +552,36 @@ public void btnPesquisarHab (ActionEvent event) {
   	
   	public void caracterizarHTML () {
   		
+  		
+		
+		htmlCaracterizar.setPrefSize(800, 200);
+		htmlCaracterizar.setLayoutX(165);
+		htmlCaracterizar.setLayoutY(467);
+		
+		
+		/*
+		htmlCaracterizar.setOnKeyPressed(event -> {
+			    if (event.getCode() == KeyCode.SPACE  
+			            || event.getCode() == KeyCode.TAB ) {
+			        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+			        event.consume();
+			    }
+			});
+			*/
+		
+		//htmlCaracterizar.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+		
+		htmlCaracterizar.setHtmlText( 
+	    		"<p><b>This text is bold</b></p>"
+	    		+ "<p><i>This text is italic</i></p>"
+	    		+ "<p>This is<sub> subscript</sub> and <sup>superscript</sup></p>"
+	    		
+	    		);
+	    
+			
+			//StackPane rootCaracterizacao = new StackPane();
+			//rootCaracterizacao.getChildren().add(htmlCaracterizar);
+			pAto.getChildren().add(htmlCaracterizar);
   	}
   	
   	public void btnGerarAtoHab (ActionEvent event) {

@@ -34,10 +34,9 @@ public class Principal extends Application{
 		
         stage.setScene(scene);
         
-        
         stage.setTitle("Welcome to JavaFX!"); 
         
-        // para o programa j�  abrir de acordo com a dimens�o da tela do computador
+        // para o programacao abrir de acordo com a dimensao da tela do computador
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         
         stage.setX(primaryScreenBounds.getMinX());
@@ -45,10 +44,9 @@ public class Principal extends Application{
         stage.setWidth(primaryScreenBounds.getWidth());
         stage.setHeight(primaryScreenBounds.getHeight());
         
-        
         // teste no notebook
-       // stage.setWidth(1266);
-       // stage.setHeight(668);
+        // stage.setWidth(1266);
+        // stage.setHeight(668);
        
         // limites de tamanho do stage
         stage.setMinHeight(768);

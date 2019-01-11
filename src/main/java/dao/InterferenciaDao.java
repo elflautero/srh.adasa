@@ -6,8 +6,10 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 import entidades.Demanda;
+import entidades.Endereco;
 import entidades.HibernateUtil;
 import entidades.Interferencia;
 import entidades.Subterranea;
@@ -28,71 +30,27 @@ public void salvaInterferencia (Interferencia interferencia) {
 	@SuppressWarnings("unchecked")
 	public List<Interferencia> listInterferencia(String strPesquisa) throws Exception {
 		
-		
-		/*
-		List<Interferencia> list = new ArrayList<Interferencia>();
-		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		
 		s.beginTransaction();
 		
-		Criteria crit = s.createCriteria(Interferencia.class);
-		crit.add(Restrictions.like("inter_Desc_Endereco", '%' + strPesquisaInterferencia + '%'));
+		List<Interferencia> list = new ArrayList<Interferencia>();
+		
+		Criteria crit = s.createCriteria(Interferencia.class, "i");
+		crit.createAlias("i.interEnderecoFK", "e", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("i.intSubFK", "sub", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.intSupFK", "sup", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("i.interTipoInterferenciaFK", "t", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interBaciaFK", "b", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interUHFK", "u", JoinType.LEFT_OUTER_JOIN);
+	
+		crit.createAlias("e.endRAFK", "ra");
+		
+		crit.add(Restrictions.like("e.endLogadouro", '%' + strPesquisa + '%'))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		list = crit.list();
-		*/
-		
-		//JOIN FETCH i.sub_Interferencia_Codigo JOIN FETCH i.super_Interferencia_Codigo 
-		// sub_Interferencia_Codigo
-		//super_Interferencia_Codigo
-		//inter_End_CodigoFK
-		
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		
-		s.beginTransaction();
-		
-		List<Interferencia> list = new ArrayList<Interferencia>();
-		
-		/*
-		List<Interferencia> listSub = s.createQuery(
-				"SELECT i FROM Interferencia AS i "
-				+ "JOIN FETCH i.inter_End_CodigoFK JOIN FETCH i.sub_Interferencia_Codigo "
-				+ "WHERE ( i.inter_Desc_Endereco LIKE '%"+strPesquisa+"%' "
-						+ "OR i.inter_Tipo LIKE '%"+strPesquisa+"%')"
-				).list();
-		
-		List<Interferencia> listSup = s.createQuery(
-				"SELECT i FROM Interferencia AS i "
-				+ "JOIN FETCH i.inter_End_CodigoFK JOIN FETCH i.super_Interferencia_Codigo "
-				+ "WHERE ( i.inter_Desc_Endereco LIKE '%"+strPesquisa+"%' "
-						+ "OR i.inter_Tipo LIKE '%"+strPesquisa+"%')"
-				).list();
-				*/
-		//try {
-		List<Interferencia> listOutros = s.createQuery(
-					"SELECT i FROM Interferencia AS i "
-				+ 	"JOIN FETCH i.interEnderecoFK AS e "
-							
-				+ 	"LEFT OUTER JOIN FETCH e.endRAFK "
-				+ 	"LEFT OUTER JOIN FETCH e.demandas "
-				
-				+	"LEFT OUTER JOIN FETCH i.intSubFK AS sub "
-				+	"LEFT OUTER JOIN FETCH sub.subSubSistemaFK "
-				
-				+	"LEFT OUTER JOIN FETCH i.intSupFK "
-				+	"LEFT OUTER JOIN FETCH i.interTipoInterferenciaFK "
-				+	"LEFT OUTER JOIN FETCH i.interBaciaFK "
-				+	"LEFT OUTER JOIN FETCH i.interUHFK "
-				
-				+ 	"WHERE ( e.endLogadouro LIKE '%"+strPesquisa+"%')" // OR i.inter_Tipo LIKE '%"+strPesquisa+"%'   // i.interLogadouro
-				).list();
-		/*} catch (Exception e) {
-			
-		}*/
-		
-		//JOIN FETCH i.inter_End_CodigoFK 
-		//list.addAll(listSub);
-		//list.addAll(listSup);
-		list.addAll(listOutros);
 		
 		s.getTransaction().commit();
 		s.close();
@@ -132,25 +90,63 @@ public void salvaInterferencia (Interferencia interferencia) {
 		s.close();
 	}
 	
-	
-	// listar subterranea
-	
-	@SuppressWarnings("unchecked")
-	public List<Subterranea> listSubterranea(String strSubPesquisa) {
-		
-		List<Subterranea> list = new ArrayList<Subterranea>();
-		
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		
-		s.beginTransaction();
-		
-		Criteria crit = s.createCriteria(Demanda.class);
-		crit.add(Restrictions.like("sub_Interferencia_Codigo", strSubPesquisa));
-		list = crit.list();
-		
-		s.getTransaction().commit();
-		s.close();
-		return list;
-	}
-	
 }
+
+
+
+/*
+List<Interferencia> list = new ArrayList<Interferencia>();
+
+Session s = HibernateUtil.getSessionFactory().openSession();
+
+s.beginTransaction();
+
+Criteria crit = s.createCriteria(Interferencia.class);
+crit.add(Restrictions.like("inter_Desc_Endereco", '%' + strPesquisaInterferencia + '%'));
+list = crit.list();
+*/
+
+//JOIN FETCH i.sub_Interferencia_Codigo JOIN FETCH i.super_Interferencia_Codigo 
+// sub_Interferencia_Codigo
+//super_Interferencia_Codigo
+//inter_End_CodigoFK
+
+
+/*
+List<Interferencia> listSub = s.createQuery(
+		"SELECT i FROM Interferencia AS i "
+		+ "JOIN FETCH i.inter_End_CodigoFK JOIN FETCH i.sub_Interferencia_Codigo "
+		+ "WHERE ( i.inter_Desc_Endereco LIKE '%"+strPesquisa+"%' "
+				+ "OR i.inter_Tipo LIKE '%"+strPesquisa+"%')"
+		).list();
+
+List<Interferencia> listSup = s.createQuery(
+		"SELECT i FROM Interferencia AS i "
+		+ "JOIN FETCH i.inter_End_CodigoFK JOIN FETCH i.super_Interferencia_Codigo "
+		+ "WHERE ( i.inter_Desc_Endereco LIKE '%"+strPesquisa+"%' "
+				+ "OR i.inter_Tipo LIKE '%"+strPesquisa+"%')"
+		).list();
+		*/
+//try {
+
+/*
+List<Interferencia> listOutros = s.createQuery(
+			"SELECT i FROM Interferencia AS i "
+		+ 	"JOIN FETCH i.interEnderecoFK AS e "
+					
+		+ 	"LEFT OUTER JOIN FETCH e.endRAFK "
+		+ 	"LEFT OUTER JOIN FETCH e.demandas "
+		
+		+	"LEFT OUTER JOIN FETCH i.intSubFK AS sub "
+		+	"LEFT OUTER JOIN FETCH sub.subSubSistemaFK "
+		
+		+	"LEFT OUTER JOIN FETCH i.intSupFK "
+		+	"LEFT OUTER JOIN FETCH i.interTipoInterferenciaFK "
+		+	"LEFT OUTER JOIN FETCH i.interBaciaFK "
+		+	"LEFT OUTER JOIN FETCH i.interUHFK "
+		
+		+ 	"WHERE ( e.endLogadouro LIKE '%"+strPesquisa+"%')" // OR i.inter_Tipo LIKE '%"+strPesquisa+"%'   // i.interLogadouro
+		).list();
+		
+		// esta maneira está duplicando resultados na lista
+*/

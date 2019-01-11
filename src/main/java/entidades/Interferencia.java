@@ -27,7 +27,7 @@ public class Interferencia implements Serializable {
 	private int interID;
 	
 	//-- RELACIONAMENTO ENDEREÇO --//
-	@ManyToOne (fetch = FetchType.EAGER) 
+	@ManyToOne  (fetch = FetchType.LAZY) 
 	@JoinColumn (name = "inter_Endereco_FK")
 	private Endereco interEnderecoFK;
 	
@@ -61,17 +61,17 @@ public class Interferencia implements Serializable {
 			}
 
 
-	@ManyToOne (fetch = FetchType.EAGER) 
+	@ManyToOne (fetch = FetchType.LAZY) 
 	@JoinColumn (name = "inter_Tipo_Interferencia_FK")
 	private TipoInterferencia interTipoInterferenciaFK;
 	
-	@ManyToOne (fetch = FetchType.EAGER) 
-	@JoinColumn (name = "inter_Bacia_FK")
-	private BaciasHidrograficas interBaciaFK;
+		@ManyToOne (fetch = FetchType.LAZY) 
+		@JoinColumn (name = "inter_Bacia_FK")
+		private BaciasHidrograficas interBaciaFK;
 	
-	@ManyToOne (fetch = FetchType.EAGER) 
-	@JoinColumn (name = "inter_UH_FK")
-	private UnidadeHidrografica interUHFK;
+			@ManyToOne (fetch = FetchType.LAZY) 
+			@JoinColumn (name = "inter_UH_FK")
+			private UnidadeHidrografica interUHFK;
 
 	@Column (columnDefinition="varchar (50)")
 	private String inter_Corpo_Hidrico;
@@ -82,8 +82,8 @@ public class Interferencia implements Serializable {
 	@Column (name="inter_DD_Longitude")
 	private Double interDDLongitude;
 	
-	@Column (name="inter_GeoLatLon")
-	private Geometry interGeoLatLon;
+	@Column(name="inter_Geom")
+	private Geometry interGeom;
 	
 	@Column (name="inter_Logadouro", columnDefinition="varchar (250)")
 	private String interLogadouro;
@@ -179,13 +179,14 @@ public class Interferencia implements Serializable {
 			this.intAtualizacao = intAtualizacao;
 		}
 
-		public Geometry getInterGeoLatLon() {
-			return interGeoLatLon;
+		public Geometry getInterGeom() {
+			return interGeom;
 		}
 
-		public void setInterGeoLatLon(Geometry interGeoLatLon) {
-			this.interGeoLatLon = interGeoLatLon;
+		public void setInterGeom(Geometry interGeom) {
+			this.interGeom = interGeom;
 		}
+
 		
 	
 		

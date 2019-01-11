@@ -55,6 +55,7 @@
 		<mapping class="entidades.Usuario"/>
 		<mapping class="entidades.Vistoria"/>
 		<mapping class="entidades.Ato"/>
+		<mapping class="entidades.ModelosHTML"/>
 		
 		 <!-- MAPEAMENTO DAS ENTIDADES 
 		 
