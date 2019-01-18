@@ -1,9 +1,7 @@
 package controladores.fiscalizacao;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
+import java.sql.Date;
 import java.util.ResourceBundle;
 
 import entidades.SubSistema;
@@ -18,7 +16,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.util.StringConverter;
 
 public class TabSubterraneaController implements Initializable {
 	
@@ -54,7 +51,13 @@ public class TabSubterraneaController implements Initializable {
 		sub.setSubProfundidade(tfProfundidade.getText());
 		sub.setSubCaesb(cbSubCaesb.getValue());
 		
-		sub.setSubDataOperacao(dpDataSubterranea.getValue());
+		if (dpDataSubterranea.getValue() == null) {
+			
+			sub.setSubDataOperacao(null);}
+		else {
+			sub.setSubDataOperacao(Date.valueOf(dpDataSubterranea.getValue()));
+			
+			}
 		
 		return sub;
 	
@@ -73,7 +76,8 @@ public class TabSubterraneaController implements Initializable {
 		
 		cbSubCaesb.setValue(sub.getSubCaesb());
 		
-		dpDataSubterranea.setValue(sub.getSubDataOperacao());
+		Date dataOper = sub.getSubDataOperacao();
+		dpDataSubterranea.setValue(dataOper.toLocalDate());
 		
 		System.out.println(sub.getSubSubSistemaFK().getSubDescricao());
 		

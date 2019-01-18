@@ -2,10 +2,10 @@ package entidades;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,15 +73,17 @@ public class Vistoria implements Serializable {
 	@Column (name="vis_Recomendacoes", columnDefinition="varchar(3000)")
 	private String visRecomendacoes;
 	
-	
+	@Basic
 	@Column (name="vis_Data_Fiscalizacao")
-	private LocalDate visDataFiscalizacao;
+	private java.sql.Date visDataFiscalizacao;
 	
+	@Basic
 	@Column (name="vis_Data_Criacao")
-	private LocalDate visDataCriacao;
+	private java.sql.Date visDataCriacao;
 	
+	@Basic
 	@Column (name="vis_Atualizacao")
-	private LocalDateTime visAtualizacao;
+	private java.sql.Timestamp visAtualizacao;
 	
 	//-- construtor vistoria tabela --//
 	public Vistoria () {
@@ -184,32 +186,40 @@ public class Vistoria implements Serializable {
 		this.visRecomendacoes = visRecomendacoes;
 	}
 
-	public LocalDate getVisDataFiscalizacao() {
-		return visDataFiscalizacao;
+	
+
+	public List<Ato> getAtos() {
+		return atos;
 	}
 
-	public void setVisDataFiscalizacao(LocalDate visDataFiscalizacao) {
-		this.visDataFiscalizacao = visDataFiscalizacao;
+	public void setAtos(List<Ato> atos) {
+		this.atos = atos;
 	}
 
-	public LocalDate getVisDataCriacao() {
-		return visDataCriacao;
-	}
-
-	public void setVisDataCriacao(LocalDate visDataCriacao) {
-		this.visDataCriacao = visDataCriacao;
-	}
-
-	public LocalDateTime getVisAtualizacao() {
+	public java.sql.Timestamp getVisAtualizacao() {
 		return visAtualizacao;
 	}
 
-	public void setVisAtualizacao(LocalDateTime visAtualizacao) {
+	public void setVisAtualizacao(java.sql.Timestamp visAtualizacao) {
 		this.visAtualizacao = visAtualizacao;
 	}
-	
-	
-	
+
+	public java.sql.Date getVisDataFiscalizacao() {
+		return visDataFiscalizacao;
+	}
+
+	public void setVisDataFiscalizacao(java.sql.Date visDataFiscalizacao) {
+		this.visDataFiscalizacao = visDataFiscalizacao;
+	}
+
+	public java.sql.Date getVisDataCriacao() {
+		return visDataCriacao;
+	}
+
+	public void setVisDataCriacao(java.sql.Date visDataCriacao) {
+		this.visDataCriacao = visDataCriacao;
+	}
+
 	
 
 }

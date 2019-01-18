@@ -1,8 +1,8 @@
 package entidades;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -88,8 +88,9 @@ public class Interferencia implements Serializable {
 	@Column (name="inter_Logadouro", columnDefinition="varchar (250)")
 	private String interLogadouro;
 	
+	@Basic
 	@Column (name="int_Atualizacao")
-	private LocalDateTime intAtualizacao;
+	private java.sql.Timestamp intAtualizacao;
 	
 
 		//CONSTRUTOR PADRÃO
@@ -171,11 +172,12 @@ public class Interferencia implements Serializable {
 			this.interLogadouro = interLogadouro;
 		}
 		
-		public LocalDateTime getIntAtualizacao() {
+		
+		public java.sql.Timestamp getIntAtualizacao() {
 			return intAtualizacao;
 		}
 
-		public void setIntAtualizacao(LocalDateTime intAtualizacao) {
+		public void setIntAtualizacao(java.sql.Timestamp intAtualizacao) {
 			this.intAtualizacao = intAtualizacao;
 		}
 

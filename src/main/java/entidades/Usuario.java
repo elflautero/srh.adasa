@@ -1,8 +1,8 @@
 package entidades;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -60,11 +60,14 @@ public class Usuario implements Serializable {
 	@Column (name = "us_Email", columnDefinition="varchar (70)")
 	private String usEmail;
 	
+	@Basic
 	@Column (name="us_Atualizacao")
-	private LocalDateTime usAtualizacao;
+	private java.sql.Timestamp usAtualizacao;
 	
 	//-- construtor padrão --//
 	
+	
+
 	public Usuario () {
 		
 	}
@@ -173,6 +176,12 @@ public class Usuario implements Serializable {
 		this.usEmail = usEmail;
 	}
 	
-	
+	public java.sql.Timestamp getUsAtualizacao() {
+		return usAtualizacao;
+	}
+
+	public void setUsAtualizacao(java.sql.Timestamp usAtualizacao) {
+		this.usAtualizacao = usAtualizacao;
+	}
 
 }

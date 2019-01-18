@@ -3,6 +3,7 @@ package entidades;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,8 +47,9 @@ public class Subterranea implements Serializable {
 	@Column (name="sub_Profundidade",columnDefinition="varchar(5)")
 	private String subProfundidade;  // em metros
 	
+	@Basic
 	@Column (name="sub_Data_Operacao")
-	private LocalDate subDataOperacao;
+	private java.sql.Date subDataOperacao;
 	
 	@ManyToOne (fetch = FetchType.EAGER) 
 	@JoinColumn (name = "sub_Subsistema_FK")
@@ -61,12 +63,29 @@ public class Subterranea implements Serializable {
 
 	//-- getters and setters --//
 	
-	public LocalDate getSubDataOperacao() {
-		return subDataOperacao;
-	}
+	
 
 	public SubSistema getSubSubSistemaFK() {
 		return subSubSistemaFK;
+	}
+
+	public Interferencia getSubInterFK() {
+		return subInterFK;
+	}
+
+
+	public void setSubInterFK(Interferencia subInterFK) {
+		this.subInterFK = subInterFK;
+	}
+
+
+	public java.sql.Date getSubDataOperacao() {
+		return subDataOperacao;
+	}
+
+
+	public void setSubDataOperacao(java.sql.Date subDataOperacao) {
+		this.subDataOperacao = subDataOperacao;
 	}
 
 
@@ -74,10 +93,6 @@ public class Subterranea implements Serializable {
 		this.subSubSistemaFK = subSubSistemaFK;
 	}
 
-
-	public void setSubDataOperacao(LocalDate subDataOperacao) {
-		this.subDataOperacao = subDataOperacao;
-	}
 
 	public int getSubID() {
 		return subID;

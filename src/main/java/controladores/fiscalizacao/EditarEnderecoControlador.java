@@ -1,6 +1,7 @@
 package controladores.fiscalizacao;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -283,8 +284,7 @@ public class EditarEnderecoControlador implements Initializable {
 								end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
 								end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
 								
-								end.setEndAtualizacao((LocalDateTime.now()));
-										
+								end.setEndAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 										
 										Demanda dem = new Demanda ();
 										
@@ -371,7 +371,8 @@ public class EditarEnderecoControlador implements Initializable {
 					end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
 					end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
 					
-					end.setEndAtualizacao((LocalDateTime.now()));
+					end.setEndAtualizacao(
+							Timestamp.valueOf((LocalDateTime.now())));
 					
 					Demanda dem = new Demanda();
 					
@@ -667,6 +668,7 @@ public class EditarEnderecoControlador implements Initializable {
 					FormatoData d = new FormatoData();
 					
 					// mostrar data de atualizacao //
+					
 					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(end.getEndAtualizacao()));
 							lblDataAtualizacao.setTextFill(Color.BLACK);
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");

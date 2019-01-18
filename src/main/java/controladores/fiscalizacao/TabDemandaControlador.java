@@ -2,6 +2,8 @@ package controladores.fiscalizacao;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -13,7 +15,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,7 +32,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -137,7 +137,7 @@ public class TabDemandaControlador implements Initializable {
 						
 						demanda.setDemDistribuicao(null);}
 					else {
-						demanda.setDemDistribuicao(dpDataDistribuicao.getValue());
+						demanda.setDemDistribuicao(Date.valueOf(dpDataDistribuicao.getValue()));
 						
 						}
 						
@@ -146,12 +146,12 @@ public class TabDemandaControlador implements Initializable {
 						demanda.setDemRecebimento(null);}
 						
 							else {
-								demanda.setDemRecebimento(dpDataRecebimento.getValue());
+								demanda.setDemRecebimento(Date.valueOf(dpDataRecebimento.getValue()));
 								}
 					
 					demanda.setDemDescricao(tfResDen.getText());
 					
-					demanda.setDemAtualizacao((LocalDateTime.now()));
+					demanda.setDemAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 					
 					DemandaDao dao = new DemandaDao();
 					
@@ -236,17 +236,19 @@ public class TabDemandaControlador implements Initializable {
 							demanda.setDemDistribuicao(null);}
 							else {
 								
-								demanda.setDemDistribuicao(dpDataDistribuicao.getValue());
+								demanda.setDemDistribuicao(Date.valueOf(dpDataDistribuicao.getValue()));
 								
 								}
+						
+						
 											
 						if (dpDataRecebimento.getValue() == null) {
 							demanda.setDemRecebimento(null);}
 							else {
-								demanda.setDemRecebimento(dpDataRecebimento.getValue());
+								demanda.setDemRecebimento(Date.valueOf(dpDataRecebimento.getValue()));
 								}
 						
-						demanda.setDemAtualizacao((LocalDateTime.now()));
+						demanda.setDemAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 								
 						demanda.setDemDescricao(tfResDen.getText());
 						 
@@ -478,19 +480,20 @@ public class TabDemandaControlador implements Initializable {
 					dpDataDistribuicao.setValue(null);
 					
 	 				} else {
-	 					dpDataDistribuicao.setValue(demanda.getDemDistribuicao());
-	 					
+	 					Date dataDis = demanda.getDemDistribuicao();
+	 					dpDataDistribuicao.setValue(dataDis.toLocalDate());
 	 				}
 				
-			
 				if (demanda.getDemRecebimento() == null) {
 					dpDataRecebimento.setValue(null);
 					
 	 				} else {
-	 					dpDataRecebimento.setValue(demanda.getDemRecebimento());
+	 					
+	 					Date dataRec = demanda.getDemRecebimento();
+	 					dpDataRecebimento.setValue(dataRec.toLocalDate());
 	 					
 	 				}
-	 				
+				
 				tfResDen.setText(demanda.getDemDescricao());
 				
 				
@@ -524,7 +527,7 @@ public class TabDemandaControlador implements Initializable {
 				FormatoData d = new FormatoData();
 				
 				// mostrar data de atualizacao //
-				try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(demanda.getDemAtualizacao()));
+				try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(demanda.getDemAtualizacao()));  // d.formatarData(demanda.getDemAtualizacao())
 						lblDataAtualizacao.setTextFill(Color.BLACK);
 				}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 						lblDataAtualizacao.setTextFill(Color.RED);}
@@ -722,3 +725,40 @@ apInterno.setOnScroll(new EventHandler<ScrollEvent>() {
     });
 */
 
+
+/*
+ * 
+ * //dpDataRecebimento.setValue(LocalDate.parse(demanda.getSqlDate().toString(), formatter));
+			
+		// Date.valueOf(dpDataRecebimento.getValue())
+			
+			System.out.println("data recebimento " + demanda.getSqlDate());
+			
+			/*
+			LocalDate localDate = dpDataRecebimento.getValue();
+			Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+			Date date = (Date) Date.from(instant);
+			System.out.println(localDate + "\n" + instant + "\n" + date);
+			*/
+
+
+//dpDataRecebimento.setValue(LocalDate.parse(demanda.getSqlDate().toString(), formatter));
+	
+	// Date.valueOf(dpDataRecebimento.getValue())
+		/*
+		System.out.println("data recebimento " + demanda.getSqlDate());
+		
+		//DateTimeFormatter fo = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	    //LocalDate localDate = LocalDate.parse(demanda.getSqlDate().toString(), fo);
+	    
+	    //System.out.println("formatado local date " + localDate);
+		
+		System.out.println("demanda sql date " + demanda.getSqlDate().toString());
+		
+		String newstring = new SimpleDateFormat("dd/MM/yyyy").format( demanda.getSqlDate());
+		
+		System.out.println("new string  " + newstring);
+		
+		dpDataRecebimento.getEditor().setText(newstring);
+		
+		*/

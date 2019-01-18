@@ -2,9 +2,8 @@ package entidades;
 
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,14 +41,19 @@ public class Demanda implements Serializable {
 	@Column (name="dem_Descricao", columnDefinition="varchar(200)")
 	private String demDescricao;
 	
+	@Basic
 	@Column (name="dem_Distribuicao")
-	private LocalDate demDistribuicao;
+	private java.sql.Date demDistribuicao;
 	
+	@Basic
 	@Column (name="dem_Recebimento")
-	private LocalDate demRecebimento;
+	private java.sql.Date  demRecebimento;
 	
+	@Basic
 	@Column (name="dem_Atualizacao")
-	private LocalDateTime demAtualizacao;
+	private java.sql.Timestamp demAtualizacao;
+	
+	
 	
 	//CONSTRUTOR PADRÃO
 	public Demanda () {
@@ -57,23 +61,6 @@ public class Demanda implements Serializable {
 	}
 	
 	// GETTERS / SETTERS
-	
-	public LocalDate getDemDistribuicao() {
-		return demDistribuicao;
-	}
-
-	public void setDemDistribuicao(LocalDate demDistribuicao) {
-		this.demDistribuicao = demDistribuicao;
-	}
-
-	public LocalDate getDemRecebimento() {
-		return demRecebimento;
-	}
-
-	public void setDemRecebimento(LocalDate demRecebimento) {
-		this.demRecebimento = demRecebimento;
-	}
-
 	
 	public int getDemID() {
 		return demID;
@@ -123,12 +110,31 @@ public class Demanda implements Serializable {
 		this.demDescricao = demDescricao;
 	}
 
-	public LocalDateTime getDemAtualizacao() {
+	public java.sql.Date getDemDistribuicao() {
+		return demDistribuicao;
+	}
+
+	public void setDemDistribuicao(java.sql.Date demDistribuicao) {
+		this.demDistribuicao = demDistribuicao;
+	}
+
+	public java.sql.Date getDemRecebimento() {
+		return demRecebimento;
+	}
+
+	public void setDemRecebimento(java.sql.Date demRecebimento) {
+		this.demRecebimento = demRecebimento;
+	}
+
+	public java.sql.Timestamp getDemAtualizacao() {
 		return demAtualizacao;
 	}
 
-	public void setDemAtualizacao(LocalDateTime demAtualizacao) {
+	public void setDemAtualizacao(java.sql.Timestamp demAtualizacao) {
 		this.demAtualizacao = demAtualizacao;
 	}
-			
+
+	
+	
+		
 }

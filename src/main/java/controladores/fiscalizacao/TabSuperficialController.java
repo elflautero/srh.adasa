@@ -1,12 +1,9 @@
 package controladores.fiscalizacao;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
+import java.sql.Date;
 import java.util.ResourceBundle;
 
-import entidades.SubSistema;
 import entidades.Superficial;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,10 +14,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.util.StringConverter;
 
 public class TabSuperficialController implements Initializable{
 	
@@ -78,7 +73,15 @@ public class TabSuperficialController implements Initializable{
 		sup.setSupArea(tfArea.getText()); // área da propriedade
 		sup.setSupCaesb(cbCaesb.getValue()); // caesb
 		
-		sup.setSupDataOperacao(dpDataOperacao.getValue());
+		if (dpDataOperacao.getValue() == null) {
+			
+			sup.setSupDataOperacao(null);}
+		else {
+			sup.setSupDataOperacao(Date.valueOf(dpDataOperacao.getValue()));
+			
+			}
+		
+		
 		
 	return sup;
 	
@@ -97,7 +100,8 @@ public class TabSuperficialController implements Initializable{
 		 
 		 cbCaesb.setValue(sup.getSupCaesb());
 		
-		 dpDataOperacao.setValue(sup.getSupDataOperacao());
+		Date dataOper = sup.getSupDataOperacao();
+		dpDataOperacao.setValue(dataOper.toLocalDate());
 		 
 	}
 	

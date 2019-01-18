@@ -8,11 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
-import entidades.Demanda;
-import entidades.Endereco;
 import entidades.HibernateUtil;
 import entidades.Interferencia;
-import entidades.Subterranea;
 
 public class InterferenciaDao {
 

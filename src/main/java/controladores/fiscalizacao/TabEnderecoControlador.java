@@ -1,6 +1,7 @@
 package controladores.fiscalizacao;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -271,7 +272,8 @@ public class TabEnderecoControlador implements Initializable {
 									
 								end.setEndGeom(p);
 								
-								end.setEndAtualizacao((LocalDateTime.now()));
+								end.setEndAtualizacao(
+										Timestamp.valueOf((LocalDateTime.now())));
 										
 										
 										Demanda dem = new Demanda ();
@@ -376,7 +378,7 @@ public class TabEnderecoControlador implements Initializable {
 					
 				end.setEndGeom(p);
 				
-				end.setEndAtualizacao((LocalDateTime.now()));
+				end.setEndAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 				
 				Demanda dem = new Demanda();
 				
@@ -705,10 +707,12 @@ public class TabEnderecoControlador implements Initializable {
 					FormatoData d = new FormatoData();
 					
 					// mostrar data de atualizacao //
+					
 					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(end.getEndAtualizacao()));
 							lblDataAtualizacao.setTextFill(Color.BLACK);
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);}
+						
 					
 					// setar a demanda 0 do endereco selecionado // 
 					setDemanda (end.getDemandas().get(0));               // *****  colocar try catch (para quando nao houver demanda associada //

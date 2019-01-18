@@ -1,10 +1,10 @@
 package entidades;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,8 +48,9 @@ public class Endereco implements Serializable{
 	@Column (name="end_DD_Longitude")
 	private Double endDDLongitude;
 	
+	@Basic
 	@Column (name="end_Atualizacao")
-	private LocalDateTime endAtualizacao;
+	private java.sql.Timestamp endAtualizacao;
 	
 	@ManyToOne (fetch = FetchType.EAGER) 
 	@JoinColumn (name="end_RA_FK")
@@ -184,15 +185,14 @@ public class Endereco implements Serializable{
 		this.demandas = demandas;
 	}
 
-	public LocalDateTime getEndAtualizacao() {
+	public java.sql.Timestamp getEndAtualizacao() {
 		return endAtualizacao;
 	}
 
-	public void setEndAtualizacao(LocalDateTime endAtualizacao) {
+	public void setEndAtualizacao(java.sql.Timestamp endAtualizacao) {
 		this.endAtualizacao = endAtualizacao;
 	}
-	
-	
+
 	public List<Usuario> getUsuarios() {
 		return usuarios;
 	}

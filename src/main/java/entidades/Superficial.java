@@ -3,6 +3,7 @@ package entidades;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,8 +41,9 @@ public class Superficial implements Serializable{
 	@Column (name="sup_Area", columnDefinition="varchar(10)")
 	private String supArea; /// em ha - hectares
 	
+	@Basic
 	@Column (name="sup_Data_Operacao")
-	private LocalDate supDataOperacao;
+	private java.sql.Date supDataOperacao;
 	
 	@Column (name="sup_Caesb", columnDefinition="varchar(3)")
 	private String supCaesb;  // tem caesb () sim () não
@@ -56,18 +58,20 @@ public class Superficial implements Serializable{
 	
 	//-- getters and setters --//
 
-	public LocalDate getSupDataOperacao() {
+	
+
+	public int getSup_ID() {
+		return sup_ID;
+	}
+
+
+	public java.sql.Date getSupDataOperacao() {
 		return supDataOperacao;
 	}
 
 
-	public void setSupDataOperacao(LocalDate supDataOperacao) {
+	public void setSupDataOperacao(java.sql.Date supDataOperacao) {
 		this.supDataOperacao = supDataOperacao;
-	}
-
-
-	public int getSup_ID() {
-		return sup_ID;
 	}
 
 

@@ -2,11 +2,8 @@ package controladores.fiscalizacao;
 
 import java.io.IOException;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
@@ -17,44 +14,67 @@ public class ControladorFiscalizacao {
 	@FXML TabPane tpFiscalizacao = new TabPane();
 	
 	@FXML Tab tpTabVistoria;
-	
-	TabVistoriaControlador tabVis;
+	Pane pVistoria = new Pane();
+	TabVistoriaControlador tabVis = new TabVistoriaControlador();
+	String strVis = "/fxml/fiscalizacao/TabVistoria.fxml";
 	
 	@FXML 
     private void initialize() {
 		
-		
-		tpFiscalizacao.setStyle("-fx-background-color: transparent;");
+		//tpFiscalizacao.setStyle("-fx-background-color: transparent;");
 		
 		tpFiscalizacao.prefWidthProperty().bind(pFiscalizacao.widthProperty());
 		tpFiscalizacao.prefHeightProperty().bind(pFiscalizacao.heightProperty());
 		
-		Pane pVistoria = new Pane();
-		
-		pVistoria.setStyle("-fx-background-color: green;");
-    	
-		tabVis = new TabVistoriaControlador();
-		
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/TabVistoria.fxml"));
-		
-		loader.setRoot(pVistoria);
-		loader.setController(tabVis);
-		try {
-			loader.load();
-		} catch (IOException e) {
-			System.out.println("erro na abertura do pane vistoria");
-			e.printStackTrace();
-		}
-		
-		pVistoria.minWidthProperty().bind(pFiscalizacao.widthProperty());
-		pVistoria.minHeightProperty().bind(pFiscalizacao.heightProperty());
-		
-		tpTabVistoria.setContent(pVistoria);
+		abrirTab (pVistoria ,  tabVis, strVis, tpTabVistoria );
 		
 		
 	}
+	
+	public void abrirTab (Pane p , Object o, String strFXML, Tab t ) {
+		
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/TabVistoria.fxml"));
+		
+		loader.setRoot(p);
+		loader.setController(o);
+		try {
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("erro na abertura do pane");
+			e.printStackTrace();
+		}
+		
+		p.minWidthProperty().bind(pFiscalizacao.widthProperty());
+		p.minHeightProperty().bind(pFiscalizacao.heightProperty());
+		
+		t.setContent(p);
+	}
 
 }
+
+
+
+/*
+Pane pVistoria = new Pane();
+
+tabVis = new TabVistoriaControlador();
+
+FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/TabVistoria.fxml"));
+
+loader.setRoot(pVistoria);
+loader.setController(tabVis);
+try {
+	loader.load();
+} catch (IOException e) {
+	System.out.println("erro na abertura do pane vistoria");
+	e.printStackTrace();
+}
+
+pVistoria.minWidthProperty().bind(pFiscalizacao.widthProperty());
+pVistoria.minHeightProperty().bind(pFiscalizacao.heightProperty());
+
+tpTabVistoria.setContent(pVistoria);
+*/
 
 
 /*

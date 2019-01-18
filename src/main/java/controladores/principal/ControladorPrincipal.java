@@ -78,8 +78,8 @@ public class ControladorPrincipal {
 	CheckBox checkTrafego;
 	
 	
-	Pane pBrowserSEI = new Pane();
-	Pane pFiscalizacao  = new Pane();
+	Pane pBrowserSEI;
+	Pane pFiscalizacao;
 	
 	Pane p;
 	
@@ -430,30 +430,7 @@ public class ControladorPrincipal {
 	    AnchorPane.setBottomAnchor(bpCenter, 115.0);
 	    
 	    bpCenter.setDisable(true);
-	    
-	    // BorderPane 2 - Center
-	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
-	    AnchorPane.setLeftAnchor(pFiscalizacao, 150.0);
-	    AnchorPane.setRightAnchor(pFiscalizacao, 150.0);
-	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
-	    
-	    AnchorPane.setTopAnchor(pBrowserSEI, 150.0);
-	    AnchorPane.setLeftAnchor(pBrowserSEI, 150.0);
-	    AnchorPane.setRightAnchor(pBrowserSEI, 150.0);
-	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0);
-	    
-	   // AnchorPane.setTopAnchor(pFiscalizacao, 150.5);
-	   // AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
-	    
-	    // Para abrir o pane fora do campo de vis�o
-	    pFiscalizacao.setTranslateY(880.0);
-	    
-	    apMain.getChildren().add(pFiscalizacao);
-	    
-	    pBrowserSEI.setTranslateY(880.0);
-	    
-	    apMain.getChildren().add(pBrowserSEI);
-	    
+	   
 	   
 	    StackPane.setAlignment(pConversor,Pos.CENTER);
 	    StackPane.setAlignment(pMainTop,Pos.CENTER);
@@ -731,17 +708,7 @@ public class ControladorPrincipal {
         upSearch = new TranslateTransition(new Duration(350), stackPMainSearch);
         upSearch.setToY(2.0);
         
-        downFiscal = new TranslateTransition(new Duration(350), pFiscalizacao);
-        downFiscal.setToY(880.0);
-        upFiscal = new TranslateTransition(new Duration(350), pFiscalizacao);
-        upFiscal.setToY(0.0);
-        
-        
-        downBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
-        downBrowser.setToY(880.0);
-        upBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
-        upBrowser.setToY(0.0);
-        
+       
         checkBacia.setOnAction((ActionEvent evt)->{
         	googleMaps.openShape(6);
         });
@@ -789,48 +756,72 @@ public class ControladorPrincipal {
         
         btnFiscalizacao.setOnAction((ActionEvent evt)->{
         	
-        	dblFiscal = pFiscalizacao.getTranslateY();
-        	
-        	if(dblFiscal.equals(0.0)){
-            	
-            	downFiscal.play(); 
-            	pBrowserSEI.setTranslateY(880.0);
-        		} 
-            	
-            	else {
-            			
-            		upFiscal.play();
-            		pBrowserSEI.setTranslateY(880.0);
-            		}
-        	
-        	if (p == null) {
+        	if (pFiscalizacao == null) {
+        		
+        		pFiscalizacao = new Pane();
+        		
+	        		downFiscal = new TranslateTransition(new Duration(350), pFiscalizacao);
+	                downFiscal.setToY(880.0);
+	                upFiscal = new TranslateTransition(new Duration(350), pFiscalizacao);
+	                upFiscal.setToY(0.0);
+        
+	        	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
+	        	    AnchorPane.setLeftAnchor(pFiscalizacao, 150.0);
+	        	    AnchorPane.setRightAnchor(pFiscalizacao, 150.0);
+	        	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
+	        	    
+	        	    // Para abrir o pane fora do campo de vis�o
+	        	    pFiscalizacao.setTranslateY(880.0);
 
-	        	p = new Pane();
-	        	
-	        	controladorFiscalizacao = new ControladorFiscalizacao();
-	        	
-	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/Fiscalizacao.fxml"));
+	        	    apMain.getChildren().add(pFiscalizacao);
+        	    
+        		
+        	}
+        	
+        	dblFiscal =  pFiscalizacao.getTranslateY();
+        	
+	        	if(dblFiscal.equals(0.0)){
+	            	
+	            	downFiscal.play(); 
+	            	if (pBrowserSEI != null)
+	            	pBrowserSEI.setTranslateY(880.0);
+	        		} 
+	            	
+	            	else {
+	            			
+	            		upFiscal.play();
+	            		if (pBrowserSEI != null)
+	            		pBrowserSEI.setTranslateY(880.0);
+	            		}
+        	
+				        	if (p == null) {
 				
-				loader.setRoot(p);
-				loader.setController(controladorFiscalizacao);
-				try {
-					loader.load();
-				} catch (IOException e) {
-					System.out.println("erro na abertura do pane fiscalizacao");
-					e.printStackTrace();
-				}
-				
-				p.minWidthProperty().bind(pFiscalizacao.widthProperty());
-				p.minHeightProperty().bind(pFiscalizacao.heightProperty());
-				
-				p.maxWidthProperty().bind(pFiscalizacao.widthProperty());
-				p.maxHeightProperty().bind(pFiscalizacao.heightProperty());
-				
-				p.setStyle("-fx-background-color: transparent;");
-				
-				pFiscalizacao.getChildren().add(p);
-				
-        		}
+					        	p = new Pane();
+					        	
+					        	controladorFiscalizacao = new ControladorFiscalizacao();
+					        	
+					        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/Fiscalizacao.fxml"));
+								
+								loader.setRoot(p);
+								loader.setController(controladorFiscalizacao);
+								try {
+									loader.load();
+								} catch (IOException e) {
+									System.out.println("erro na abertura do pane fiscalizacao");
+									e.printStackTrace();
+								}
+								
+								p.minWidthProperty().bind(pFiscalizacao.widthProperty());
+								p.minHeightProperty().bind(pFiscalizacao.heightProperty());
+								
+								p.maxWidthProperty().bind(pFiscalizacao.widthProperty());
+								p.maxHeightProperty().bind(pFiscalizacao.heightProperty());
+								
+								p.setStyle("-fx-background-color: transparent;");
+								
+								pFiscalizacao.getChildren().add(p);
+								
+				        		}
         	});
 				    
         btnConversor.setOnAction((ActionEvent evt)->{
@@ -854,7 +845,24 @@ public class ControladorPrincipal {
         	
         	if (wBrowser == null ) {
         		
-	        	spWebBrowser = new ScrollPane();
+        		spWebBrowser = new ScrollPane();
+        		pBrowserSEI = new Pane();
+        		
+        		downBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
+	            downBrowser.setToY(880.0);
+	            upBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
+	            upBrowser.setToY(0.0);
+	        	
+	        	AnchorPane.setTopAnchor(pBrowserSEI, 150.0);
+	    	    AnchorPane.setLeftAnchor(pBrowserSEI, 150.0);
+	    	    AnchorPane.setRightAnchor(pBrowserSEI, 150.0);
+	    	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0);
+
+	    	    pBrowserSEI.setTranslateY(880.0);
+	    	    
+	    	    apMain.getChildren().add(pBrowserSEI);
+
+	    	    
 	        	
 	        	wBrowser = new WebView();
 	        	WebEngine weBrowser = wBrowser.getEngine();
@@ -882,15 +890,18 @@ public class ControladorPrincipal {
         	dblBrowser =  pBrowserSEI.getTranslateY();
         	
         	
-            if(dblBrowser.equals(0.0)){
+        	if(dblBrowser.equals(0.0)){
             	
             	downBrowser.play();
+            	
+            	if (pFiscalizacao != null)
             	pFiscalizacao.setTranslateY(880.0);//downFiscal.play();
             	
 	            } else {
 	            
 	            	upBrowser.play();
-	            	pFiscalizacao.setTranslateY(880.0);//downFiscal.play();
+	            	if (pFiscalizacao != null)
+	            	pFiscalizacao.setTranslateY(880.0);
 	            
 	            }
 	            

@@ -1,6 +1,7 @@
 package controladores.fiscalizacao;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,11 +29,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.web.HTMLEditor;
 import principal.FormatoData;
@@ -257,7 +256,7 @@ public void btnNovoHab (ActionEvent event) {
 				ato.setAtoIdentificacao(tfAto.getText());
 				ato.setAtoSEI(tfAtoSEI.getText());
 				
-				ato.setAtoAtualizacao(LocalDateTime.now());
+				ato.setAtoAtualizacao(Timestamp.valueOf(LocalDateTime.now()));
 				
 				if (dpDataFiscalizacao.getValue() == null) {
 					ato.setAtoDataFiscalizacao(null);}
@@ -327,7 +326,7 @@ public void btnNovoHab (ActionEvent event) {
 			ato.setAtoTipo(cbAtoTipo.getValue());
 			ato.setAtoIdentificacao(tfAto.getText());
 			ato.setAtoSEI(tfAtoSEI.getText());
-			ato.setAtoAtualizacao(LocalDateTime.now());
+			ato.setAtoAtualizacao(Timestamp.valueOf(LocalDateTime.now()));
 			
 			if (dpDataFiscalizacao.getValue() == null) {
 				ato.setAtoDataFiscalizacao(null);}
@@ -515,11 +514,12 @@ public void btnPesquisarHab (ActionEvent event) {
  				FormatoData d = new FormatoData();
 				
 				// mostrar data de atualizacao //
+ 				
 				try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(ato.getAtoAtualizacao()));
 						lblDataAtualizacao.setTextFill(Color.BLACK);
 				}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 						lblDataAtualizacao.setTextFill(Color.RED);}
- 					
+ 			
  				//-- mudar a vistoria de acordo com a seleçao --//
 				//visGeral = ato.getAtoVistoriaFK();
  				

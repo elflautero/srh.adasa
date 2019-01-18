@@ -2,15 +2,14 @@ package controladores.fiscalizacao;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.PrecisionModel;
 
 import controladores.principal.ControladorPrincipal;
 import dao.InterferenciaDao;
@@ -241,7 +240,7 @@ public class TabInterferenciaControlador  implements Initializable{
 											interferencia.setInterDDLatitude(Double.parseDouble(tfIntLat.getText()));
 											interferencia.setInterDDLongitude(Double.parseDouble(tfIntLon.getText()));
 											
-											interferencia.setIntAtualizacao((LocalDateTime.now()));
+											interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 										
 											interferencia.setInterEnderecoFK(endereco);
 											
@@ -335,7 +334,7 @@ public class TabInterferenciaControlador  implements Initializable{
 												interferencia.setInterDDLatitude(Double.parseDouble(tfIntLat.getText()));
 												interferencia.setInterDDLongitude(Double.parseDouble(tfIntLon.getText()));
 												
-												interferencia.setIntAtualizacao((LocalDateTime.now()));
+												interferencia.setIntAtualizacao((Timestamp.valueOf((LocalDateTime.now()))));
 											
 												interferencia.setInterEnderecoFK(endereco);
 												
@@ -417,7 +416,7 @@ public class TabInterferenciaControlador  implements Initializable{
 							interferencia.setInterDDLatitude(Double.parseDouble(tfIntLat.getText()));
 							interferencia.setInterDDLongitude(Double.parseDouble(tfIntLon.getText()));
 							
-							interferencia.setIntAtualizacao((LocalDateTime.now()));
+							interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 						
 							interferencia.setInterEnderecoFK(endereco);
 							
@@ -540,7 +539,7 @@ public class TabInterferenciaControlador  implements Initializable{
 											interferencia.setInterDDLatitude(Double.parseDouble(tfIntLat.getText()));
 											interferencia.setInterDDLongitude(Double.parseDouble(tfIntLon.getText()));
 											
-											interferencia.setIntAtualizacao((LocalDateTime.now()));
+											interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 										
 											interferencia.setInterEnderecoFK(endereco);
 											
@@ -631,7 +630,7 @@ public class TabInterferenciaControlador  implements Initializable{
 												interferencia.setInterDDLatitude(Double.parseDouble(tfIntLat.getText()));
 												interferencia.setInterDDLongitude(Double.parseDouble(tfIntLon.getText()));
 												
-												interferencia.setIntAtualizacao((LocalDateTime.now()));
+												interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 											
 												interferencia.setInterEnderecoFK(endereco);
 												
@@ -718,7 +717,7 @@ public class TabInterferenciaControlador  implements Initializable{
 							interferencia.setInterDDLatitude(Double.parseDouble(tfIntLat.getText()));
 							interferencia.setInterDDLongitude(Double.parseDouble(tfIntLon.getText()));
 							
-							interferencia.setIntAtualizacao((LocalDateTime.now()));
+							interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 						
 							interferencia.setInterEnderecoFK(endereco);
 							
@@ -1166,7 +1165,7 @@ public class TabInterferenciaControlador  implements Initializable{
 							lblDataAtualizacao.setTextFill(Color.BLACK);
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);}
-					
+				
 					setEndereco(inter.getInterEnderecoFK());
 					
 					

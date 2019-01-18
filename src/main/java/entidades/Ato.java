@@ -3,8 +3,8 @@ package entidades;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,8 +47,9 @@ public class Ato implements Serializable {
 	@Column (name="ato_Data_Criacao")
 	private LocalDate atoDataCriacao;
 	
+	@Basic
 	@Column (name="ato_Atualizacao")
-	private LocalDateTime atoAtualizacao;
+	private java.sql.Timestamp atoAtualizacao;
 	
 	// construtor padrão //
 
@@ -120,14 +121,14 @@ public class Ato implements Serializable {
 		this.atoDataCriacao = atoDataCriacao;
 	}
 
-	public LocalDateTime getAtoAtualizacao() {
+	public java.sql.Timestamp getAtoAtualizacao() {
 		return atoAtualizacao;
 	}
 
-	public void setAtoAtualizacao(LocalDateTime atoAtualizacao) {
+	public void setAtoAtualizacao(java.sql.Timestamp atoAtualizacao) {
 		this.atoAtualizacao = atoAtualizacao;
 	}
-	
+
 	
 
 }

@@ -1,33 +1,14 @@
 package principal;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class FormatoData {
 	
-	
-	public String formatarData (LocalDateTime d) {
+	public String formatarData (Timestamp timestamp) {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss");
-
-		String agoraFormatado = d.format(formatter);
-		
-		return agoraFormatado;
+		return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(timestamp);
 
 	}
 	
-	/*
-	 
-	// capturar demanda para a TabEnderecoController
-	Demanda dGeral = new Demanda ();
-	
-	// formatar data para  mostar no label (data de atualizacao do documento)
-	DateTimeFormatter formatterDT = new DateTimeFormatterBuilder()
-		.parseCaseInsensitive()
-		.append(DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"))
-		.toFormatter();
-	
-	
-	 */
-
 }
