@@ -15,23 +15,24 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -49,39 +50,35 @@ public class TabDemandaControlador implements Initializable {
 	// --- String para primeira pesquisa --- //
 	String strPesquisa = "";
 	
-	@FXML TextField tfDocumento;
-	@FXML TextField tfDocSei;
-	@FXML TextField tfProcSei;
-	@FXML TextField tfResDen;
-	@FXML TextField tfPesquisar;
-	
-	// ----- Label - endereco da demanda ------ //
-	@FXML Label lblDenEnd = new Label ();
+	TextField tfDocumento = new TextField();
+	TextField tfDocSei  = new TextField();
+	TextField tfProcSei  = new TextField();
+	TextField tfResDen  = new TextField();
 
-	@FXML Button btnNovo;
-	@FXML Button btnSalvar;
-	@FXML Button btnEditar;
-	@FXML Button btnExcluir;
-	@FXML Button btnCancelar;
-	@FXML Button btnPesquisar;
-	@FXML Button btnSair;
+	 Button btnNovo = new Button("Novo");
+	 Button btnSalvar = new Button("Salvar");
+	 Button btnEditar = new Button("Editar");
+	 Button btnExcluir = new Button("Excluir");
+	 Button btnCancelar = new Button("Cancelar");
+	 Button btnPesquisar = new Button("Pesquisar");
+	 TextField tfPesquisar = new TextField();
 	
-	@FXML Button btnEndDetalhes;
+	 Button btnEndDetalhes = new Button("Detalhes");
+	 
+	 Label lblDemEnd = new Label();
 
-	@FXML DatePicker dpDataDistribuicao;
-	@FXML DatePicker dpDataRecebimento;
+	 DatePicker dpDataDistribuicao = new DatePicker();
+	 DatePicker dpDataRecebimento  = new DatePicker();
 	
 	// -- Tabela --  //
-	@FXML private TableView <Demanda> tvLista;
+	 private TableView <Demanda> tvLista = new TableView<>();
 	
 	// -- Colunas -- //
-	@FXML private TableColumn<Demanda, String> tcDocumento;
-	@FXML private TableColumn<Demanda, String> tcDocSEI;
-	@FXML private TableColumn<Demanda, String> tcProcSEI;
-	
-	@FXML DatePicker dpDoc;
-	
-	public void btnNovoHabilitar (ActionEvent event) {
+	 private TableColumn<Demanda, String> tcDocumento  = new TableColumn<>("Número da Demanda");
+	 private TableColumn<Demanda, String> tcDocSEI  = new TableColumn<>("SEI");
+	 private TableColumn<Demanda, String> tcProcSEI  = new TableColumn<>("Número do Processo");
+	 
+	public void btnNovoHab () {
 		
 		tfDocumento.setText("");
 		tfDocSei.setText("");
@@ -108,11 +105,11 @@ public class TabDemandaControlador implements Initializable {
 	}
 	
 	// -- botão salvar -- //
-	public void btnSalvarHabilitar (ActionEvent event) {
+	public void btnSalvarHab() {
 		
-        obsList = FXCollections.observableArrayList();
+        // filtro para não salvar documento sem numero de documento ou processo
         
-		try { // filtro para não salvar documento sem numero de documento ou processo
+		try { 
 			
 			if (tfDocSei.getText().isEmpty()  ||
 				tfProcSei.getText().isEmpty()	) 
@@ -153,23 +150,19 @@ public class TabDemandaControlador implements Initializable {
 					
 					demanda.setDemAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 					
+					
+					// salvar a demanda //
 					DemandaDao dao = new DemandaDao();
 					
 					dao.salvarDemanda(demanda);
 					
+					// enviar o objeto Demanda para a tabEndereco //
 					tabEndCon.setDemanda(demanda);
 					edEndCon.setDemanda(demanda);
 					
-					// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
-					//dGeral = demanda;
-					//main.pegarDoc(dGeral);
-						
+					// adicionar a lista //
 					obsList.add(demanda);
 					
-					tvLista.setItems(obsList);
-						
-					selecionarDemanda();
-				
 					modularBotoesInicial ();
 					
 					//-- Alerta de denúncia salva --//
@@ -197,7 +190,7 @@ public class TabDemandaControlador implements Initializable {
 	}
 	
 	// -- botão editar -- //
-	public void btnEditarHabilitar (ActionEvent event) {
+	public void btnEditarHab () {
 		
 		if (tfDocumento.isDisable()) { // filtro para abrir caixas para edição
 			
@@ -258,7 +251,6 @@ public class TabDemandaControlador implements Initializable {
 						
 						// atualizar os dados na tabela
 						obsList.remove(demanda);
-						
 						obsList.add(demanda);
 						
 						// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
@@ -266,14 +258,10 @@ public class TabDemandaControlador implements Initializable {
 						tabEndCon.setDemanda(demanda);
 						edEndCon.setDemanda(demanda);
 						
-							//dGeral = demanda;
-							//main.pegarDoc(dGeral);
 						
 						// para trazer o resultado por id (do maior para o menor) //
 							//Comparator<Demanda> comparar = Comparator.comparing(Demanda::getDemID); //getDemID
 							//obsList.sort(comparar.reversed());
-							
-						selecionarDemanda();
 						
 						modularBotoesInicial ();
 						
@@ -288,7 +276,7 @@ public class TabDemandaControlador implements Initializable {
 	}
 	
 	// -- botão excluir -- //
-	public void btnExcluirHabilitar (ActionEvent event) {
+	public void btnExcluirHab () {
 	
 		try {
 			
@@ -301,8 +289,6 @@ public class TabDemandaControlador implements Initializable {
 			dDao.removerDemanda(id);
 			
 			obsList.remove(demanda);
-			
-			selecionarDemanda();
 			
 			modularBotoesInicial (); 
 			
@@ -326,93 +312,295 @@ public class TabDemandaControlador implements Initializable {
 	}
 	
 	// -- botão cancelar -- //
-	public void btnCancelarHabilitar (ActionEvent event) {
+	public void btnCancelarHab () {
 			
 		modularBotoesInicial();
 	}
 	
 	// -- botão pesquisar denúncia -- //
-	public void btnPesquisarHabilitar (ActionEvent event) {
+	public void btnPesquisarHab () {
 		
 		strPesquisa = (String) tfPesquisar.getText();
 		
 		listarDemandas(strPesquisa);
-		selecionarDemanda();
-		
+	
 		modularBotoesInicial (); 
 		
 	}
 	
+	Label lblDataAtualizacao = new Label();
 	
-		@FXML ScrollPane spDemanda = new ScrollPane ();
-		@FXML Pane pDemanda = new Pane ();
-		@FXML AnchorPane apSBInterno = new AnchorPane();
-		@FXML Pane psbInterno = new Pane();
-		
-		@FXML Label lblDataAtualizacao = new Label();
-		
-		
-		@FXML AnchorPane apPrincipal = new AnchorPane();
-		@FXML AnchorPane apPrin1 = new AnchorPane();
-		@FXML AnchorPane apPrin2 = new AnchorPane();
-		@FXML BorderPane bpPrincipal = new BorderPane();
-		@FXML ScrollBar sbPrincipal = new ScrollBar();
-
+	@FXML Pane pDemanda;
+	AnchorPane apPrincipal = new AnchorPane();
+	BorderPane bpPrincipal = new BorderPane();
+	ScrollPane spPrincipal = new ScrollPane();
+	Pane p1 = new Pane ();
+	
+	Pane pDadosBasicos = new Pane();
+	Pane pPersistencia = new Pane();
+	Pane pEndereco = new Pane();
+	
+	@SuppressWarnings("unchecked")
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		AnchorPane.setTopAnchor(apPrin1, 0.0);
-	    AnchorPane.setLeftAnchor(apPrin1, 0.0);
-		AnchorPane.setRightAnchor(apPrin1, 0.0);
-	    AnchorPane.setBottomAnchor(apPrin1, 0.0);
-	
-	    AnchorPane.setLeftAnchor(apPrin2, 0.0);
-		AnchorPane.setRightAnchor(apPrin2, 0.0);
+		pDemanda.getChildren().add(apPrincipal);
 		
-		AnchorPane.setTopAnchor(sbPrincipal, 0.0);
-		AnchorPane.setBottomAnchor(sbPrincipal, 2.0);
-		AnchorPane.setRightAnchor(sbPrincipal, 0.0);
+		apPrincipal.minWidthProperty().bind(pDemanda.widthProperty());
+		apPrincipal.minHeightProperty().bind(pDemanda.heightProperty());
 		
-		AnchorPane.setTopAnchor(bpPrincipal, 0.0);
-	    AnchorPane.setLeftAnchor(bpPrincipal, 0.0);
-		AnchorPane.setRightAnchor(bpPrincipal, 0.0);
-	    AnchorPane.setBottomAnchor(bpPrincipal, 0.0);
+		apPrincipal.getChildren().add(spPrincipal);
+		
+		spPrincipal.setHbarPolicy(ScrollBarPolicy.NEVER);
+		spPrincipal.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		
+	    AnchorPane.setLeftAnchor(spPrincipal, 0.0);
+		AnchorPane.setRightAnchor(spPrincipal, 0.0);
+		AnchorPane.setTopAnchor(spPrincipal, 0.0);
+		AnchorPane.setBottomAnchor(spPrincipal, 47.0);
+		
+		spPrincipal.setPrefSize(200, 200);
+		
+	    bpPrincipal.minWidthProperty().bind(spPrincipal.widthProperty());
+	    bpPrincipal.setPrefHeight(1200);
+
+	    spPrincipal.setContent(bpPrincipal);
 	    
-	    // para rolar a tab //
-	    sbPrincipal.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            	apPrin2.setLayoutY(-new_val.doubleValue());
-            }
-        });
+	    p1.setMaxSize(1140, 680);
+	    p1.setMinSize(1140, 680);
 	    
+	    obterDadosBasicos ();
+	    obterPersistencia ();
+	    obterEndereco ();
 	    
-		// para concluir pesquisa com a tecla do enter
-		tfPesquisar.setOnKeyReleased(event -> {
-	  		  if (event.getCode() == KeyCode.ENTER){
-	  		     btnPesquisar.fire();
-	  		  }
-	  		});
+	    lblDataAtualizacao.setPrefSize(247, 22);
+	    lblDataAtualizacao.setLayoutX(779);
+	    lblDataAtualizacao.setLayoutY(441);
+	    
+	    p1.getChildren().addAll(
+	    		
+	    		pDadosBasicos, pPersistencia, tvLista, lblDataAtualizacao, pEndereco
+	    		);
 		
 		// --- habilitar e desabilitar botões ---- //
-				modularBotoesInicial();
+		modularBotoesInicial();
 		
 		tcDocumento.setCellValueFactory(new PropertyValueFactory<Demanda,String>("demDocumento"));
 		tcDocSEI.setCellValueFactory(new PropertyValueFactory<Demanda,String>("demDocumentoSEI"));
 		tcProcSEI.setCellValueFactory(new PropertyValueFactory<Demanda,String>("demProcessoSEI")); 
 		
+		tcDocumento.setPrefWidth(409);
+		tcDocSEI.setPrefWidth(232);
+		tcProcSEI.setPrefWidth(232);
+		
+		tvLista.setPrefSize(900, 185);
+		tvLista.setLayoutX(126);
+		tvLista.setLayoutY(248);
+		
+		tvLista.getColumns().addAll(tcDocumento, tcDocSEI, tcProcSEI);
+		
+		tvLista.setItems(obsList);
+		
+		bpPrincipal.setTop(p1);
+	    BorderPane.setAlignment(p1, Pos.CENTER);
+		
 		selecionarDemanda ();
 		
+		btnNovo.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnNovoHab();
+	        }
+	    });
+		    
+	    btnSalvar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnSalvarHab();
+	        }
+	    });
+	    
+	    btnEditar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnEditarHab();
+	        }
+	    });
+	    
+	    btnCancelar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnCancelarHab();
+	        }
+	    });
+	    
+	    btnPesquisar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnPesquisarHab();
+	        }
+	    });
+	    
+	    btnEndDetalhes.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	btnEndDetalhesHabilitar();
+	        }
+	    });
+	    
+	   
+		    
 	}
 	
-	ObservableList<Demanda> obsList;
+	public void obterDadosBasicos () {
+		
+	 	pDadosBasicos.setStyle("-fx-background-color: #E9E9E9;");
+	    pDadosBasicos.setPrefSize(900, 160);
+	    pDadosBasicos.setLayoutX(126);
+	    pDadosBasicos.setLayoutY(35);
+	   
+	    Label lblDoc = new Label("Documento: ");
+	    lblDoc.setLayoutX(19);
+	    lblDoc.setLayoutY(3);
+	    
+	    tfDocumento.setPrefSize(520, 25);
+	    tfDocumento.setLayoutX(19);
+	    tfDocumento.setLayoutY(27);
+	    
+	    Label lblDocSEI = new Label("Número SEI: ");
+
+	    lblDocSEI.setLayoutX(551);
+	    lblDocSEI.setLayoutY(3);
+	    
+	    tfDocSei.setPrefSize(128, 25);
+	    tfDocSei.setLayoutX(550);
+	    tfDocSei.setLayoutY(27);
+	    
+	    Label lblProcSEI = new Label("Número do Processo: ");
+
+	    lblProcSEI.setLayoutX(690);
+	    lblProcSEI.setLayoutY(3);
+	    
+	    tfProcSei.setPrefSize(197, 25);
+	    tfProcSei.setLayoutX(689);
+	    tfProcSei.setLayoutY(27);
+	    
+	    Label lblDistribuicao = new Label("Data de Distribuição: ");
+	    lblDistribuicao.setLayoutX(308);
+	    lblDistribuicao.setLayoutY(64);
+
+	    dpDataDistribuicao.setPrefSize(125, 25);
+	    dpDataDistribuicao.setLayoutX(308); //504
+	    dpDataDistribuicao.setLayoutY(87);
+
+	    Label lblRecebimento = new Label("Data de Recebimento: ");
+	    lblRecebimento.setLayoutX(469);
+	    lblRecebimento.setLayoutY(64);
+
+	    dpDataRecebimento.setPrefSize(125, 25);
+	    dpDataRecebimento.setLayoutX(469); //504
+	    dpDataRecebimento.setLayoutY(87);
+	    
+	    Label lblResDen = new Label("Resumo da Denúncia: ");
+	    lblResDen.setLayoutX(19);
+	    lblResDen.setLayoutY(100);
+	    
+	    tfResDen.setPrefSize(865, 25);
+	    tfResDen.setLayoutX(19);
+	    tfResDen.setLayoutY(124);
+	   
+	    pDadosBasicos.getChildren().addAll( 
+	    		
+	    		lblDoc, tfDocumento, lblDocSEI, tfDocSei, lblProcSEI, tfProcSei,
+	    		lblDistribuicao, dpDataDistribuicao, lblRecebimento, dpDataRecebimento,
+	    		lblResDen, tfResDen
+				
+				);
+	    
+	}
+	
+    public void obterPersistencia () {
+    	
+    	pPersistencia  = new Pane();
+   	    pPersistencia.setPrefSize(900, 50);
+   	    pPersistencia.setLayoutX(126);
+   	    pPersistencia.setLayoutY(195);
+   
+		btnNovo.setPrefSize(76, 25);
+		btnNovo.setLayoutX(42);
+		btnNovo.setLayoutY(12);
+	
+	    btnSalvar.setPrefSize(76, 25);
+	    btnSalvar.setLayoutX(129);
+	    btnSalvar.setLayoutY(12);
+	
+	    btnEditar.setPrefSize(76, 25);
+	    btnEditar.setLayoutX(216);
+	    btnEditar.setLayoutY(12);
+	
+	    btnExcluir.setPrefSize(76, 25);
+	    btnExcluir.setLayoutX(303);
+	    btnExcluir.setLayoutY(12);
+	    
+	    btnCancelar.setPrefSize(76, 25);
+	    btnCancelar.setLayoutX(390);
+	    btnCancelar.setLayoutY(12);
+	    
+	    btnPesquisar.setPrefSize(76, 25);
+	    btnPesquisar.setLayoutX(783);
+	    btnPesquisar.setLayoutY(12);
+	    
+	    tfPesquisar.setPrefSize(295, 25);
+	    tfPesquisar.setLayoutX(477);
+	    tfPesquisar.setLayoutY(12);
+	    
+	    pPersistencia.getChildren().addAll( 
+	    		btnNovo, btnSalvar, btnEditar, btnExcluir,
+	    		btnCancelar, tfPesquisar, btnPesquisar
+	    		
+	    		);
+	    
+	    
+    }
+    
+    public void obterEndereco () {
+    	
+   	    pEndereco.setPrefSize(900, 50);
+   	    pEndereco.setLayoutX(126);
+   	    pEndereco.setLayoutY(474);
+   	    
+   	    pEndereco.setStyle("-fx-background-color: #E9E9E9;");
+   	    
+    	Label lblEnd = new Label("Endereço: ");
+    	lblEnd.setLayoutX(15);
+    	lblEnd.setLayoutY(15);
+    	
+    	lblDemEnd.setPrefSize(728, 25);
+    	lblDemEnd.setLayoutX(85);
+    	lblDemEnd.setLayoutY(13);
+   
+    	btnEndDetalhes.setLayoutX(824);
+    	btnEndDetalhes.setLayoutY(13);
+	
+    	pEndereco.getChildren().addAll( 
+	    		lblEnd, lblDemEnd, btnEndDetalhes
+	    		);
+	    
+    }
+	 
+	ObservableList<Demanda> obsList = FXCollections.observableArrayList();
 
 	public void listarDemandas(String strPesquisa) {
 		
 		// -- Conexão e pesquisa de den�ncias -- //
 		DemandaDao demandaDao = new DemandaDao();	//passar classe
 		List<Demanda> demandaList = demandaDao.listarDemandas(strPesquisa); //passar string de pesquisar
-		obsList = FXCollections.observableArrayList(); //chamar observable list e outra classe
-
+	
 		
 		if (!obsList.isEmpty()) {
 			obsList.clear();
@@ -424,6 +612,7 @@ public class TabDemandaControlador implements Initializable {
     	
     	for (Demanda d : iList) {
     		
+    		d.getDemID();
     		d.getDemDocumento();
     		d.getDemDocumentoSEI();
     		d.getDemProcessoSEI();
@@ -478,19 +667,22 @@ public class TabDemandaControlador implements Initializable {
 				
 				if (demanda.getDemDistribuicao() == null) {
 					dpDataDistribuicao.setValue(null);
+					System.out.println("data dis null");
 					
 	 				} else {
 	 					Date dataDis = demanda.getDemDistribuicao();
 	 					dpDataDistribuicao.setValue(dataDis.toLocalDate());
+	 					System.out.println("ok data dis");
 	 				}
 				
 				if (demanda.getDemRecebimento() == null) {
 					dpDataRecebimento.setValue(null);
-					
+					System.out.println("data rec null");
 	 				} else {
 	 					
 	 					Date dataRec = demanda.getDemRecebimento();
 	 					dpDataRecebimento.setValue(dataRec.toLocalDate());
+	 					System.out.println("ok data rec");
 	 					
 	 				}
 				
@@ -499,29 +691,17 @@ public class TabDemandaControlador implements Initializable {
 				
 				// endereço relacionado //
 				if (demanda.getDemEnderecoFK() != null) {
-					lblDenEnd.setText(demanda.getDemEnderecoFK().getEndLogadouro() 
+					lblDemEnd.setText(demanda.getDemEnderecoFK().getEndLogadouro() 
 							+ ",  Região Administrativa: " + demanda.getDemEnderecoFK().getEndRAFK().getRaNome()
 							+ ",  Cep: " + demanda.getDemEnderecoFK().getEndCEP()
 							+ ",  Cidade: " + demanda.getDemEnderecoFK().getEndCidade()
 							+ ",  UF: " + demanda.getDemEnderecoFK().getEndUF()
 							);
-					 		/*
-							ControladorPrincipal.capturarGoogleMaps().setMarkerPosition(
-									demanda.getDemEnderecoFK().getEndLatitude() + 1,
-									demanda.getDemEnderecoFK().getEndLongitude());
-							
-							ControladorPrincipal.capturarGoogleMaps().setMapCenter(
-									demanda.getDemEnderecoFK().getEndLatitude(),
-									demanda.getDemEnderecoFK().getEndLongitude()
-									);
-							
-							apPrincipal.setStyle("-fx-background-color: rgba(255, 255, 255, 0.5);");
-							*/
-					
-					lblDenEnd.setTextFill(Color.BLACK);
+					 		
+					lblDemEnd.setTextFill(Color.BLACK);
 				} else {
-					lblDenEnd.setText("Sem endereço cadastrado!");
-					lblDenEnd.setTextFill(Color.RED);	
+					lblDemEnd.setText("Sem endereço cadastrado!");
+					lblDemEnd.setTextFill(Color.RED);	
 				}
 				
 				FormatoData d = new FormatoData();
@@ -558,7 +738,7 @@ public class TabDemandaControlador implements Initializable {
 		
 	}
 	
-	public void btnEndDetalhesHabilitar (ActionEvent event) {
+	public void btnEndDetalhesHabilitar () {
 		
 			Pane pEndereco = new Pane();
 			edEndCon = new EditarEnderecoControlador();
@@ -584,8 +764,6 @@ public class TabDemandaControlador implements Initializable {
 	        stage.show();
 		}
 
-
-	
 	// -- método habilitar e desabilitar botões -- //
 	private void modularBotoesInicial () {
 			
@@ -607,158 +785,3 @@ public class TabDemandaControlador implements Initializable {
 	
 }
 
-	/*
-		btnLatLng.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		    	
-		    	//googleMaps = new GoogleMap();
-		    	//googleMaps.setMarkerPosition(Double.parseDouble(tfLat.getText()), Double.parseDouble(tfLng.getText()));
-		    	//googleMaps.setMapCenter(Double.parseDouble(tfLat.getText()), Double.parseDouble(tfLng.getText()));
-		    	
-		    	ControladorPrincipal.capturarGoogleMaps().setMarkerPosition(-15.0,-47.0);
-		    	ControladorPrincipal.capturarGoogleMaps().setMapCenter(-15.0,-47.0);
-		    	
-		    	
-		    }
-		});
-		
-*/
-
-
-/*
-// métodos de remimensionar as tabs //
-public void redimensionarLargura (Number newValue) {
-		apDemanda.setMinWidth((double) newValue);
-		System.out.println("método redim. largura chamado " + newValue);
-		lblTeste.setText(  newValue.toString());
-}
-public void redimensionarAltura (Number newValue) {
-		apDemanda.setMinHeight((double) newValue);
-		System.out.println("método redim. altura chamado " + newValue);
-}
-*/
-
-
-/*
- 
-  
-		apDemanda.widthProperty().addListener((obs, oldVal, newVal) -> {
-			  
-			 System.out.println("ap demanda " + newVal);
-	    	
-			
-	    });
-		
-		apDemanda.heightProperty().addListener((obs, oldVal, newVal) -> {
-			  
-			 System.out.println("ap demanda altura" + newVal);
-			 
-			
-	    });
-	    
-	    
-		*/
-  
-
-/*
- @FXML private ControladorFiscalizacao conFisMain;
-
-	public void init(ControladorFiscalizacao controladorFiscalizacao) {
-		conFisMain = controladorFiscalizacao;
-	}
-	
-	
-	
-	*/
-
-
-
-/*
-LatLng latLng = new LatLng(latitude, longitude);
-
-//latLng.toUTMRef()
-
-OSRef osRef = latLng.toOSRef();
-
-double eastingRef = osRef.getEasting();
-double northingRef = osRef.getNorthing();
-
-UTMRef eUTM = latLng.toUTMRef();
-
-
-double utmE = eUTM.getEasting();
-double utmL = eUTM.getNorthing();
-
-
-
-System.out.println( utmE + " e " + utmL);
-*/
-
-
-/*
-apInterno.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-    public void handle(MouseEvent e) {
-    	
-        System.out.println("clicou anchor pane");
-        
-        
-        
-        
-		 
-    }
-    
-});
-*/
-/*
-apInterno.setOnScroll(new EventHandler<ScrollEvent>() {
-
-	@Override
-	public void handle(ScrollEvent event) {
-		System.out.println("scroll event");
-		System.out.println(event.getY());
-		
-		apInterno.setTranslateY(apInterno.getTranslateY() + 20);
-		
-	}
-
-    });
-*/
-
-
-/*
- * 
- * //dpDataRecebimento.setValue(LocalDate.parse(demanda.getSqlDate().toString(), formatter));
-			
-		// Date.valueOf(dpDataRecebimento.getValue())
-			
-			System.out.println("data recebimento " + demanda.getSqlDate());
-			
-			/*
-			LocalDate localDate = dpDataRecebimento.getValue();
-			Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-			Date date = (Date) Date.from(instant);
-			System.out.println(localDate + "\n" + instant + "\n" + date);
-			*/
-
-
-//dpDataRecebimento.setValue(LocalDate.parse(demanda.getSqlDate().toString(), formatter));
-	
-	// Date.valueOf(dpDataRecebimento.getValue())
-		/*
-		System.out.println("data recebimento " + demanda.getSqlDate());
-		
-		//DateTimeFormatter fo = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-	    //LocalDate localDate = LocalDate.parse(demanda.getSqlDate().toString(), fo);
-	    
-	    //System.out.println("formatado local date " + localDate);
-		
-		System.out.println("demanda sql date " + demanda.getSqlDate().toString());
-		
-		String newstring = new SimpleDateFormat("dd/MM/yyyy").format( demanda.getSqlDate());
-		
-		System.out.println("new string  " + newstring);
-		
-		dpDataRecebimento.getEditor().setText(newstring);
-		
-		*/

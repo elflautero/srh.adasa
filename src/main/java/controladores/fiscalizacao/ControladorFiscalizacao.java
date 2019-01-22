@@ -18,22 +18,27 @@ public class ControladorFiscalizacao {
 	TabVistoriaControlador tabVis = new TabVistoriaControlador();
 	String strVis = "/fxml/fiscalizacao/TabVistoria.fxml";
 	
+	@FXML Tab tpTabDemanda;
+	Pane pDemanda = new Pane();
+	TabDemandaControlador tabDem = new TabDemandaControlador();
+	String strDem = "/fxml/fiscalizacao/TabDemanda.fxml";
+	
+	
 	@FXML 
     private void initialize() {
-		
-		//tpFiscalizacao.setStyle("-fx-background-color: transparent;");
 		
 		tpFiscalizacao.prefWidthProperty().bind(pFiscalizacao.widthProperty());
 		tpFiscalizacao.prefHeightProperty().bind(pFiscalizacao.heightProperty());
 		
 		abrirTab (pVistoria ,  tabVis, strVis, tpTabVistoria );
+		abrirTab (pDemanda ,  tabDem, strDem, tpTabDemanda );
 		
 		
 	}
 	
 	public void abrirTab (Pane p , Object o, String strFXML, Tab t ) {
 		
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/TabVistoria.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource(strFXML));
 		
 		loader.setRoot(p);
 		loader.setController(o);

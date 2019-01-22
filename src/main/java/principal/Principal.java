@@ -26,8 +26,6 @@ public class Principal extends Application{
         
         }
 
-    // metodo start //
-	@Override
 	public void start(Stage stage) throws Exception {
 		
 		Scene scene = new Scene (rootNode);

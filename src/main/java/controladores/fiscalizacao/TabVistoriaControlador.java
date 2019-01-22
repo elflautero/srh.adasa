@@ -435,6 +435,7 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	AnchorPane apPrincipal = new AnchorPane();
 	BorderPane bpPrincipal = new BorderPane();
 	ScrollPane spPrincipal = new ScrollPane();
+	Pane p1 = new Pane ();
 
 	Pane pEndereco = new Pane();
 	Pane pDadosBasicos = new Pane();
@@ -449,8 +450,6 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	HTMLEditor htmlApresentacao = new HTMLEditor();
 	HTMLEditor htmlRelato = new HTMLEditor();
 	HTMLEditor htmlRecomendacao = new HTMLEditor();
-	
-	Pane p1 = new Pane ();
 	
 	// TableView Endereço //
 	TableView <Vistoria> tvVistoria = new TableView<>();
@@ -598,7 +597,31 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 
 	        @Override
 	        public void handle(ActionEvent event) {
-	        	btnInfracoesHab ();
+	        	lerIncisosDoCheckBox(infraIncisos);
+	        }
+	    });
+	    
+	    bPena.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	lerIncisosDoCheckBox(penaIncisos);
+	        }
+	    });
+	    
+	    bAten.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	lerIncisosDoCheckBox(atenIncisos);
+	        }
+	    });
+	    
+	    bAgra.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	lerIncisosDoCheckBox(agraIncisos);
 	        }
 	    });
 	    
@@ -648,6 +671,8 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	final CheckBox[] cbPenalidades = new CheckBox[incisos.length];
 	final CheckBox[] cbAtenuantes = new CheckBox[incisosAten.length];
 	final CheckBox[] cbAgravantes = new CheckBox[incisosAgra.length];
+	
+	final CheckBox[] cbInfraBox = new CheckBox[incisos.length];
 	
 	final int [] layoutXcb = new int[] {
 			196,
@@ -1434,57 +1459,18 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 		 
 	 }
 
-	 public void btnInfracoesHab () {
+	 public void lerIncisosDoCheckBox (String [] s) {
 		 
-		 	VBox vBoxCheck = new VBox();
-			vBoxCheck.setSpacing(6);
-			vBoxCheck.setLayoutY(3);
-			vBoxCheck.setLayoutX(3);
-			
 			VBox vBoxInfra = new VBox();
 			vBoxInfra.setPrefWidth(915);
 			vBoxInfra.setPrefHeight(176);
 			vBoxInfra.setLayoutX(25);
 		 
-			for (int i = 0; i < incisos.length; i++) {
-			    
-				final CheckBox cb = cbAtenuantes [i] = new CheckBox(incisos[i]);
-
-				//cb.setLayoutX(layoutXcb[i]);
-				//cb.setLayoutY(3);
-				    
-				cb.setAccessibleText(String.valueOf(numIncisos[i]));
-				    
-				cb.selectedProperty().addListener(new ChangeListener<Boolean>() {
-				    	
-				        public void changed(ObservableValue<? extends Boolean> ov,
-				            Boolean old_val, Boolean new_val) {
-				               
-				                String strCheck = "";
-				                
-				                for (int i = 0; i < incisos.length; i++) {
-				              
-				                	if (cbAtenuantes[i].isSelected()) {
-				                		
-				                		strCheck += cbAtenuantes[i].getAccessibleText();
-							             
-				                	}
-				                	
-				                }
-				                strAtenuantes = strCheck;
-				                System.out.println(" listener do cbAtenuantes, penalidades escolhidas " + strAtenuantes);
-				                
-				        }
-				    });
-				    
-					vBoxCheck.getChildren().add(cb);
-				}
-				
-				ObservableList<String> obs = FXCollections.observableArrayList(infraIncisos);
+				ObservableList<String> obs = FXCollections.observableArrayList(s);
 				ListView<String> list = new ListView<String>(obs);
 				vBoxInfra.getChildren().add(list);
 			
-				Group g = new Group(vBoxCheck,vBoxInfra);
+				Group g = new Group(vBoxInfra);
 				
 				Scene scene = new Scene(g);
 				Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
@@ -1498,26 +1484,7 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 			   
 			    stage.setAlwaysOnTop(true); 
 			    stage.show();
-			
-			    
-			  //--  https://docs.oracle.com/javafx/2/ui_controls/ListViewSample.java.html  --// 
-			  list.getSelectionModel().selectedItemProperty().addListener(
-	             new ChangeListener<String>() {
-	                 public void changed(ObservableValue<? extends String> 
-	                 ov, String old_val, String new_val) {
-	               
-	                      Clipboard clip = Clipboard.getSystemClipboard();
-	                      ClipboardContent conteudo = new ClipboardContent();
-	                      conteudo.putHtml(new_val);
-	                      String artigo = (String) conteudo.getString();
-	                      conteudo.putString(artigo);
-	                      clip.setContent(conteudo);
-	                      
-	                      
-	                      
-	                 }
-          });
-         
+			   
 	 }
 	 
 	String infraIncisos [];
