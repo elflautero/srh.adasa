@@ -51,8 +51,6 @@ public class TabVistoriaControlador implements Initializable {
 	
 TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 
-	//@FXML Pane pVistoria;
-	
 	Button btnNovo = new Button("Novo");
 	Button btnSalvar = new Button("Salvar");
 	Button btnEditar = new Button("Editar");
@@ -185,16 +183,15 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 						
 						obsList.add(vis);
 						
+						tabAtoControlador.setVistoria(vis);
+						
 						modularBotoes();
 						fecharEditorHTML();
 						
 						Alerta a = new Alerta ();
 						a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro salvo com sucesso!!!", ButtonType.OK));
 					
-						//-- número da vistoria para a tabela atos --//
 						
-						//visGeral = vis;
-						//main.pegarVistoria(vis);
 			}
 		}
 		
@@ -273,6 +270,7 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 							obsList.remove(vis);
 							obsList.add(vis);
 							
+							tabAtoControlador.setVistoria(vis);
 							
 							modularBotoes();
 							fecharEditorHTML();
@@ -280,10 +278,6 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 							Alerta a = new Alerta ();
 							a.alertar(new Alert(Alert.AlertType.INFORMATION, "Vistoria editada!", ButtonType.OK));
 							
-							
-							//visGeral = vis;
-							//main.pegarVistoria(vis);
-				
 				
 						} catch (Exception e) {
 							
@@ -425,7 +419,6 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	}
 
 	public static Endereco getEndereco () {
-		
 		return endereco;
 	}
 
@@ -487,7 +480,7 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	    p1.setMaxSize(1140, 2084);
 	    p1.setMinSize(1140, 2084);
 	    
-	    tcNumero.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visIdentificacao"));  // visIdentificacao
+	    tcNumero.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visIdentificacao"));
 		tcSEI.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visSEI"));  
 		tcData.setCellValueFactory(new PropertyValueFactory<Vistoria, String>("visDataFiscalizacao")); 
 		
@@ -500,8 +493,8 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 		tcData.setText("Data da Fiscalizacão");
 		
 		tvVistoria.setPrefSize(900, 185);
-		tvVistoria.setLayoutX(130);
-		tvVistoria.setLayoutY(201);
+		tvVistoria.setLayoutX(120);
+		tvVistoria.setLayoutY(205);
 		
 		tvVistoria.getColumns().addAll(tcNumero, tcSEI, tcData);
 		tvVistoria.setItems(obsList);
@@ -524,23 +517,23 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 		
 		pBotoesLeg.setPrefSize(32, 144);
 		pBotoesLeg.setLayoutX(1044);
-		pBotoesLeg.setLayoutY(392);
+		pBotoesLeg.setLayoutY(396);
 		
 		bInfra.setPrefSize(25, 25);
 		bInfra.setLayoutX(4);
-		bInfra.setLayoutY(5);
+		bInfra.setLayoutY(7);
 		
 		bPena.setPrefSize(25, 25);
 		bPena.setLayoutX(4);
-		bPena.setLayoutY(45);
+		bPena.setLayoutY(42);
 		
 		bAten.setPrefSize(25, 25);
 		bAten.setLayoutX(4);
-		bAten.setLayoutY(85);
+		bAten.setLayoutY(77);
 		
 		bAgra.setPrefSize(25, 25);
 		bAgra.setLayoutX(4);
-		bAgra.setLayoutY(125);
+		bAgra.setLayoutY(112);
 		
 		pBotoesLeg.getChildren().addAll(bInfra, bPena, bAten, bAgra);
 		
@@ -626,7 +619,8 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	    });
 	    
 	    selecionarVistoria();
-	   
+	    
+	    
 	}
 	
 	final String[] incisos = new String[]{
@@ -925,42 +919,37 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	
 	public void chamarEditoresHTML () {
 		
-		Label lblObjeto = new Label ("OBJETO:");
-		lblObjeto.setPrefSize(140, 25);
-		lblObjeto.setLayoutX(133);
-		lblObjeto.setLayoutY(558);
+		Label lblObjeto = new Label ("OBJETO: ");
+		lblObjeto.setLayoutX(120);
+		lblObjeto.setLayoutY(547);
 		
 		htmlObjeto.setPrefSize(820, 200);
-	    htmlObjeto.setLayoutX(170);
-	    htmlObjeto.setLayoutY(587);
+	    htmlObjeto.setLayoutX(160);
+	    htmlObjeto.setLayoutY(573);
 	    
-	    Label lblApre = new Label ("APRESENTAÇÃO:");
-	    lblApre.setPrefSize(140, 25);
-	    lblApre.setLayoutX(133);
-	    lblApre.setLayoutY(792);
+	    Label lblApre = new Label ("APRESENTAÇÃO: ");
+	    lblApre.setLayoutX(120);
+	    lblApre.setLayoutY(783);
 	    
 	    htmlApresentacao.setPrefSize(820, 200);
-	    htmlApresentacao.setLayoutX(170);
-	    htmlApresentacao.setLayoutY(823);
+	    htmlApresentacao.setLayoutX(160);
+	    htmlApresentacao.setLayoutY(811);
 		 
-	    Label lblRel= new Label ("RELATO:");
-	    lblRel.setPrefSize(140, 25);
-	    lblRel.setLayoutX(133);
-	    lblRel.setLayoutY(1027);
+	    Label lblRel= new Label ("RELATO: ");
+	    lblRel.setLayoutX(120);
+	    lblRel.setLayoutY(1022);
 	    
 	    htmlRelato.setPrefSize(820, 673);
-	    htmlRelato.setLayoutX(170);
-	    htmlRelato.setLayoutY(1057);
+	    htmlRelato.setLayoutX(160);
+	    htmlRelato.setLayoutY(1047);
 	    
-	    Label lblRecom = new Label ("RECOMENDAÇÕES:");
-	    lblRecom.setPrefSize(140, 25);
-	    lblRecom.setLayoutX(133);
-	    lblRecom.setLayoutY(1736);
+	    Label lblRecom = new Label ("RECOMENDAÇÕES: ");
+	    lblRecom.setLayoutX(120);
+	    lblRecom.setLayoutY(1728);
 	    
 	    htmlRecomendacao.setPrefSize(820, 200);
-	    htmlRecomendacao.setLayoutX(170);
-	    htmlRecomendacao.setLayoutY(1765);
-	    
+	    htmlRecomendacao.setLayoutX(160);
+	    htmlRecomendacao.setLayoutY(1754);
 	    
 		htmlObjeto.setOnKeyPressed(event -> {
 			    if (event.getCode() == KeyCode.SPACE  
@@ -1002,35 +991,9 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	    		
 	    		);
 	    
-	    htmlObjeto.setHtmlText( 
-	    		"<p><b>This text is bold</b></p>"
-	    		+ "<p><i>This text is italic</i></p>"
-	    		+ "<p>This is<sub> subscript</sub> and <sup>superscript</sup></p>"
-	    		
-	    		);
-	    
-	    htmlApresentacao.setHtmlText( 
-	    		"<p><b>This text is bold</b></p>"
-	    		+ "<p><i>This text is italic</i></p>"
-	    		+ "<p>This is<sub> subscript</sub> and <sup>superscript</sup></p>"
-	    		
-	    		);
-	    
-	    htmlRelato.setHtmlText( 
-	    		"<p><b>This text is bold</b></p>"
-	    		+ "<p><i>This text is italic</i></p>"
-	    		+ "<p>This is<sub> subscript</sub> and <sup>superscript</sup></p>"
-	    		
-	    		);
-	    
-	    htmlRecomendacao.setHtmlText( 
-	    		"<p><b>This text is bold</b></p>"
-	    		+ "<p><i>This text is italic</i></p>"
-	    		+ "<p>This is<sub> subscript</sub> and <sup>superscript</sup></p>"
-	    		
-	    		);
-	    
 	}
+	
+	Button btnBuscarEnd = new Button();
 	
 	public void chamarEndereco () {
 		
@@ -1038,42 +1001,43 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 		pEndereco.setStyle("-fx-background-color: #E9E9E9;");
 		
 		pEndereco.setPrefSize(900, 50);
-		pEndereco.setLayoutX(130);
-		pEndereco.setLayoutY(21);
+		pEndereco.setLayoutX(120);
+		pEndereco.setLayoutY(20);
+		
+		Label lblEnd = new Label("Endereco: ");
+		lblEnd.setLayoutX(23);
+		lblEnd.setLayoutY(16);
 		 
-		lblEndereco.setPrefSize(719, 25);
-		lblEndereco.setLayoutX(126);
+		lblEndereco.setPrefSize(750, 25);
+		lblEndereco.setLayoutX(93);
 		lblEndereco.setLayoutY(13);
 		lblEndereco.setStyle("-fx-font-weight: bold;");
-		lblEndereco.setStyle("-fx-background-color: #E9E9E9;");
+
+		btnBuscarEnd.setPrefSize(25, 25);
+		btnBuscarEnd.setLayoutX(852);
+		btnBuscarEnd.setLayoutY(13);
 		
-		Label l1 = new Label("Endereco: ");
-		    l1.setPrefSize(67, 25);
-		    l1.setLayoutX(56);
-		    l1.setLayoutY(13);
-		    
-		    
-		pEndereco.getChildren().addAll(l1, lblEndereco);
+		pEndereco.getChildren().addAll(lblEnd, lblEndereco, btnBuscarEnd);
 
 	}
 	
 	public void chamarLegislacao () {
 		
 		pInfracao.setPrefSize(900, 25);
-		pInfracao.setLayoutX(130);
-		pInfracao.setLayoutY(400);
+		pInfracao.setLayoutX(120);
+		pInfracao.setLayoutY(404);
 		
 		pPenalidade.setPrefSize(900, 25);
-		pPenalidade.setLayoutX(130);
-		pPenalidade.setLayoutY(440);
+		pPenalidade.setLayoutX(120);
+		pPenalidade.setLayoutY(439);
 		
 		pAtenuantes.setPrefSize(900, 25);
-		pAtenuantes.setLayoutX(130);
-		pAtenuantes.setLayoutY(480);
+		pAtenuantes.setLayoutX(120);
+		pAtenuantes.setLayoutY(474);
 		
 		pAgravantes.setPrefSize(900, 25);
-		pAgravantes.setLayoutX(130);
-		pAgravantes.setLayoutY(520);
+		pAgravantes.setLayoutX(120);
+		pAgravantes.setLayoutY(509);
 		
 		
 		pInfracao.setStyle("-fx-background-color:  EFEFEF;");
@@ -1093,8 +1057,8 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 		
 	 	pDadosBasicos.setStyle("-fx-background-color: #E9E9E9;");
 	    pDadosBasicos.setPrefSize(900, 50);
-	    pDadosBasicos.setLayoutX(130);
-	    pDadosBasicos.setLayoutY(86);
+	    pDadosBasicos.setLayoutX(120);
+	    pDadosBasicos.setLayoutY(82);
 	   
 	    Label lblNumVistoria= new Label("Número do Ato: ");
 	    lblNumVistoria.setLayoutX(35);
@@ -1144,7 +1108,7 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
     	
     	pPersistencia  = new Pane();
    	    pPersistencia.setPrefSize(900, 50);
-   	    pPersistencia.setLayoutX(130);
+   	    pPersistencia.setLayoutX(120);
    	    pPersistencia.setLayoutY(145);
    
 		btnNovo.setPrefSize(76, 25);

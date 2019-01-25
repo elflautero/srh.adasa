@@ -20,20 +20,21 @@
             <AnchorPane fx:id="apVisInt" minHeight="0.0" minWidth="0.0" prefHeight="1982.0" prefWidth="1140.0">
                <children>
                   <BorderPane fx:id="bpVistoria">
-                     <center>
-                        <Pane fx:id="pVistoria" maxHeight="2084.0" maxWidth="1140.0" minHeight="2084.0" minWidth="1140.0" prefHeight="2084.0" prefWidth="1140.0" styleClass="classFontSize" stylesheets="@../../../../../../fiscal/src/main/resources/css/application.css">
+                     <top>
+                        <Pane fx:id="pVistoria" maxHeight="2084.0" maxWidth="1140.0" minHeight="2084.0" minWidth="1140.0" prefHeight="2084.0" prefWidth="1140.0" styleClass="classFontSize" stylesheets="@../../../../../../fiscal/src/main/resources/css/application.css" BorderPane.alignment="CENTER">
                            <children>
-                              <Pane layoutX="130.0" layoutY="21.0" prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #E9E9E9;">
+                              <Pane layoutX="120.0" layoutY="20.0" prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #E9E9E9;">
                                  <children>
-                                    <Label layoutX="56.0" layoutY="13.0" prefHeight="25.0" prefWidth="67.0" text="Endereço: " />
-                                    <Label fx:id="lblVisEnd" layoutX="126.0" layoutY="13.0" prefHeight="25.0" prefWidth="719.0">
+                                    <Label layoutX="23.0" layoutY="16.0" text="Endereço: " />
+                                    <Label fx:id="lblVisEnd" layoutX="93.0" layoutY="13.0" prefHeight="25.0" prefWidth="750.0">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </Label>
+                                    <Button layoutX="852.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" />
                                  </children>
                               </Pane>
-                              <Pane fx:id="pPersistencia" layoutX="130.0" layoutY="145.0" prefHeight="50.0" prefWidth="900.0">
+                              <Pane fx:id="pPersistencia" layoutX="120.0" layoutY="145.0" prefHeight="50.0" prefWidth="900.0">
                                  <children>
                                     <Button fx:id="btnNovo" layoutX="42.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnNovoHab" prefHeight="25.0" prefWidth="76.0" text="Novo" />
                                     <Button fx:id="btnSalvar" layoutX="129.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnSalvarHab" prefHeight="25.0" prefWidth="76.0" text="Salvar" />
@@ -44,7 +45,7 @@
                                     <TextField fx:id="tfPesquisar" layoutX="477.0" layoutY="12.0" prefHeight="25.0" prefWidth="295.0" />
                                  </children>
                               </Pane>
-                              <Pane fx:id="pDadosBasicos" layoutX="130.0" layoutY="86.0" prefHeight="50.0" prefWidth="900.0">
+                              <Pane fx:id="pDadosBasicos" layoutX="120.0" layoutY="82.0" prefHeight="50.0" prefWidth="900.0">
                                  <children>
                                     <DatePicker fx:id="dpFiscalizacao" layoutX="520.0" layoutY="12.0" prefHeight="25.0" prefWidth="120.0" promptText="01/01/0000" />
                                     <TextField fx:id="tfNumVistoria" layoutX="124.0" layoutY="12.0" prefHeight="25.0" prefWidth="100.0" promptText="12/2018" />
@@ -56,7 +57,7 @@
                                     <Label fx:id="lblCriacao" layoutX="652.0" layoutY="17.0" text="Data de Criação:  " />
                                  </children>
                               </Pane>
-                              <Pane fx:id="pInfracao" layoutX="130.0" layoutY="400.0" prefHeight="25.0" prefWidth="900.0" style="-fx-background-color: EFEFEF;">
+                              <Pane fx:id="pInfracao" layoutX="120.0" layoutY="404.0" prefHeight="25.0" prefWidth="900.0" style="-fx-background-color: EFEFEF;">
                                  <children>
                                     <Label layoutX="126.0" layoutY="4.0" text="Infrações: " />
                                     <CheckBox fx:id="checkInfra1" layoutX="197.0" layoutY="4.0" mnemonicParsing="false" onAction="#checkInfraHab" text="Inciso I" />
@@ -68,7 +69,7 @@
                                     <CheckBox fx:id="checkInfra7" layoutX="696.0" layoutY="4.0" mnemonicParsing="false" onAction="#checkInfraHab" text="Inciso VII" />
                                  </children>
                               </Pane>
-                              <Pane fx:id="pPenalidades" layoutX="130.0" layoutY="435.0" prefHeight="25.0" prefWidth="900.0" style="-fx-background-color: EFEFEF;">
+                              <Pane fx:id="pPenalidades" layoutX="120.0" layoutY="439.0" prefHeight="25.0" prefWidth="900.0" style="-fx-background-color: EFEFEF;">
                                  <children>
                                     <Label layoutX="112.0" layoutY="5.0" text="Penalidades:  " />
                                     <CheckBox fx:id="checkPena1" layoutX="204.0" layoutY="4.0" mnemonicParsing="false" onAction="#checkPenaHab" text="Inciso I" />
@@ -80,7 +81,7 @@
                                     <CheckBox fx:id="checkPena7" layoutX="704.0" layoutY="4.0" mnemonicParsing="false" onAction="#checkPenaHab" text="Inciso VII" />
                                  </children>
                               </Pane>
-                              <Pane fx:id="pAtenuantes" layoutX="130.0" layoutY="470.0" prefHeight="25.0" prefWidth="900.0" style="-fx-background-color: EFEFEF;">
+                              <Pane fx:id="pAtenuantes" layoutX="120.0" layoutY="474.0" prefHeight="25.0" prefWidth="900.0" style="-fx-background-color: EFEFEF;">
                                  <children>
                                     <Label layoutX="29.0" layoutY="5.0" text="Atenuantes:  " />
                                     <CheckBox fx:id="checkAten1" layoutX="116.0" layoutY="4.0" mnemonicParsing="false" onAction="#checkAtenHab" text="Inciso I" />
@@ -96,16 +97,16 @@
                               </Pane>
                               <Button fx:id="btnPesquisarObjeto" layoutX="1050.0" layoutY="641.0" mnemonicParsing="false" onAction="#btnPesqObjHab" text="?" />
                               <Button fx:id="btnPesquisarApresentacao" layoutX="1050.0" layoutY="916.0" mnemonicParsing="false" onAction="#btnPesApHab" text="?" />
-                              <Label layoutX="149.0" layoutY="550.0" prefHeight="17.0" prefWidth="82.0" text="OBJETO " />
-                              <Label layoutX="146.0" layoutY="776.0" prefHeight="17.0" prefWidth="117.0" text="APRESENTAÇÃO" />
-                              <Label layoutX="146.0" layoutY="1007.0" prefHeight="17.0" prefWidth="79.0" text="RELATO" />
-                              <Label layoutX="146.0" layoutY="1713.0" prefHeight="17.0" prefWidth="195.0" text="RECOMENDAÇÕES" />
+                              <Label layoutX="120.0" layoutY="547.0" text="OBJETO:  " />
+                              <Label layoutX="120.0" layoutY="783.0" text="APRESENTAÇÃO: " />
+                              <Label layoutX="120.0" layoutY="1022.0" text="RELATO: " />
+                              <Label layoutX="120.0" layoutY="1728.0" text="RECOMENDAÇÕES: " />
                               <Button fx:id="btnAjudaRelatorio" layoutX="1050.0" layoutY="1416.0" mnemonicParsing="false" onAction="#btnAjudaRelatorioHab" text="?" />
                               <Button fx:id="btnRecomendacoes" layoutX="1050.0" layoutY="1859.0" mnemonicParsing="false" onAction="#btnRecomendacoesHab" text="?" />
-                              <Pane fx:id="paneRelato" layoutX="174.0" layoutY="1027.0" prefHeight="673.0" prefWidth="820.0" />
-                              <Pane fx:id="paneRecomendacao" layoutX="174.0" layoutY="1733.0" prefHeight="200.0" prefWidth="820.0" />
+                              <Pane fx:id="paneRelato" layoutX="160.0" layoutY="1047.0" prefHeight="673.0" prefWidth="820.0" />
+                              <Pane fx:id="paneRecomendacao" layoutX="160.0" layoutY="1754.0" prefHeight="200.0" prefWidth="820.0" />
                               <Button fx:id="btnRelatorio" layoutX="1060.0" layoutY="270.0" mnemonicParsing="false" onAction="#btnRelatorioHab" prefHeight="32.0" prefWidth="32.0" />
-                              <Pane layoutX="1044.0" layoutY="392.0" prefHeight="144.0" prefWidth="32.0">
+                              <Pane layoutX="1044.0" layoutY="396.0" prefHeight="144.0" prefWidth="32.0">
                                  <children>
                                     <Button fx:id="btnIfracoes" layoutX="4.0" layoutY="7.0" mnemonicParsing="false" onAction="#btnInfracoesHab" prefHeight="25.0" prefWidth="25.0" text="?" />
                                     <Button fx:id="btnPenalidades" layoutX="4.0" layoutY="42.0" mnemonicParsing="false" onAction="#btnPenalidadesHab" text="?" />
@@ -113,16 +114,16 @@
                                     <Button fx:id="btnAgravantes" layoutX="4.0" layoutY="112.0" mnemonicParsing="false" onAction="#btnAgravantesHab" text="?" />
                                  </children>
                               </Pane>
-                              <Pane fx:id="paneApresentacao" layoutX="174.0" layoutY="796.0" prefHeight="200.0" prefWidth="820.0" />
-                              <Pane fx:id="paneObjeto" layoutX="174.0" layoutY="567.0" prefHeight="200.0" prefWidth="820.0" />
-                              <TableView fx:id="tvVistoria" layoutX="130.0" layoutY="201.0" prefHeight="185.0" prefWidth="900.0">
+                              <Pane fx:id="paneApresentacao" layoutX="160.0" layoutY="811.0" prefHeight="200.0" prefWidth="820.0" />
+                              <Pane fx:id="paneObjeto" layoutX="160.0" layoutY="573.0" prefHeight="200.0" prefWidth="820.0" />
+                              <TableView fx:id="tvVistoria" layoutX="120.0" layoutY="205.0" prefHeight="185.0" prefWidth="900.0">
                                  <columns>
                                     <TableColumn fx:id="tcNumero" prefWidth="409.0" text="Número" />
                                     <TableColumn fx:id="tcSEI" minWidth="0.0" prefWidth="232.0" text="SEI" />
                                     <TableColumn fx:id="tcData" prefWidth="241.0" text="Data da Fiscalização" />
                                  </columns>
                               </TableView>
-                              <Pane fx:id="pAgravantes" layoutX="130.0" layoutY="505.0" prefHeight="25.0" prefWidth="900.0" style="-fx-background-color: EFEFEF;">
+                              <Pane fx:id="pAgravantes" layoutX="120.0" layoutY="509.0" prefHeight="25.0" prefWidth="900.0" style="-fx-background-color: EFEFEF;">
                                  <children>
                                     <Label layoutX="124.0" layoutY="4.0" text="Agravantes:  " />
                                     <CheckBox fx:id="checkAgra1" layoutX="211.0" layoutY="4.0" mnemonicParsing="false" onAction="#checkAgraHab" text="a);" />
@@ -141,7 +142,7 @@
                               </Pane>
                            </children>
                         </Pane>
-                     </center>
+                     </top>
                   </BorderPane>
                </children>
             </AnchorPane>

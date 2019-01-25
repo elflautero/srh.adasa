@@ -72,9 +72,19 @@ public class Interferencia implements Serializable {
 			@ManyToOne (fetch = FetchType.LAZY) 
 			@JoinColumn (name = "inter_UH_FK")
 			private UnidadeHidrografica interUHFK;
-
-	@Column (columnDefinition="varchar (50)")
-	private String inter_Corpo_Hidrico;
+			
+				@ManyToOne (fetch = FetchType.LAZY) 
+				@JoinColumn (name = "inter_Situacao_Processo_FK")
+				private SituacaoProcesso interSituacaoProcessoFK;
+				
+					@ManyToOne (fetch = FetchType.LAZY) 
+					@JoinColumn (name = "inter_Tipo_Ato_FK")
+					private TipoAto interTipoAtoFK;
+					
+						@ManyToOne (fetch = FetchType.LAZY) 
+						@JoinColumn (name = "inter_Tipo_Outorga_FK")
+						private TipoOutorga interTipoOutorgaFK;
+						
 	
 	@Column (name="inter_DD_Latitude")
 	private Double interDDLatitude;
@@ -89,8 +99,19 @@ public class Interferencia implements Serializable {
 	private String interLogadouro;
 	
 	@Basic
-	@Column (name="int_Atualizacao")
+	@Column (name="inter_Atualizacao")
 	private java.sql.Timestamp intAtualizacao;
+	
+	@Basic
+	@Column (name="inter_Data_Vencimento")
+	private java.sql.Date interDataVencimento;
+	
+	@Basic
+	@Column (name="inter_Data_Publicacao")
+	private java.sql.Date interDataPublicacao;
+	
+	@Column (name="inter_Num_Ato", columnDefinition="varchar(20)")
+	private String interNumeroAto;
 	
 
 		//CONSTRUTOR PADRÃO
@@ -139,14 +160,7 @@ public class Interferencia implements Serializable {
 			this.interUHFK = interUH;
 		}
 
-		public String getInter_Corpo_Hidrico() {
-			return inter_Corpo_Hidrico;
-		}
-
-		public void setInter_Corpo_Hidrico(String inter_Corpo_Hidrico) {
-			this.inter_Corpo_Hidrico = inter_Corpo_Hidrico;
-		}
-
+		
 		public Double getInterDDLatitude() {
 			return interDDLatitude;
 		}
@@ -189,8 +203,56 @@ public class Interferencia implements Serializable {
 			this.interGeom = interGeom;
 		}
 
+		public SituacaoProcesso getInterSituacaoProcessoFK() {
+			return interSituacaoProcessoFK;
+		}
+
+		public void setInterSituacaoProcessoFK(SituacaoProcesso interSituacaoProcessoFK) {
+			this.interSituacaoProcessoFK = interSituacaoProcessoFK;
+		}
+
+		public TipoAto getInterTipoAtoFK() {
+			return interTipoAtoFK;
+		}
+
+		public void setInterTipoAtoFK(TipoAto interTipoAtoFK) {
+			this.interTipoAtoFK = interTipoAtoFK;
+		}
+
+		public TipoOutorga getInterTipoOutorgaFK() {
+			return interTipoOutorgaFK;
+		}
+
+		public void setInterTipoOutorgaFK(TipoOutorga interTipoOutorgaFK) {
+			this.interTipoOutorgaFK = interTipoOutorgaFK;
+		}
+
+		public java.sql.Date getInterDataVencimento() {
+			return interDataVencimento;
+		}
+
+		public void setInterDataVencimento(java.sql.Date interDataVencimento) {
+			this.interDataVencimento = interDataVencimento;
+		}
+
+		public java.sql.Date getInterDataPublicacao() {
+			return interDataPublicacao;
+		}
+
+		public void setInterDataPublicacao(java.sql.Date interDataPublicacao) {
+			this.interDataPublicacao = interDataPublicacao;
+		}
+
+		public String getInterNumeroAto() {
+			return interNumeroAto;
+		}
+
+		public void setInterNumeroAto(String interNumeroAto) {
+			this.interNumeroAto = interNumeroAto;
+		}
+
 		
-	
+		
 		
 
 }

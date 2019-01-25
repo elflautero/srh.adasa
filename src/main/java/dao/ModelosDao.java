@@ -28,7 +28,7 @@ public List<ModelosHTML> listarModelo (String strPesquisa) {
 		
 		List<ModelosHTML> list = s.createQuery(
 				"SELECT mod FROM ModelosHTML AS mod "
-						+ "WHERE ( mod.mIdentificacao LIKE '%"+strPesquisa+"%')" 
+						+ "WHERE ( mod.modIdentificacao LIKE '%"+strPesquisa+"%')" 
 				).list();
 		
 		s.beginTransaction();

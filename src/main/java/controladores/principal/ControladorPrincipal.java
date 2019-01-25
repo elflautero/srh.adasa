@@ -2,6 +2,7 @@ package controladores.principal;
 
 import java.io.IOException;
 
+import controladores.atendimento.ControladorAtendimento;
 import controladores.fiscalizacao.ControladorFiscalizacao;
 import controladores.modelosHTML.ControladorModelosHTML;
 import de.jensd.fx.glyphs.GlyphsDude;
@@ -49,9 +50,10 @@ public class ControladorPrincipal {
 	@FXML AnchorPane apMain;
 	
 	// para chamar a parte da fiscalizacao //
+	ControladorAtendimento controladorAtendimento;
 	ControladorFiscalizacao controladorFiscalizacao;
-	ControladorModelosHTML controladorModelosHTML;
 	
+	ControladorModelosHTML controladorModelosHTML;
 	
 	@FXML Pane pMainTop;
 	@FXML BorderPane bpFiscalizacao;
@@ -79,9 +81,13 @@ public class ControladorPrincipal {
 	
 	
 	Pane pBrowserSEI;
+	Pane pFis;
 	Pane pFiscalizacao;
 	
-	Pane p;
+	Pane pAten;
+	Pane pAtendimento;
+	
+	
 	
 	@FXML ScrollPane spWebMap;
 	@FXML ScrollPane spWebBrowser;
@@ -93,6 +99,7 @@ public class ControladorPrincipal {
 	Button btnHome;
 	Button btnMapa;
 	Button btnConversor;
+	Button btnAtendimento;
 	Button btnFiscalizacao;
 	Button btnSEI;
 	Button btnEditorHTML;
@@ -116,9 +123,13 @@ public class ControladorPrincipal {
 	Double dblSearch;
 	Double dblBrowser;
 	Double dblFiscal;
+	Double dblAtend;
 	
 	TranslateTransition upFiscal;
 	TranslateTransition downFiscal;
+	
+	TranslateTransition upAtend;
+	TranslateTransition downAtend;
 	
 	TranslateTransition downSearch;
 	TranslateTransition upSearch;
@@ -490,6 +501,17 @@ public class ControladorPrincipal {
         btnSEI.setLayoutX(10.0);
         btnSEI.setLayoutY(55.0);
         
+        btnAtendimento = GlyphsDude.createIconButton(
+        		FontAwesomeIcon.PHONE_SQUARE,
+        		"ATENDIMENTO", 
+        		"20px", 
+                "11px",   
+                ContentDisplay.LEFT);
+        
+        btnAtendimento.getStyleClass().add("clBotoesLateral");
+        btnAtendimento.setLayoutX(10.0);
+        btnAtendimento.setLayoutY(94.0);
+        
         btnFiscalizacao = GlyphsDude.createIconButton(
         		FontAwesomeIcon.TICKET,
         		"FISCALIZAÇÃO", 
@@ -499,7 +521,7 @@ public class ControladorPrincipal {
         
         btnFiscalizacao.getStyleClass().add("clBotoesLateral");
         btnFiscalizacao.setLayoutX(10.0);
-        btnFiscalizacao.setLayoutY(96.0);
+        btnFiscalizacao.setLayoutY(133.0);
         
         btnEditorHTML = GlyphsDude.createIconButton(
            		FontAwesomeIcon.HTML5,
@@ -510,7 +532,7 @@ public class ControladorPrincipal {
            
            btnEditorHTML.getStyleClass().add("clBotoesLateral");
            btnEditorHTML.setLayoutX(10.0);
-           btnEditorHTML.setLayoutY(177.0);
+           btnEditorHTML.setLayoutY(172.0);
            
         
         btnConversor = GlyphsDude.createIconButton(
@@ -522,7 +544,7 @@ public class ControladorPrincipal {
         
         btnConversor.getStyleClass().add("clBotoesLateral");
         btnConversor.setLayoutX(10.0);
-        btnConversor.setLayoutY(137.0);
+        btnConversor.setLayoutY(211.0);
         
         
         // botao de aumentar o zoom //
@@ -649,8 +671,8 @@ public class ControladorPrincipal {
         pOrgaos2.setPrefSize(130, 370);
         pOrgaos2.getStyleClass().add("panesLaterais");
         
-        
-        pOrgaos.getChildren().addAll(btnHome, btnSEI, btnFiscalizacao, btnConversor, btnEditorHTML);
+
+        pOrgaos.getChildren().addAll(btnHome, btnSEI, btnAtendimento, btnFiscalizacao, btnConversor, btnEditorHTML);
         
         tab1.setContent(pOrgaos);
         tab2.setContent(pOrgaos2);
@@ -754,6 +776,82 @@ public class ControladorPrincipal {
         	googleMaps.switchHybrid();
         });
         
+        btnAtendimento.setOnAction((ActionEvent evt)->{
+        	
+        	if (pAtendimento == null) {
+        		
+        		pAtendimento = new Pane();
+        		
+	        		downAtend = new TranslateTransition(new Duration(350), pAtendimento);
+	        		downAtend.setToY(880.0);
+	                upAtend = new TranslateTransition(new Duration(350), pAtendimento);
+	                upAtend.setToY(0.0);
+        
+	        	    AnchorPane.setTopAnchor(pAtendimento, 150.0);
+	        	    AnchorPane.setLeftAnchor(pAtendimento, 150.0);
+	        	    AnchorPane.setRightAnchor(pAtendimento, 150.0);
+	        	    AnchorPane.setBottomAnchor(pAtendimento, 115.0);
+	        	    
+	        	    // Para abrir o pane fora do campo de vis�o
+	        	    pAtendimento.setTranslateY(880.0);
+
+	        	    apMain.getChildren().add(pAtendimento);
+        	    
+        		
+        	}
+        	
+        	dblAtend =  pAtendimento.getTranslateY();
+        	
+	        	if(dblAtend.equals(0.0)){
+	            	
+	            	downAtend.play(); 
+	            	if (pBrowserSEI != null)
+	            	pBrowserSEI.setTranslateY(880.0);
+	            	if (pFiscalizacao != null)
+            			pFiscalizacao.setTranslateY(880.0);
+	        		} 
+	            	
+	            	else {
+	            			
+	            		upAtend.play();
+	            		if (pBrowserSEI != null)
+	            		pBrowserSEI.setTranslateY(880.0);
+	            		if (pFiscalizacao != null)
+	            			pFiscalizacao.setTranslateY(880.0);
+	            		}
+	        	
+	        			
+        	
+				        	if (pAten == null) {
+				
+				        		pAten = new Pane();
+					        	
+					        	controladorAtendimento = new ControladorAtendimento();
+					        	
+					        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/atendimento/Atendimento.fxml"));
+								
+								loader.setRoot(pAten);
+								loader.setController(controladorAtendimento);
+								try {
+									loader.load();
+								} catch (IOException e) {
+									System.out.println("erro na abertura do pane atendimento");
+									e.printStackTrace();
+								}
+								
+								pAten.minWidthProperty().bind(pAtendimento.widthProperty());
+								pAten.minHeightProperty().bind(pAtendimento.heightProperty());
+								
+								pAten.maxWidthProperty().bind(pAtendimento.widthProperty());
+								pAten.maxHeightProperty().bind(pAtendimento.heightProperty());
+								
+								pAten.setStyle("-fx-background-color: transparent;");
+								
+								pAtendimento.getChildren().add(pAten);
+								
+				        		}
+        	});
+        
         btnFiscalizacao.setOnAction((ActionEvent evt)->{
         	
         	if (pFiscalizacao == null) {
@@ -785,6 +883,8 @@ public class ControladorPrincipal {
 	            	downFiscal.play(); 
 	            	if (pBrowserSEI != null)
 	            	pBrowserSEI.setTranslateY(880.0);
+	            	if (pAtendimento != null)
+	            		pAtendimento.setTranslateY(880.0);
 	        		} 
 	            	
 	            	else {
@@ -792,17 +892,20 @@ public class ControladorPrincipal {
 	            		upFiscal.play();
 	            		if (pBrowserSEI != null)
 	            		pBrowserSEI.setTranslateY(880.0);
+	            		if (pAtendimento != null)
+	            			pAtendimento.setTranslateY(880.0);
+		        		
 	            		}
         	
-				        	if (p == null) {
+				        	if (pFis == null) {
 				
-					        	p = new Pane();
+				        		pFis = new Pane();
 					        	
 					        	controladorFiscalizacao = new ControladorFiscalizacao();
 					        	
 					        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/Fiscalizacao.fxml"));
 								
-								loader.setRoot(p);
+								loader.setRoot(pFis);
 								loader.setController(controladorFiscalizacao);
 								try {
 									loader.load();
@@ -811,15 +914,15 @@ public class ControladorPrincipal {
 									e.printStackTrace();
 								}
 								
-								p.minWidthProperty().bind(pFiscalizacao.widthProperty());
-								p.minHeightProperty().bind(pFiscalizacao.heightProperty());
+								pFis.minWidthProperty().bind(pFiscalizacao.widthProperty());
+								pFis.minHeightProperty().bind(pFiscalizacao.heightProperty());
 								
-								p.maxWidthProperty().bind(pFiscalizacao.widthProperty());
-								p.maxHeightProperty().bind(pFiscalizacao.heightProperty());
+								pFis.maxWidthProperty().bind(pFiscalizacao.widthProperty());
+								pFis.maxHeightProperty().bind(pFiscalizacao.heightProperty());
 								
-								p.setStyle("-fx-background-color: transparent;");
+								pFis.setStyle("-fx-background-color: transparent;");
 								
-								pFiscalizacao.getChildren().add(p);
+								pFiscalizacao.getChildren().add(pFis);
 								
 				        		}
         	});
@@ -896,12 +999,16 @@ public class ControladorPrincipal {
             	
             	if (pFiscalizacao != null)
             	pFiscalizacao.setTranslateY(880.0);//downFiscal.play();
-            	
+            	if (pAtendimento != null)
+            		pAtendimento.setTranslateY(880.0);
+        		
 	            } else {
 	            
 	            	upBrowser.play();
 	            	if (pFiscalizacao != null)
 	            	pFiscalizacao.setTranslateY(880.0);
+	            	if (pAtendimento != null)
+	            		pAtendimento.setTranslateY(880.0);
 	            
 	            }
 	            

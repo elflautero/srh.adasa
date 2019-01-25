@@ -38,14 +38,19 @@ public class Ato implements Serializable {
 	@Column (name="ato_SEI", columnDefinition="varchar(20)") // 3561241
 	private String atoSEI;
 	
-	@Column (name="ato_Caracaterizacao", columnDefinition="varchar(2000)") // texto
+	@Column (name="ato_Caracaterizacao", columnDefinition="varchar(3000)") // texto
 	private String atoCaracterizacao;
 	
-	@Column (name="ato_Data_Fiscalizacao")
-	private LocalDate atoDataFiscalizacao;
+	@Column (name="ato_Recomendacao", columnDefinition="varchar(3000)") // texto
+	private String atoRecomendacao;
 	
+	@Basic
+	@Column (name="ato_Data_Fiscalizacao")
+	private java.sql.Date atoDataFiscalizacao;
+	
+	@Basic
 	@Column (name="ato_Data_Criacao")
-	private LocalDate atoDataCriacao;
+	private java.sql.Date atoDataCriacao;
 	
 	@Basic
 	@Column (name="ato_Atualizacao")
@@ -105,22 +110,6 @@ public class Ato implements Serializable {
 		this.atoCaracterizacao = atoCaracterizacao;
 	}
 
-	public LocalDate getAtoDataFiscalizacao() {
-		return atoDataFiscalizacao;
-	}
-
-	public void setAtoDataFiscalizacao(LocalDate atoDataFiscalizacao) {
-		this.atoDataFiscalizacao = atoDataFiscalizacao;
-	}
-
-	public LocalDate getAtoDataCriacao() {
-		return atoDataCriacao;
-	}
-
-	public void setAtoDataCriacao(LocalDate atoDataCriacao) {
-		this.atoDataCriacao = atoDataCriacao;
-	}
-
 	public java.sql.Timestamp getAtoAtualizacao() {
 		return atoAtualizacao;
 	}
@@ -129,6 +118,32 @@ public class Ato implements Serializable {
 		this.atoAtualizacao = atoAtualizacao;
 	}
 
+	public String getAtoRecomendacao() {
+		return atoRecomendacao;
+	}
+
+	public void setAtoRecomendacao(String atoRecomendacao) {
+		this.atoRecomendacao = atoRecomendacao;
+	}
+
+	public java.sql.Date getAtoDataFiscalizacao() {
+		return atoDataFiscalizacao;
+	}
+
+	public void setAtoDataFiscalizacao(java.sql.Date atoDataFiscalizacao) {
+		this.atoDataFiscalizacao = atoDataFiscalizacao;
+	}
+
+	public java.sql.Date getAtoDataCriacao() {
+		return atoDataCriacao;
+	}
+
+	public void setAtoDataCriacao(java.sql.Date atoDataCriacao) {
+		this.atoDataCriacao = atoDataCriacao;
+	}
+
+	
+	
 	
 
 }

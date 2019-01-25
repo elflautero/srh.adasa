@@ -2,6 +2,10 @@ package controladores.fiscalizacao;
 
 import java.io.IOException;
 
+import controladores.principal.TabDemandaControlador;
+import controladores.principal.TabEnderecoControlador;
+import controladores.principal.TabInterferenciaControlador;
+import controladores.principal.TabUsuarioControlador;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
@@ -13,15 +17,35 @@ public class ControladorFiscalizacao {
 	@FXML Pane pFiscalizacao;
 	@FXML TabPane tpFiscalizacao = new TabPane();
 	
-	@FXML Tab tpTabVistoria;
-	Pane pVistoria = new Pane();
-	TabVistoriaControlador tabVis = new TabVistoriaControlador();
-	String strVis = "/fxml/fiscalizacao/TabVistoria.fxml";
-	
 	@FXML Tab tpTabDemanda;
 	Pane pDemanda = new Pane();
 	TabDemandaControlador tabDem = new TabDemandaControlador();
-	String strDem = "/fxml/fiscalizacao/TabDemanda.fxml";
+	String strDem = "/fxml/principal/TabDemanda.fxml";
+	
+		@FXML Tab tpTabEndereco;
+		Pane pEndereco = new Pane();
+		TabEnderecoControlador tabEnd = new TabEnderecoControlador();
+		String strEnd = "/fxml/principal/TabEndereco.fxml";
+	
+			@FXML Tab tpTabInterferencia;
+			Pane pInterferencia = new Pane();
+			TabInterferenciaControlador tabInt = new TabInterferenciaControlador();
+			String strInt = "/fxml/principal/TabInterferencia.fxml";
+	
+				@FXML Tab tpTabUsuario;
+				Pane pUsuario = new Pane();
+				TabUsuarioControlador tabUs = new TabUsuarioControlador();
+				String strUs = "/fxml/principal/TabUsuario.fxml";
+	
+					@FXML Tab tpTabVistoria;
+					Pane pVistoria = new Pane();
+					TabVistoriaControlador tabVis = new TabVistoriaControlador();
+					String strVis = "/fxml/fiscalizacao/TabVistoria.fxml";
+	
+						@FXML Tab tpTabAto;
+						Pane pAto = new Pane();
+						TabAtoControlador tabAto = new TabAtoControlador();
+						String strAto = "/fxml/fiscalizacao/TabAto.fxml";
 	
 	
 	@FXML 
@@ -30,9 +54,13 @@ public class ControladorFiscalizacao {
 		tpFiscalizacao.prefWidthProperty().bind(pFiscalizacao.widthProperty());
 		tpFiscalizacao.prefHeightProperty().bind(pFiscalizacao.heightProperty());
 		
-		abrirTab (pVistoria ,  tabVis, strVis, tpTabVistoria );
 		abrirTab (pDemanda ,  tabDem, strDem, tpTabDemanda );
-		
+			abrirTab (pEndereco ,  tabEnd, strEnd, tpTabEndereco );
+				abrirTab (pInterferencia ,  tabInt, strInt, tpTabInterferencia );
+					abrirTab (pUsuario ,  tabUs, strUs, tpTabUsuario );
+						abrirTab (pVistoria ,  tabVis, strVis, tpTabVistoria );
+							abrirTab (pAto ,  tabAto, strAto, tpTabAto );
+			
 		
 	}
 	

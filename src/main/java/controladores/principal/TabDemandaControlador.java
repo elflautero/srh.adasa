@@ -1,4 +1,4 @@
-package controladores.fiscalizacao;
+package controladores.principal;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +23,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -38,6 +39,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import principal.Alerta;
 import principal.FormatoData;
 
 
@@ -115,11 +117,9 @@ public class TabDemandaControlador implements Initializable {
 				tfProcSei.getText().isEmpty()	) 
 			{
 				
-				Alert a = new Alert (Alert.AlertType.ERROR);
-				a.setTitle("Alerta!!!");
-				a.setContentText("Informe: Documento, Processo SEI!!!");
-				a.setHeaderText(null);
-				a.show();
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.ERROR, "Informe: Documento, Processo SEI!!!", ButtonType.OK));
+		
 				
 			} else {
 			
@@ -165,12 +165,9 @@ public class TabDemandaControlador implements Initializable {
 					
 					modularBotoesInicial ();
 					
-					//-- Alerta de denúncia salva --//
-					Alert a = new Alert (Alert.AlertType.INFORMATION);
-					a.setTitle("Parabéns!!!");
-					a.setContentText("Cadastro salvo com sucesso!!!");
-					a.setHeaderText(null);
-					a.show();
+					Alerta a = new Alerta ();
+					a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro salvo com sucesso!!!", ButtonType.OK));
+			
 					
 					}
 			
@@ -179,12 +176,9 @@ public class TabDemandaControlador implements Initializable {
 			System.out.println("Erro: " + ex);
 			ex.printStackTrace();
 			
-			//-- Alerta de denúncia salva --//
-			Alert a = new Alert (Alert.AlertType.ERROR);
-			a.setTitle("Alerta!!!");
-			a.setContentText("erro na conexão, tente novamente!");
-			a.setHeaderText(null);
-			a.show();
+			Alerta a = new Alerta ();
+			a.alertar(new Alert(Alert.AlertType.ERROR, "erro na conexão, tente novamente!", ButtonType.OK));
+	
 		}
 		
 	}
@@ -210,11 +204,9 @@ public class TabDemandaControlador implements Initializable {
 					tfProcSei.getText().isEmpty()) 
 				{
 					
-					Alert a = new Alert (Alert.AlertType.ERROR);
-					a.setTitle("Alerta!!!");
-					a.setContentText("Informe: Documento, Processo SEI!!!");
-					a.setHeaderText(null);
-					a.show();
+					Alerta a = new Alerta ();
+					a.alertar(new Alert(Alert.AlertType.ERROR, "Informe: Documento, Processo SEI!!!", ButtonType.OK));
+			
 					
 				} else {
 			
@@ -265,11 +257,9 @@ public class TabDemandaControlador implements Initializable {
 						
 						modularBotoesInicial ();
 						
-						Alert a = new Alert (Alert.AlertType.INFORMATION);
-						a.setTitle("Parabéns!!!");
-						a.setContentText("Cadastro editado com sucesso!!!");
-						a.setHeaderText(null);
-						a.show();
+						Alerta a = new Alerta ();
+						a.alertar(new Alert(Alert.AlertType.ERROR, "Cadastro editado com sucesso!!!", ButtonType.OK));
+				
 				}
 				
 			}
@@ -280,33 +270,28 @@ public class TabDemandaControlador implements Initializable {
 	
 		try {
 			
-			Demanda demanda = tvLista.getSelectionModel().getSelectedItem();
+			Demanda dem = tvLista.getSelectionModel().getSelectedItem();
 			
-			int id = demanda.getDemID(); // buscar id para deletar
+			int id = dem.getDemID(); // buscar id para deletar
 			
 			DemandaDao dDao = new DemandaDao();
 			
 			dDao.removerDemanda(id);
 			
-			obsList.remove(demanda);
+			obsList.remove(dem);
 			
 			modularBotoesInicial (); 
 			
-				Alert a = new Alert (Alert.AlertType.INFORMATION);
-				a.setTitle("Parabéns!!!");
-				a.setContentText("Cadastro excluído com sucesso!!!");
-				a.setHeaderText(null);
-				a.show();
+				
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro excluído com sucesso!!!", ButtonType.OK));
 		
 			}
 		
 			catch (Exception e) {
 				
-				Alert a = new Alert (Alert.AlertType.ERROR);
-				a.setTitle("Alerta!!!");
-				a.setContentText("Erro ao excluir o cadastro!!!");
-				a.setHeaderText(e.toString());
-				a.show();
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.ERROR, "Erro ao excluir o cadastro!!!", ButtonType.OK));
 			}
 				
 	}
@@ -450,6 +435,14 @@ public class TabDemandaControlador implements Initializable {
 	        @Override
 	        public void handle(ActionEvent event) {
 	        	btnEndDetalhesHabilitar();
+	        }
+	    });
+	    
+	    btnExcluir.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	btnExcluirHab();
 	        }
 	    });
 	    
@@ -704,9 +697,10 @@ public class TabDemandaControlador implements Initializable {
 					lblDemEnd.setTextFill(Color.RED);	
 				}
 				
-				FormatoData d = new FormatoData();
+				
 				
 				// mostrar data de atualizacao //
+				FormatoData d = new FormatoData();
 				try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(demanda.getDemAtualizacao()));  // d.formatarData(demanda.getDemAtualizacao())
 						lblDataAtualizacao.setTextFill(Color.BLACK);
 				}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
@@ -742,7 +736,7 @@ public class TabDemandaControlador implements Initializable {
 		
 			Pane pEndereco = new Pane();
 			edEndCon = new EditarEnderecoControlador();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/EditarEndereco.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/principal/EditarEndereco.fxml"));
 			loader.setRoot(pEndereco);
 			loader.setController(edEndCon);
 			

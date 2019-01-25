@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="960.0" type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="94.0" layoutY="23.0" text="Tipo de Poço: " />
+      <ChoiceBox fx:id="cbTipoPoco" layoutX="93.0" layoutY="49.0" prefHeight="25.0" prefWidth="120.0" />
+      <Label layoutX="225.0" layoutY="23.0" text="Subsistema: " />
+      <ChoiceBox fx:id="cbSubSis" layoutX="224.0" layoutY="49.0" prefHeight="25.0" prefWidth="120.0" />
+      <Label layoutX="487.0" layoutY="23.0" prefHeight="17.0" prefWidth="110.0" text="Nível Estático (m): " />
+      <Label layoutX="618.0" layoutY="23.0" prefHeight="17.0" prefWidth="131.0" text="Nível Dinâmico (m): " />
+      <Label layoutX="749.0" layoutY="21.0" prefHeight="17.0" prefWidth="110.0" text="Profundidade (m): " />
+      <TextField fx:id="tfVazao" layoutX="355.0" layoutY="49.0" prefHeight="25.0" prefWidth="120.0" />
+      <TextField fx:id="tfEstatico" layoutX="486.0" layoutY="49.0" prefHeight="25.0" prefWidth="120.0" />
+      <TextField fx:id="tfDinamico" layoutX="617.0" layoutY="49.0" prefHeight="25.0" prefWidth="120.0" />
+      <TextField fx:id="tfProfundidade" layoutX="748.0" layoutY="49.0" prefHeight="25.0" prefWidth="120.0" />
+      <Label layoutX="363.0" layoutY="87.0" text="Área atendida (Caesb): " />
+      <ChoiceBox fx:id="cbSubCaesb" layoutX="360.0" layoutY="111.0" prefHeight="25.0" prefWidth="120.0" />
+      <Label layoutX="505.0" layoutY="87.0" prefHeight="17.0" prefWidth="131.0" text="Em operação desde: " />
+      <DatePicker fx:id="dpDataSubterranea" layoutX="504.0" layoutY="111.0" prefHeight="25.0" prefWidth="120.0" />
+      <TableView layoutX="172.0" layoutY="149.0" prefHeight="121.0" prefWidth="652.0">
+         <columns>
+            <TableColumn prefWidth="280.0" text="Finalidade" />
+            <TableColumn minWidth="0.0" prefWidth="280.0" text="Subfinalidade" />
+            <TableColumn minWidth="0.0" prefWidth="100.0" text="Vazão" />
+         </columns>
+      </TableView>
+      <TableView layoutX="172.0" layoutY="281.0" prefHeight="121.0" prefWidth="652.0">
+         <columns>
+            <TableColumn prefWidth="50.0" text="Mês" />
+            <TableColumn prefWidth="50.0" text="Jan" />
+            <TableColumn prefWidth="50.0" text="Fev" />
+            <TableColumn prefWidth="50.0" text="Mar" />
+            <TableColumn prefWidth="50.0" text="Abr" />
+            <TableColumn prefWidth="50.0" text="Mai" />
+            <TableColumn prefWidth="50.0" text="Jun" />
+            <TableColumn prefWidth="50.0" text="Jul" />
+            <TableColumn prefWidth="50.0" text="Ago" />
+            <TableColumn prefWidth="50.0" text="Set" />
+            <TableColumn prefWidth="50.0" text="Out" />
+            <TableColumn prefWidth="50.0" text="Nov" />
+            <TableColumn prefWidth="50.0" text="Dez" />
+         </columns>
+      </TableView>
+      <Label layoutX="356.0" layoutY="23.0" text="Vazão (L/h): " />
+   </children>
+</fx:root>

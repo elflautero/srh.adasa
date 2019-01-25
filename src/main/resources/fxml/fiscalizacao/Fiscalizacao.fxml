@@ -5,39 +5,18 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.Pane?>
 
-<fx:root fx:id="pFiscalizacao" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="1140.0" type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="pFiscalizacao" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="1140.0" type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TabPane fx:id="tpFiscalizacao" layoutY="-3.0" prefHeight="628.0" prefWidth="1140.0" stylesheets="@../../css/fiscalizacao.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0" tabMinWidth="100.0">
         <tabs>
         
-          <Tab fx:id="tpTabDemanda" styleClass="tabPaneClass" text="  Demanda  " /> 
-          
-          <Tab styleClass="tabPaneClass" text="  Endereço  ">
-            <content>
-            	<fx:include fx:id="tabDemanda" source="TabEndereco.fxml" />
-             </content>
-          </Tab>
-          
-          <Tab styleClass="tabPaneClass" text="Interferência">
-            <content>
-            	<fx:include fx:id="tabInterferencia" source="TabInterferencia.fxml" />
-             </content>
-          </Tab>
-          
-          <Tab styleClass="tabPaneClass" text="  Usuário  ">
-            <content>
-            	<fx:include fx:id="tabUsuario" source="TabUsuario.fxml" />
-             </content>
-          </Tab>
-          
+          <Tab fx:id="tpTabDemanda" styleClass="tabPaneClass" text="  Demanda  " />
+          <Tab fx:id="tpTabEndereco" styleClass="tabPaneClass" text="  Endereco  " />
+          <Tab fx:id="tpTabInterferencia" styleClass="tabPaneClass" text="Interferencia" />
+          <Tab fx:id="tpTabUsuario" styleClass="tabPaneClass" text="  Usuário  " /> 
           <Tab fx:id="tpTabVistoria" styleClass="tabPaneClass" text="  Vistoria  " />
-          
-          <Tab styleClass="tabPaneClass" text="     Ato     ">
-            <content>
-            	<fx:include fx:id="tabAto" source="TabAto.fxml" />
-             </content>
-          </Tab>
-          
+          <Tab fx:id="tpTabAto" styleClass="tabPaneClass" text="    Ato    " />
+         
         </tabs>
          <cursor>
             <Cursor fx:constant="DEFAULT" />

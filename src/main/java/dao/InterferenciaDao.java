@@ -34,18 +34,30 @@ public void salvaInterferencia (Interferencia interferencia) {
 		List<Interferencia> list = new ArrayList<Interferencia>();
 		
 		Criteria crit = s.createCriteria(Interferencia.class, "i");
-		crit.createAlias("i.interEnderecoFK", "e", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interEnderecoFK", "endereco", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("i.intSubFK", "sub", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("i.intSupFK", "sup", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.intSubFK", "subterranea", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.intSupFK", "superficial", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("i.interTipoInterferenciaFK", "t", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("i.interBaciaFK", "b", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("i.interUHFK", "u", JoinType.LEFT_OUTER_JOIN);
-	
-		crit.createAlias("e.endRAFK", "ra");
+		crit.createAlias("i.interTipoInterferenciaFK", "tipoInter", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interBaciaFK", "baciaInter", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interUHFK", "unidaHidInter", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.add(Restrictions.like("e.endLogadouro", '%' + strPesquisa + '%'))
+		crit.createAlias("i.interTipoOutorgaFK", "tipoOutorga", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interTipoAtoFK", "tipoAto", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interSituacaoProcessoFK", "situacaoProcesso", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("endereco.endRAFK", "regiaoAdm", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("subterranea.subTipoPocoFK", "tipoPoco", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("subterranea.subSubSistemaFK", "subSistema", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("superficial.supFormaCaptacaoFK", "formaCaptacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("superficial.supLocalCaptacaoFK", "localCaptacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("superficial.supMetodoIrrigacaoFK", "metodoIrrigacao", JoinType.LEFT_OUTER_JOIN);
+		
+		
+		crit.add(Restrictions.like("endereco.endLogadouro", '%' + strPesquisa + '%'))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		list = crit.list();
 		

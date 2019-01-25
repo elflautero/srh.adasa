@@ -27,7 +27,7 @@ public class Endereco implements Serializable{
 	private static final long serialVersionUID = -8620638555874838035L;
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column (name="end_ID")  // @Column (name="dem_documento", columnDefinition="varchar(80)")
+	@Column (name="end_ID")
 	private int endID; 
 	
 	@Column (name="end_Logadouro", columnDefinition="varchar(95)")

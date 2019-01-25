@@ -98,9 +98,10 @@ public class ControladorModelosHTML implements Initializable {
 		
 		ModelosHTML mod = new ModelosHTML();
 		
-		mod.setmUnidade(cbUnidade.getValue());
-		mod.setmIdentificacao(tfIdentificacao.getText());
-		mod.setmConteudo(htmlEditor.getHtmlText());
+		mod.setModUnidade(cbUnidade.getValue());
+		mod.setModIdentificacao(tfIdentificacao.getText());
+		mod.setModConteudo(htmlEditor.getHtmlText());
+		
 		
 	ModelosDao modDao = new ModelosDao();
 	
@@ -124,9 +125,9 @@ public class ControladorModelosHTML implements Initializable {
 		
 			ModelosHTML mod = tvLista.getSelectionModel().getSelectedItem();
 			
-				mod.setmUnidade(cbUnidade.getValue());
-				mod.setmIdentificacao(tfIdentificacao.getText());
-				mod.setmConteudo(htmlEditor.getHtmlText());
+				mod.setModUnidade(cbUnidade.getValue());
+				mod.setModIdentificacao(tfIdentificacao.getText());
+				mod.setModConteudo(htmlEditor.getHtmlText());
 				
 				
 			ModelosDao modDao = new ModelosDao();
@@ -150,7 +151,7 @@ public class ControladorModelosHTML implements Initializable {
 		
 		ModelosHTML mod = tvLista.getSelectionModel().getSelectedItem();
 		
-		int id = mod.getModeloID();
+		int id = mod.getModID();
 		
 		ModelosDao modDao = new ModelosDao();
 		
@@ -203,14 +204,14 @@ public class ControladorModelosHTML implements Initializable {
 		
 		tcIdentificacao.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ModelosHTML, String>, ObservableValue<String>>() {
 		    public ObservableValue<String> call(TableColumn.CellDataFeatures<ModelosHTML, String> mod) {
-		    	return new SimpleStringProperty(mod.getValue().getmIdentificacao());
+		    	return new SimpleStringProperty(mod.getValue().getModIdentificacao());
 		       
 		    }
 		});
 		
 		tcUnidade.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ModelosHTML, String>, ObservableValue<String>>() {
 		    public ObservableValue<String> call(TableColumn.CellDataFeatures<ModelosHTML, String> mod) {
-		    	return new SimpleStringProperty(mod.getValue().getmUnidade());
+		    	return new SimpleStringProperty(mod.getValue().getModUnidade());
 		       
 		    }
 		});
@@ -234,10 +235,10 @@ public class ControladorModelosHTML implements Initializable {
 		
     	for (ModelosHTML m : modLista) {
     		
-    		m.getModeloID();
-    		m.getmUnidade();
-    		m.getmIdentificacao();
-    		m.getmConteudo();
+    		m.getModID();
+    		m.getModUnidade();
+    		m.getModIdentificacao();
+    		m.getModConteudo();
     		
     		obsList.add(m);
     		
@@ -278,9 +279,9 @@ public class ControladorModelosHTML implements Initializable {
 			} else {
 
 				// -- preencher os campos -- //
-				cbUnidade.setValue(mod.getmUnidade());
-				tfIdentificacao.setText(mod.getmIdentificacao());
-				htmlEditor.setHtmlText(mod.getmConteudo());
+				cbUnidade.setValue(mod.getModUnidade());
+				tfIdentificacao.setText(mod.getModIdentificacao());
+				htmlEditor.setHtmlText(mod.getModConteudo());
 				
 				textAreaHTML.setText(htmlEditor.getHtmlText());
 				

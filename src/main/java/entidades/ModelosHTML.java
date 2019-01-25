@@ -17,53 +17,55 @@ public class ModelosHTML implements Serializable {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column (name="mod_ID")
-	private int modeloID;
+	private int modID;
 	
 	@Column (name="mod_Unidade", columnDefinition="varchar(10)") // texto
-	private String mUnidade;
+	private String modUnidade;
 	
 	@Column (name="mod_Identificacao", columnDefinition="varchar(90)") // texto
-	private String mIdentificacao;
+	private String modIdentificacao;
 	
 	@Column (name="mod_Conteudo", columnDefinition="varchar(max)") // texto
-	private String mConteudo;
+	private String modConteudo;
 	
 	// construtor padrao //
 	public ModelosHTML () {
 		
 	}
 
-	public int getModeloID() {
-		return modeloID;
+	public int getModID() {
+		return modID;
 	}
 
-	public void setModeloID(int modeloID) {
-		this.modeloID = modeloID;
+	public void setModID(int modID) {
+		this.modID = modID;
 	}
 
-	public String getmUnidade() {
-		return mUnidade;
+	public String getModUnidade() {
+		return modUnidade;
 	}
 
-	public void setmUnidade(String mUnidade) {
-		this.mUnidade = mUnidade;
+	public void setModUnidade(String modUnidade) {
+		this.modUnidade = modUnidade;
 	}
 
-	public String getmIdentificacao() {
-		return mIdentificacao;
+	public String getModIdentificacao() {
+		return modIdentificacao;
 	}
 
-	public void setmIdentificacao(String mIdentificacao) {
-		this.mIdentificacao = mIdentificacao;
+	public void setModIdentificacao(String modIdentificacao) {
+		this.modIdentificacao = modIdentificacao;
 	}
 
-	public String getmConteudo() {
-		return mConteudo;
+	public String getModConteudo() {
+		return modConteudo;
 	}
 
-	public void setmConteudo(String mConteudo) {
-		this.mConteudo = mConteudo;
+	public void setModConteudo(String modConteudo) {
+		this.modConteudo = modConteudo;
 	}
 
+	
+	
 	
 }

@@ -61,8 +61,8 @@ public class Usuario implements Serializable {
 	private String usEmail;
 	
 	@Basic
-	@Column (name="us_Atualizacao")
-	private java.sql.Timestamp usAtualizacao;
+	@Column (name="us_Data_Atualizacao")
+	private java.sql.Timestamp usDataAtualizacao;
 	
 	//-- construtor padrão --//
 	
@@ -175,13 +175,13 @@ public class Usuario implements Serializable {
 	public void setUsEmail(String usEmail) {
 		this.usEmail = usEmail;
 	}
+
+	public java.sql.Timestamp getUsDataAtualizacao() {
+		return usDataAtualizacao;
+	}
+
+	public void setUsDataAtualizacao(java.sql.Timestamp usDataAtualizacao) {
+		this.usDataAtualizacao = usDataAtualizacao;
+	}
 	
-	public java.sql.Timestamp getUsAtualizacao() {
-		return usAtualizacao;
-	}
-
-	public void setUsAtualizacao(java.sql.Timestamp usAtualizacao) {
-		this.usAtualizacao = usAtualizacao;
-	}
-
 }

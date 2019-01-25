@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="960.0" type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+	
+   <children>
+      
+      <Label layoutX="18.0" layoutY="15.0" text="Local de Captação: " />
+      <ChoiceBox fx:id="cbLocalCaptacao" layoutX="17.0" layoutY="40.0" prefHeight="25.0" prefWidth="141.0" />
+      <Label layoutX="169.0" layoutY="15.0" text="Forma de Captação: " />
+      <ChoiceBox fx:id="cbFormaCaptacao" layoutX="168.0" layoutY="40.0" prefWidth="124.0" />
+      <Label layoutX="304.0" layoutY="16.0" text="Método de Irrigação: " />
+      <ChoiceBox fx:id="cbMetodoIrrigacao" layoutX="303.0" layoutY="40.0" prefHeight="25.0" prefWidth="124.0" />
+      <Label layoutX="440.0" layoutY="14.0" text="Barramento: " />
+      <ChoiceBox fx:id="cbBarramento" layoutX="439.0" layoutY="40.0" prefHeight="25.0" prefWidth="68.0" />
+      <Label layoutX="519.0" layoutY="15.0" text="Em operação desde: " />
+      <DatePicker fx:id="dpDataOperacao" layoutX="518.0" layoutY="40.0" prefHeight="25.0" prefWidth="120.0" />
+      
+      <Label layoutX="649.0" layoutY="15.0" text="Potência da Bomba (cv): " />
+      <TextField fx:id="tfPotenciaBomba" layoutX="648.0" layoutY="40.0" prefHeight="25.0" prefWidth="130.0" />
+      <Label layoutX="790.0" layoutY="14.0" text="Marca da Bomba: " />
+      <TextField fx:id="tfMarcaBomba" layoutX="789.0" layoutY="40.0" />
+      
+      <TextField fx:id="tfCorpoHidrico" layoutX="35.0" layoutY="101.0" prefHeight="25.0" prefWidth="303.0" />
+      <Label layoutX="36.0" layoutY="76.0" text="Corpo Hídrico: " />
+      <TextField fx:id="tfAreaIrrigada" layoutX="348.0" layoutY="101.0" prefHeight="25.0" prefWidth="98.0" />
+      <Label layoutX="349.0" layoutY="77.0" text="Área Irrigada (ha): " />
+      <TextField fx:id="tfAreaContribuicao" layoutX="457.0" layoutY="101.0" prefHeight="25.0" prefWidth="141.0" />
+      <Label layoutX="458.0" layoutY="77.0" text="Área de Contribuição (ha):" />
+      <TextField fx:id="tfAreaPropriedade" layoutX="611.0" layoutY="101.0" prefHeight="25.0" prefWidth="163.0" />
+      <Label layoutX="612.0" layoutY="77.0" text="Área da Propriedade (ha):" />
+      
+      <Label layoutX="784.0" layoutY="75.0" text="Área atendida pela Caesb: " />
+      <ChoiceBox fx:id="cbCaesb" layoutX="785.0" layoutY="100.0" prefHeight="25.0" prefWidth="54.0" />
+      
+      <TableView layoutX="154.0" layoutY="137.0" prefHeight="121.0" prefWidth="652.0">
+        <columns>
+          <TableColumn prefWidth="280.0" text="Finalidade" />
+            <TableColumn minWidth="0.0" prefWidth="280.0" text="Subfinalidade" />
+            <TableColumn minWidth="0.0" prefWidth="100.0" text="Vazão" />
+        </columns>
+      </TableView>
+      
+      <TableView layoutX="154.0" layoutY="269.0" prefHeight="121.0" prefWidth="652.0">
+         <columns>
+            <TableColumn prefWidth="50.0" text="Mês" />
+            <TableColumn prefWidth="50.0" text="Jan" />
+            <TableColumn prefWidth="50.0" text="Fev" />
+            <TableColumn prefWidth="50.0" text="Mar" />
+            <TableColumn prefWidth="50.0" text="Abr" />
+            <TableColumn prefWidth="50.0" text="Mai" />
+            <TableColumn prefWidth="50.0" text="Jun" />
+            <TableColumn prefWidth="50.0" text="Jul" />
+            <TableColumn prefWidth="50.0" text="Ago" />
+            <TableColumn prefWidth="50.0" text="Set" />
+            <TableColumn prefWidth="50.0" text="Out" />
+            <TableColumn prefWidth="50.0" text="Nov" />
+            <TableColumn prefWidth="50.0" text="Dez" />
+         </columns>
+      </TableView>
+   </children>
+</fx:root>

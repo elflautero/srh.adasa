@@ -1,7 +1,6 @@
 package entidades;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -28,8 +27,13 @@ public class Subterranea implements Serializable {
 		@JoinColumn (name = "sup_Interferencia_FK")  // mudar o nome para sub_Inter_FK
 		private Interferencia subInterFK;
 	
-	@Column (name="sub_Tipo_Captacao", columnDefinition="varchar (10)")
-	private String subTipoCaptacao;
+			@ManyToOne (fetch = FetchType.LAZY) 
+			@JoinColumn (name = "sub_Tipo_Poco_FK")
+			private TipoPoco subTipoPocoFK; // Manual Tubular
+			
+				@ManyToOne (fetch = FetchType.EAGER) 
+				@JoinColumn (name = "sub_Subsistema_FK")
+				private SubSistema subSubSistemaFK;
 
 	@Column (name="sub_Caesb", columnDefinition="varchar(3)")
 	private String subCaesb;  // tem caesb () sim () não
@@ -51,20 +55,13 @@ public class Subterranea implements Serializable {
 	@Column (name="sub_Data_Operacao")
 	private java.sql.Date subDataOperacao;
 	
-	@ManyToOne (fetch = FetchType.EAGER) 
-	@JoinColumn (name = "sub_Subsistema_FK")
-	private SubSistema subSubSistemaFK;
-	
 	
 	public Subterranea () {
 		
 	}
 
-
 	//-- getters and setters --//
 	
-	
-
 	public SubSistema getSubSubSistemaFK() {
 		return subSubSistemaFK;
 	}
@@ -110,14 +107,7 @@ public class Subterranea implements Serializable {
 		this.subInterFK = subInterSub;
 	}
 
-	public String getSubTipoCaptacao() {
-		return subTipoCaptacao;
-	}
-
-	public void setSubTipoCaptacao(String subTipoCaptacao) {
-		this.subTipoCaptacao = subTipoCaptacao;
-	}
-
+	
 	public String getSubCaesb() {
 		return subCaesb;
 	}
@@ -158,9 +148,14 @@ public class Subterranea implements Serializable {
 		this.subProfundidade = subProfundidade;
 	}
 
-	
+	public TipoPoco getSubTipoPocoFK() {
+		return subTipoPocoFK;
+	}
 
-	
+	public void setSubTipoPocoFK(TipoPoco subTipoPocoFK) {
+		this.subTipoPocoFK = subTipoPocoFK;
+	}
+
 	
 
 }

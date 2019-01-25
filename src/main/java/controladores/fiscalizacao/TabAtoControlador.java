@@ -1,6 +1,7 @@
 package controladores.fiscalizacao;
 
 import java.net.URL;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,26 +10,29 @@ import java.util.ResourceBundle;
 import dao.AtoDao;
 import entidades.Ato;
 import entidades.Vistoria;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -45,62 +49,46 @@ public class TabAtoControlador implements Initializable {
 	
 	TabAtoControlador.vistoria = vistoria;
 	
-	
-		TabAtoControlador.lblVistoria2.setText(
-			"Vistoria n°: " + vistoria.getVisSEI()
-			+ ", Data da fiscalização: " + vistoria.getVisDataFiscalizacao()
+		TabAtoControlador.lblVistoria.setText(
+			vistoria.getVisSEI()
+			+ ", Endereço: " + vistoria.getVisEnderecoFK().getEndLogadouro()
+			+ ", RA: " + vistoria.getVisEnderecoFK().getEndRAFK().getRaNome()
 		);
 			
 	}
 
 	public static Vistoria getVistoria () {
-		
 		return vistoria;
 	}
 	
-	@FXML Pane p_lbl_Vistoria;
-	@FXML Label lblVistoria1;
-	static Label lblVistoria2;
+	//Pane p_lbl_Vistoria= new Pane();
+	static Label lblVistoria = new Label();
+	Label lblDataAtualizacao = new Label();
 	
-	@FXML Label lblDataAtualizacao;
+	String strPesquisa = "";
 	
-String strPesquisa = "";
+	Button btnNovo = new Button("Novo");
+	Button btnSalvar = new Button("Salvar");
+	Button btnEditar = new Button("Editar");
+	Button btnExcluir = new Button("Excluir");
+	Button btnCancelar = new Button("Cancelar");
+	Button btnPesquisar = new Button("Pesquisar");
+	TextField tfPesquisar = new TextField();
 	
-	@FXML	Pane tabAto = new Pane ();
+	TextField tfAto  = new TextField();
+	TextField tfAtoSEI  = new TextField();
 	
-	@FXML Button btnNovo;
-	@FXML Button btnSalvar;
-	@FXML Button btnEditar;
-	@FXML Button btnExcluir;
-	@FXML Button btnCancelar;
-	@FXML Button btnPesquisar;
-	
-	@FXML TextField tfAto;
-	@FXML TextField tfAtoSEI;
-	
-	@FXML DatePicker dpDataFiscalizacao;
-	@FXML DatePicker dpDataCriacaoAto;
-	
-	@FXML Button bntCaracterizacao;
-	@FXML Button btnGerarAto;
-	
-	//@FXML Image imgAto = new Image(TabAtoController.class.getResourceAsStream("/images/ato32.png"));
-	
-	
-	Ato atoGeral;
+	DatePicker dpDataFiscalizacao = new DatePicker();
+	DatePicker dpDataCriacaoAto = new DatePicker();
 	
 	// TableView Endereço //
-	@FXML private TableView <Ato> tvLista;
+	private TableView <Ato> tvLista  = new TableView<>();
 	ObservableList<Ato> obsList = FXCollections.observableArrayList();
 	
-	@FXML TableColumn<Ato, String> tcTipo;
-	@FXML TableColumn<Ato, String> tcNumero;
-	@FXML TableColumn<Ato, String> tcSEI;
-		
-		
-	@FXML TextField tfPesquisar;
+	TableColumn<Ato, String> tcTipo = new TableColumn<>();
+	TableColumn<Ato, String> tcNumero = new TableColumn<>();
+	TableColumn<Ato, String> tcSEI = new TableColumn<>();
 	
-	@FXML
 	ChoiceBox<String> cbAtoTipo = new ChoiceBox<String>();
 		ObservableList<String> olAtoTipo = FXCollections
 			.observableArrayList(
@@ -108,96 +96,309 @@ String strPesquisa = "";
 					"Auto de Infração",
 					"Auto de Infração de Multa");
 	
-	@FXML public Label lblVisAto; // público para receber valor do MainController, método pegarEnd()
+	HTMLEditor htmlCaracteriza = new HTMLEditor();
+	HTMLEditor htmlRecomenda = new HTMLEditor();
 	
-	//  objeto para passar os valor pelo MainControoler para outro controller //
-	public Vistoria visGeral;
-	
-	HTMLEditor htmlCaracterizar = new HTMLEditor();
-  	@FXML Pane paneCaracterizar;
-  	
   	int u = 0;
-  	@FXML
+
 	ChoiceBox<String> cbUsuario = new ChoiceBox<String>();
 		ObservableList<String> olUsuario = FXCollections
 			.observableArrayList("0" , "1", "2", "3", "4");
 	
-		
-
-		@FXML AnchorPane apPrincipal = new AnchorPane();
-		@FXML AnchorPane apPrin1 = new AnchorPane();
-		@FXML AnchorPane apPrin2 = new AnchorPane();
-		@FXML BorderPane bpPrincipal = new BorderPane();
-		@FXML ScrollBar sbPrincipal = new ScrollBar();	
+	@FXML Pane pAto;
+	AnchorPane apPrincipal = new AnchorPane();
+	BorderPane bpPrincipal = new BorderPane();
+	ScrollPane spPrincipal = new ScrollPane();
+	Pane p1 = new Pane ();
 	
+	Pane p_lblVistoria = new Pane();
+	Pane pDadosBasicos = new Pane();
+	Pane pPersistencia = new Pane();
+		
+	@SuppressWarnings("unchecked")
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		AnchorPane.setTopAnchor(apPrin1, 0.0);
-	    AnchorPane.setLeftAnchor(apPrin1, 0.0);
-		AnchorPane.setRightAnchor(apPrin1, 0.0);
-	    AnchorPane.setBottomAnchor(apPrin1, 0.0);
-	
-	    AnchorPane.setLeftAnchor(apPrin2, 0.0);
-		AnchorPane.setRightAnchor(apPrin2, 0.0);
+		pAto.getChildren().add(apPrincipal);
 		
-		AnchorPane.setTopAnchor(sbPrincipal, 0.0);
-		AnchorPane.setBottomAnchor(sbPrincipal, 2.0);
-		AnchorPane.setRightAnchor(sbPrincipal, 0.0);
+		apPrincipal.minWidthProperty().bind(pAto.widthProperty());
+		apPrincipal.minHeightProperty().bind(pAto.heightProperty());
 		
-		AnchorPane.setTopAnchor(bpPrincipal, 0.0);
-	    AnchorPane.setLeftAnchor(bpPrincipal, 0.0);
-		AnchorPane.setRightAnchor(bpPrincipal, 0.0);
-	    AnchorPane.setBottomAnchor(bpPrincipal, 0.0);
+		apPrincipal.getChildren().add(spPrincipal);
+		
+		spPrincipal.setHbarPolicy(ScrollBarPolicy.NEVER);
+		spPrincipal.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		
+	    AnchorPane.setLeftAnchor(spPrincipal, 0.0);
+		AnchorPane.setRightAnchor(spPrincipal, 0.0);
+		AnchorPane.setTopAnchor(spPrincipal, 0.0);
+		AnchorPane.setBottomAnchor(spPrincipal, 47.0);
+		
+		spPrincipal.setPrefSize(200, 200);
+		
+	    bpPrincipal.minWidthProperty().bind(spPrincipal.widthProperty());
+	    bpPrincipal.setPrefHeight(1200);
+
+	    spPrincipal.setContent(bpPrincipal);
 	    
-	    // para rolar a tab //
-	    sbPrincipal.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            	apPrin2.setLayoutY(-new_val.doubleValue());
-            	
-            }
-        });
+	    p1.setMaxSize(1140, 680);
+	    p1.setMinSize(1140, 680);
+	    
+		bpPrincipal.setTop(p1);
+	    BorderPane.setAlignment(p1, Pos.CENTER);
 	    
 	    
-	 // Label para preencher com a demanda a ser trabalhada //
-	    lblVistoria2 = new Label();
-	    lblVistoria2.setStyle("-fx-font-weight: bold;");
-	    lblVistoria2.setPrefSize(727, 25);	
-	    lblVistoria2.setLayoutX(109);
-	    lblVistoria2.setLayoutY(12);
-		
-		p_lbl_Vistoria.getChildren().add(lblVistoria2); 
-		
 		tcTipo.setCellValueFactory(new PropertyValueFactory<Ato, String>("atoTipo")); 
 		tcNumero.setCellValueFactory(new PropertyValueFactory<Ato, String>("atoIdentificacao")); 
 		tcSEI.setCellValueFactory(new PropertyValueFactory<Ato, String>("atoSEI")); 
 		
+		tcTipo.setPrefWidth(409);
+		tcNumero.setPrefWidth(232);
+		tcSEI.setPrefWidth(232);
+		
+		tvLista.getColumns().addAll(tcTipo, tcNumero, tcSEI);
+		tvLista.setItems(obsList);
+		
+		tvLista.setPrefSize(900, 185);
+		tvLista.setLayoutX(120);
+		tvLista.setLayoutY(246);
+		
+		lblDataAtualizacao.setPrefSize(247, 22);
+		lblDataAtualizacao.setLayoutX(772);
+		lblDataAtualizacao.setLayoutY(440);
+		
+		obterVistoria();
+		obterDadosBasicos();
+		obterPersistencia();
+		obterEditoresHTML();
+		
+		p1.getChildren().addAll(p_lblVistoria, pDadosBasicos, pPersistencia, lblDataAtualizacao, tvLista);
+		
 		modularBotoes();
-		
-		// -- inicitalizar a caracterizacao -- //
-		Platform.runLater(() ->{
-		
-			caracterizarHTML();
-			fecharEditorHTML();
-		
-		});
+		selecionarAto();
 		
 		cbAtoTipo.setItems(olAtoTipo);
 		
-		
-		
-		tvLista.setItems(obsList);
+		btnNovo.setOnAction(new EventHandler<ActionEvent>() {
+
+		        @Override
+		        public void handle(ActionEvent event) {
+		            btnNovoHab();
+		        }
+		    });
+			    
+		btnSalvar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnSalvarHab();
+	        }
+	    });
+		    
+	    btnEditar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnEditarHab();
+	        }
+	    });
 	    
+	    btnCancelar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnCancelarHab();
+	        }
+	    });
+	    
+	    btnPesquisar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnPesquisarHab();
+	        }
+	    });
 		
 	}
 	
-	public void bntCaracterizacaoHab (ActionEvent event) {
+	public void obterEditoresHTML () {
+		
+		Label lblCarac = new Label("CARACTERIZAÇÃO: ");
+		lblCarac.setLayoutX(120);
+		lblCarac.setLayoutY(459);
+		
+		htmlCaracteriza.setPrefSize(820, 200);
+		htmlCaracteriza.setLayoutX(160);
+		htmlCaracteriza.setLayoutY(485);
+		
+		Label lblRecom = new Label("RECOMENDAÇÃO: ");
+		lblRecom.setLayoutX(120);
+		lblRecom.setLayoutY(700);
+		
+		htmlRecomenda.setPrefSize(820, 200);
+		htmlRecomenda.setLayoutX(160);
+		htmlRecomenda.setLayoutY(726);
+		
+		htmlCaracteriza.setOnKeyPressed(event -> {
+		    if (event.getCode() == KeyCode.SPACE  
+		            || event.getCode() == KeyCode.TAB ) {
+		        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+		        event.consume();
+		    }
+		});
+		
+		htmlRecomenda.setOnKeyPressed(event -> {
+		    if (event.getCode() == KeyCode.SPACE  
+		            || event.getCode() == KeyCode.TAB ) {
+		        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+		        event.consume();
+		    }
+		});
+		
+		htmlCaracteriza.setHtmlText( 
+	    		"<p><b>This text is bold</b></p>"
+	    		+ "<p><i>This text is italic</i></p>"
+	    		+ "<p>This is<sub> subscript</sub> and <sup>superscript</sup></p>"
+	    		
+	    		);
+		
+		htmlRecomenda.setHtmlText( 
+	    		"<p><b>This text is bold</b></p>"
+	    		+ "<p><i>This text is italic</i></p>"
+	    		+ "<p>This is<sub> subscript</sub> and <sup>superscript</sup></p>"
+	    		
+	    		);
+		
+		p1.getChildren().addAll(lblCarac, htmlCaracteriza, lblRecom, htmlRecomenda);
 		
 	}
 	
+	Button btnBuscaVis = new Button();
+	
+	public void obterVistoria () {
+		
+		p_lblVistoria.setPrefSize(900, 50);
+		p_lblVistoria.setLayoutX(120);
+		p_lblVistoria.setLayoutY(20);
+		p_lblVistoria.setStyle("-fx-background-color: #E9E9E9;");
+		
+		Label lblVis = new Label ("Vistoria: ");
+		lblVis.setLayoutX(48);
+		lblVis.setLayoutY(17);
+		
+		lblVistoria.setPrefSize(712, 25);
+		lblVistoria.setLayoutX(105);
+		lblVistoria.setLayoutY(13);
+		lblVistoria.setStyle("-fx-font-weight: bold;");
+		
+		btnBuscaVis.setPrefSize(25, 25);
+		btnBuscaVis.setLayoutX(828);
+		btnBuscaVis.setLayoutY(13);
+		
+		p_lblVistoria.getChildren().addAll(lblVis, lblVistoria, btnBuscaVis);
+		
+	}
+	
+	public void obterDadosBasicos () {
+		
+		pDadosBasicos.setPrefSize(900, 90);
+		pDadosBasicos.setLayoutX(120);
+		pDadosBasicos.setLayoutY(85);
+		pDadosBasicos.setStyle("-fx-background-color: #E9E9E9;");
+		
+		Label lblTipoAto = new Label ("Tipo de Ato: ");
+		lblTipoAto.setLayoutX(117);
+		lblTipoAto.setLayoutY(17);
+		
+			cbAtoTipo.setPrefSize(252, 25);
+			cbAtoTipo.setLayoutX(194);
+			cbAtoTipo.setLayoutY(13);
+			
+				Label lblNumAto = new Label ("Número do ato: ");
+				lblNumAto.setLayoutX(456);
+				lblNumAto.setLayoutY(17);
+					
+					tfAto.setPrefSize(87, 25);
+					tfAto.setLayoutX(551);
+					tfAto.setLayoutY(13);
+					
+						Label lblSEI = new Label ("n° SEI: ");
+						lblSEI.setLayoutX(650);
+						lblSEI.setLayoutY(17);
+			
+							tfAtoSEI.setPrefSize(87, 25);
+							tfAtoSEI.setLayoutX(697);
+							tfAtoSEI.setLayoutY(13);
+							
+								Label lblDataFis = new Label ("Data da Fiscalização: ");
+								lblDataFis.setLayoutX(228);
+								lblDataFis.setLayoutY(58);
+							
+									dpDataFiscalizacao.setPrefSize(110, 25);
+									dpDataFiscalizacao.setLayoutX(351);
+									dpDataFiscalizacao.setLayoutY(54);
+									
+										Label lblDataCri = new Label ("Data de Criação: ");
+										lblDataCri.setLayoutX(472);
+										lblDataCri.setLayoutY(58);
+									
+											dpDataCriacaoAto.setPrefSize(110, 25);
+											dpDataCriacaoAto.setLayoutX(575);
+											dpDataCriacaoAto.setLayoutY(54);
+		
+
+		pDadosBasicos.getChildren().addAll(
+				
+				lblTipoAto, cbAtoTipo, lblNumAto, tfAto, lblSEI, tfAtoSEI,
+				lblDataFis, dpDataFiscalizacao, lblDataCri, dpDataCriacaoAto
+				);
+		
+	}
+	
+    public void obterPersistencia () {
+    	
+   	    pPersistencia.setPrefSize(900, 50);
+   	    pPersistencia.setLayoutX(120);
+   	    pPersistencia.setLayoutY(180);
+   
+		btnNovo.setPrefSize(76, 25);
+		btnNovo.setLayoutX(42);
+		btnNovo.setLayoutY(12);
+	
+	    btnSalvar.setPrefSize(76, 25);
+	    btnSalvar.setLayoutX(129);
+	    btnSalvar.setLayoutY(12);
+	
+	    btnEditar.setPrefSize(76, 25);
+	    btnEditar.setLayoutX(216);
+	    btnEditar.setLayoutY(12);
+	
+	    btnExcluir.setPrefSize(76, 25);
+	    btnExcluir.setLayoutX(303);
+	    btnExcluir.setLayoutY(12);
+	    
+	    btnCancelar.setPrefSize(76, 25);
+	    btnCancelar.setLayoutX(390);
+	    btnCancelar.setLayoutY(12);
+	    
+	    btnPesquisar.setPrefSize(76, 25);
+	    btnPesquisar.setLayoutX(783);
+	    btnPesquisar.setLayoutY(12);
+	    
+	    tfPesquisar.setPrefSize(295, 25);
+	    tfPesquisar.setLayoutX(477);
+	    tfPesquisar.setLayoutY(12);
+	    
+	    pPersistencia.getChildren().addAll( 
+	    		btnNovo, btnSalvar, btnEditar, btnExcluir,
+	    		btnCancelar, tfPesquisar, btnPesquisar
+	    		
+	    		);
+	    
+	    
+    }
 	
 	
-public void btnNovoHab (ActionEvent event) {
+	public void btnNovoHab () {
 		
 		cbAtoTipo.setDisable(false);
 		tfAto.setDisable(false);
@@ -211,7 +412,7 @@ public void btnNovoHab (ActionEvent event) {
 		dpDataFiscalizacao.setValue(null);
 		dpDataCriacaoAto.setValue(null);
 		
-		htmlCaracterizar.setHtmlText("<p><font face='Times New Roman'> </font></p>");
+		htmlCaracteriza.setHtmlText("<p><font face='Times New Roman'> </font></p>");
 		
 		
 		abrirEditorHTML();
@@ -224,7 +425,7 @@ public void btnNovoHab (ActionEvent event) {
 		
 	}
 
-	public void btnSalvarHab (ActionEvent event) {
+	public void btnSalvarHab () {
 		
 		if (vistoria == null) {
 			
@@ -256,30 +457,30 @@ public void btnNovoHab (ActionEvent event) {
 				ato.setAtoIdentificacao(tfAto.getText());
 				ato.setAtoSEI(tfAtoSEI.getText());
 				
-				ato.setAtoAtualizacao(Timestamp.valueOf(LocalDateTime.now()));
-				
 				if (dpDataFiscalizacao.getValue() == null) {
 					ato.setAtoDataFiscalizacao(null);}
 					else {
-						ato.setAtoDataFiscalizacao(dpDataFiscalizacao.getValue()); // DATA
+						ato.setAtoDataFiscalizacao(Date.valueOf(dpDataFiscalizacao.getValue())); // DATA
 					}
 				
 				if (dpDataCriacaoAto.getValue() == null) {
 					ato.setAtoDataCriacao(null);}
 					else {
-						ato.setAtoDataCriacao(dpDataCriacaoAto.getValue()); // DATA
+						ato.setAtoDataCriacao(Date.valueOf(dpDataCriacaoAto.getValue())); // DATA
 					}
 				
-				ato.setAtoCaracterizacao(htmlCaracterizar.getHtmlText());
+				ato.setAtoCaracterizacao(htmlCaracteriza.getHtmlText());
+				ato.setAtoRecomendacao(htmlRecomenda.getHtmlText());
 				
 				ato.setAtoVistoriaFK(vistoria);
+				
+				ato.setAtoAtualizacao(Timestamp.valueOf(LocalDateTime.now()));
 				
 				AtoDao atoDao = new  AtoDao();
 				
 				atoDao.mergeAto(ato);
 				
-				selecionarAto();
-				
+				obsList.add(ato);
 				
 				modularBotoes();
 				fecharEditorHTML();
@@ -293,7 +494,7 @@ public void btnNovoHab (ActionEvent event) {
 		}
 	}
 	
-	public void btnEditarHab (ActionEvent event) {
+	public void btnEditarHab () {
 		
 		if (cbAtoTipo.isDisable()) {
 			
@@ -326,31 +527,31 @@ public void btnNovoHab (ActionEvent event) {
 			ato.setAtoTipo(cbAtoTipo.getValue());
 			ato.setAtoIdentificacao(tfAto.getText());
 			ato.setAtoSEI(tfAtoSEI.getText());
-			ato.setAtoAtualizacao(Timestamp.valueOf(LocalDateTime.now()));
+			
 			
 			if (dpDataFiscalizacao.getValue() == null) {
 				ato.setAtoDataFiscalizacao(null);}
 				else {
-					ato.setAtoDataFiscalizacao(dpDataFiscalizacao.getValue()); // DATA
+					ato.setAtoDataFiscalizacao(Date.valueOf(dpDataFiscalizacao.getValue())); // DATA
 				}
 			
 			if (dpDataCriacaoAto.getValue() == null) {
 				ato.setAtoDataCriacao(null);}
 				else {
-					ato.setAtoDataCriacao(dpDataCriacaoAto.getValue()); // DATA
+					ato.setAtoDataCriacao(Date.valueOf(dpDataCriacaoAto.getValue())); // DATA
 				}
 
-			ato.setAtoCaracterizacao(htmlCaracterizar.getHtmlText());
+			ato.setAtoCaracterizacao(htmlCaracteriza.getHtmlText());
+			ato.setAtoRecomendacao(htmlRecomenda.getHtmlText());
+			
+			ato.setAtoAtualizacao(Timestamp.valueOf(LocalDateTime.now()));
 			
 			AtoDao atoDao = new AtoDao();
 			
 				atoDao.mergeAto(ato);
 			
 			obsList.remove(ato);
-			
 			obsList.add(ato);
-			
-			selecionarAto();
 			
 			modularBotoes();
 			fecharEditorHTML();
@@ -367,7 +568,7 @@ public void btnNovoHab (ActionEvent event) {
 		
 	}
 
-	public void btnExcluirHab (ActionEvent event) {
+	public void btnExcluirHab () {
 		
 		try {
 	
@@ -378,8 +579,6 @@ public void btnNovoHab (ActionEvent event) {
 			atoDao.removerAto(ato.getAtoID());
 			
 			obsList.remove(ato);
-			
-			selecionarAto();
 			
 			modularBotoes();
 			
@@ -401,22 +600,19 @@ public void btnNovoHab (ActionEvent event) {
 				
 			};
 		
-		
 	}
 	
-	public void btnCancelarHab (ActionEvent event) {
+	public void btnCancelarHab () {
 		
 		modularBotoes();
 		fecharEditorHTML();
 	}
 	
-	
-public void btnPesquisarHab (ActionEvent event) {
+	public void btnPesquisarHab () {
 		
 		strPesquisa = tfPesquisar.getText();
 		
 		listarAtos(strPesquisa);
-		selecionarAto ();
 		
 		modularBotoes();
 		fecharEditorHTML();
@@ -439,7 +635,7 @@ public void btnPesquisarHab (ActionEvent event) {
 		btnNovo.setDisable(false);
 	}
 	
-	@FXML Pane pAto;
+	//@FXML Pane pAto;
 	@FXML AnchorPane apAtoInt;
 	@FXML BorderPane bpAto;
 	
@@ -456,7 +652,6 @@ public void btnPesquisarHab (ActionEvent event) {
 		
 			for (Ato ato : atoList) {
 				
-					
 				ato.getAtoID();
 				ato.getAtoVistoriaFK();
 				ato.getAtoTipo();
@@ -500,33 +695,31 @@ public void btnPesquisarHab (ActionEvent event) {
  				if (ato.getAtoDataFiscalizacao() == null) {
  					dpDataFiscalizacao.getEditor().clear();
 	 				} else {
-	 					dpDataFiscalizacao.setValue(ato.getAtoDataFiscalizacao());
+	 					Date dataFis = ato.getAtoDataFiscalizacao();
+	 					dpDataFiscalizacao.setValue(dataFis.toLocalDate());
 	 				}
  				
  				if (ato.getAtoDataCriacao() == null) {
  					dpDataCriacaoAto.getEditor().clear();
 	 				} else {
-	 					dpDataCriacaoAto.setValue(ato.getAtoDataCriacao());
+	 					Date dataCri = ato.getAtoDataCriacao();
+	 					dpDataCriacaoAto.setValue(dataCri.toLocalDate());
 	 				}
  				
- 				htmlCaracterizar.setHtmlText(ato.getAtoCaracterizacao());
+ 				htmlCaracteriza.setHtmlText(ato.getAtoCaracterizacao());
+ 				htmlRecomenda.setHtmlText(ato.getAtoRecomendacao());
  				
- 				FormatoData d = new FormatoData();
-				
 				// mostrar data de atualizacao //
- 				
+ 				FormatoData d = new FormatoData();
 				try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(ato.getAtoAtualizacao()));
 						lblDataAtualizacao.setTextFill(Color.BLACK);
 				}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 						lblDataAtualizacao.setTextFill(Color.RED);}
  			
- 				//-- mudar a vistoria de acordo com a seleçao --//
-				//visGeral = ato.getAtoVistoriaFK();
- 				
  				vistoria = ato.getAtoVistoriaFK();
 				
  				
- 				lblVistoria2.setText(
+ 				lblVistoria.setText(
  						"Vistoria n°: " + vistoria.getVisSEI()
  						+ ", Data da fiscalização: " + vistoria.getVisDataFiscalizacao()
  				);
@@ -550,52 +743,14 @@ public void btnPesquisarHab (ActionEvent event) {
  		});
   	}
   	
-  	public void caracterizarHTML () {
-  		
-  		
-		
-		htmlCaracterizar.setPrefSize(800, 200);
-		htmlCaracterizar.setLayoutX(165);
-		htmlCaracterizar.setLayoutY(467);
-		
-		
-		/*
-		htmlCaracterizar.setOnKeyPressed(event -> {
-			    if (event.getCode() == KeyCode.SPACE  
-			            || event.getCode() == KeyCode.TAB ) {
-			        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
-			        event.consume();
-			    }
-			});
-			*/
-		
-		//htmlCaracterizar.setHtmlText("<p><font face='Times New Roman'> </font></p>");
-		
-		htmlCaracterizar.setHtmlText( 
-	    		"<p><b>This text is bold</b></p>"
-	    		+ "<p><i>This text is italic</i></p>"
-	    		+ "<p>This is<sub> subscript</sub> and <sup>superscript</sup></p>"
-	    		
-	    		);
-	    
-			
-			//StackPane rootCaracterizacao = new StackPane();
-			//rootCaracterizacao.getChildren().add(htmlCaracterizar);
-			pAto.getChildren().add(htmlCaracterizar);
-  	}
-  	
-  	public void btnGerarAtoHab (ActionEvent event) {
-  		
-  	}
-	
-  	
   	public void fecharEditorHTML (){
-		htmlCaracterizar.setDisable(true);
+		htmlCaracteriza.setDisable(true);
+		htmlRecomenda.setDisable(true);
 	}
+  	
 	public void abrirEditorHTML (){
-		htmlCaracterizar.setDisable(false);
+		htmlCaracteriza.setDisable(false);
+		htmlRecomenda.setDisable(false);
 	}
-
-	
 
 }

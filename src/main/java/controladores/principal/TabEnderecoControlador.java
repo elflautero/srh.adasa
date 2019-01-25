@@ -1,4 +1,4 @@
-package controladores.fiscalizacao;
+package controladores.principal;
 
 import java.net.URL;
 import java.sql.Timestamp;
@@ -10,7 +10,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
-import controladores.principal.ControladorPrincipal;
+import controladores.fiscalizacao.TabVistoriaControlador;
 import dao.EnderecoDao;
 import entidades.Demanda;
 import entidades.Endereco;
@@ -21,14 +21,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -55,7 +58,7 @@ public class TabEnderecoControlador implements Initializable {
 		
 		TabEnderecoControlador.demanda = demanda;
 		// preencher o label com a demanda selecionada //
-		TabEnderecoControlador.lblDemanda2.setText(
+		TabEnderecoControlador.lblDemanda.setText(
 				demanda.getDemDocumento() 
 				+ ", Sei n° " + demanda.getDemDocumentoSEI()
 				+ ", Processo n° " + demanda.getDemProcessoSEI()
@@ -67,53 +70,38 @@ public class TabEnderecoControlador implements Initializable {
 		return demanda;
 	}
 	
+	TextField tfEnd = new TextField();
 	
-	@FXML Pane tabEndereco;
-	@FXML Button btnBuscarDoc;
-	@FXML TextField tfEnd;
+	TextField tfCep = new TextField();
+	TextField  tfCid = new TextField();
 	
+	TextField tfLat = new TextField();
+	TextField tfLon = new TextField();
 	
-	@FXML TextField tfEndCep;
-	@FXML TextField  tfEndCid;
-	
-	@FXML TextField tfEndLat;
-	@FXML TextField tfEndLon;
-	
-	@FXML Button btnNovo;
-	@FXML Button btnSalvar;
-	@FXML Button btnEditar;
-	@FXML Button btnExcluir;
-	@FXML Button btnCancelar;
-	@FXML Button btnPesquisar;
-	
-	@FXML Button btnEndCoord;
-	@FXML Pane pEndMap;
-	@FXML Pane pEndereco;
-	
-	@FXML Button btnEndMaps;
-	
-	@FXML Label lblDataAtualizacao;
+	Button btnNovo = new Button("Novo");
+	Button btnSalvar = new Button("Salvar");
+	Button btnEditar = new Button("Editar");
+	Button btnExcluir = new Button("Excluir");
+	Button btnCancelar = new Button("Cancelar");
+	Button btnPesquisar = new Button("Pesquisar");
+	TextField tfPesquisar = new TextField();
 	
 	
-	@FXML Button btnDenAtualizar;
-	@FXML TextField tfEndPesq;
+	Button btnCoord = new Button();
+	Pane pMap;
+
+	Button btnMaps = new Button();
 	
-	@FXML Button btnEndLatLon;
-	
-	@FXML Pane pEndCoord;
+	Label lblDataAtualizacao = new Label();
 	
 	//-- TableView endereco --//
-	@FXML private TableView <Endereco> tvLista;
+	private TableView <Endereco> tvLista = new TableView<>();
+
+	TableColumn<Endereco, String> tcDesEnd = new TableColumn<>("Endereço");
+	TableColumn<Endereco, String> tcEndRA = new TableColumn<>("Região Administrativa");
+	TableColumn<Endereco, String> tcEndCid = new TableColumn<>("CEP");
 	
-	@FXML TableColumn<Endereco, String> tcDesEnd;
-	@FXML TableColumn<Endereco, String> tcEndRA;
-	@FXML TableColumn<Endereco, String> tcEndCid;
-	
-	@FXML TextField tfPesquisar;
-	
-	@FXML Pane p_lblDemanda;
-	@FXML Label lblDemanda1; // captura layout x y, tamanho e largura para lblDemanda2
-	static Label lblDemanda2;
+	static Label lblDemanda = new Label();
 	
 	int intRA = 1;
 	String strRA = "Plano Piloto";
@@ -165,13 +153,13 @@ public class TabEnderecoControlador implements Initializable {
 			); 	
 		
 		//-- combobox - unidade federal --//
-		@FXML
+
 		ChoiceBox<String> cbEndUF = new ChoiceBox<String>();
 			ObservableList<String> olEndUF = FXCollections
 				.observableArrayList("DF" , "GO", "Outro");
 
 		
-		@FXML Label lblEndereco = new Label();
+		Label lblEndereco = new Label();
 		
 		//-- string para chamar as coordenadas corretas do mapa --//
 		String strHTMLMap;
@@ -182,32 +170,30 @@ public class TabEnderecoControlador implements Initializable {
 		
 		ObservableList<Endereco> obsList = FXCollections.observableArrayList();
 		
-		
-		
-	public void btnNovoHab (ActionEvent event) {
+	public void btnNovoHab () {
 		
 		tfEnd.setText("");
 		
 		cbEndRA.setValue(null);
 		
-		tfEndCep.setText("");
-		tfEndCid.setText("Brasília");
+		tfCep.setText("");
+		tfCid.setText("Brasília");
 		
 		cbEndUF.setValue("DF");
 		
-		tfEndLat.setText("");
-		tfEndLon.setText("");
+		tfLat.setText("");
+		tfLon.setText("");
 		
 		
 		tfEnd.setDisable(false);
 		cbEndRA.setDisable(false);
 		
 		
-		tfEndCep.setDisable(false);
-		tfEndCid.setDisable(false);
+		tfCep.setDisable(false);
+		tfCid.setDisable(false);
 		cbEndUF.setDisable(false);
-		tfEndLat.setDisable(false);
-		tfEndLon.setDisable(false);
+		tfLat.setDisable(false);
+		tfLon.setDisable(false);
 	
 		btnSalvar.setDisable(false);
 		btnEditar.setDisable(true);
@@ -216,10 +202,10 @@ public class TabEnderecoControlador implements Initializable {
 		
 	}
 	
-	public void btnSalvarHab (ActionEvent event) {
+	public void btnSalvarHab () {
 		
-		if (tfEndLat.getText().isEmpty() || 
-				tfEndLon.getText().isEmpty()) {
+		if (tfLat.getText().isEmpty() || 
+				tfLon.getText().isEmpty()) {
 			
 			Alerta a = new Alerta ();
 			a.alertar(new Alert(Alert.AlertType.ERROR, "Coordenadas inválidas!!!", ButtonType.OK));
@@ -252,20 +238,20 @@ public class TabEnderecoControlador implements Initializable {
 							end.setEndLogadouro(tfEnd.getText());
 							end.setEndRAFK(ra);
 								
-							end.setEndCEP(tfEndCep.getText());
-							end.setEndCidade(tfEndCid.getText());
+							end.setEndCEP(tfCep.getText());
+							end.setEndCidade(tfCid.getText());
 							end.setEndUF(cbEndUF.getValue());
 							
 							try {
 								
-								end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
-								end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
+								end.setEndDDLatitude(Double.parseDouble(tfLat.getText()));
+								end.setEndDDLongitude(Double.parseDouble(tfLon.getText()));
 								
 								GeometryFactory geoFac = new GeometryFactory();
 								
 								Point p = geoFac.createPoint(new Coordinate(
-										Double.parseDouble(tfEndLon.getText()),
-										Double.parseDouble(tfEndLat.getText()
+										Double.parseDouble(tfLon.getText()),
+										Double.parseDouble(tfLat.getText()
 										)));
 								
 								p.setSRID(4674);
@@ -321,23 +307,23 @@ public class TabEnderecoControlador implements Initializable {
 			
 	}
 	
-	public void btnEditarHab (ActionEvent event) {
+	public void btnEditarHab () {
 	
 	
 	if (tfEnd.isDisable()) {
 		
 		tfEnd.setDisable(false);
 		cbEndRA.setDisable(false);
-		tfEndCep.setDisable(false);
-		tfEndCid.setDisable(false);
+		tfCep.setDisable(false);
+		tfCid.setDisable(false);
 		cbEndUF.setDisable(false);
-		tfEndLat.setDisable(false);
-		tfEndLon.setDisable(false);
+		tfLat.setDisable(false);
+		tfLon.setDisable(false);
 	
 			
 	} else {
 		
-		if (tfEndLat.getText().isEmpty()|| tfEndLon.getText().isEmpty() ) {
+		if (tfLat.getText().isEmpty()|| tfLon.getText().isEmpty() ) {
 			Alerta a = new Alerta ();
 			a.alertar(new Alert(Alert.AlertType.ERROR, "Coordenadas inválidas!!!", ButtonType.OK));
 			// colocar para não aceitar texto e somente número
@@ -360,18 +346,18 @@ public class TabEnderecoControlador implements Initializable {
 					
 				end.setEndLogadouro(tfEnd.getText());
 				end.setEndRAFK(ra);
-				end.setEndCEP(tfEndCep.getText());
-				end.setEndCidade(tfEndCid.getText());
+				end.setEndCEP(tfCep.getText());
+				end.setEndCidade(tfCid.getText());
 				end.setEndUF(cbEndUF.getValue());
 				
-				end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
-				end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
+				end.setEndDDLatitude(Double.parseDouble(tfLat.getText()));
+				end.setEndDDLongitude(Double.parseDouble(tfLon.getText()));
 				
 				GeometryFactory geoFac = new GeometryFactory();
 				
 				Point p = geoFac.createPoint(new Coordinate(
-						Double.parseDouble(tfEndLon.getText()),
-						Double.parseDouble(tfEndLat.getText()
+						Double.parseDouble(tfLon.getText()),
+						Double.parseDouble(tfLat.getText()
 						)));
 				
 				p.setSRID(4674);
@@ -419,7 +405,7 @@ public class TabEnderecoControlador implements Initializable {
 	
 }
 
-	public void btnExcluirHab (ActionEvent event) {
+	public void btnExcluirHab () {
 	
 		Endereco end = tvLista.getSelectionModel().getSelectedItem();
 		
@@ -454,7 +440,7 @@ public class TabEnderecoControlador implements Initializable {
 		
 }
 
-	public void btnCancelarHab (ActionEvent event) {
+	public void btnCancelarHab () {
 	
 		modularBotoesInicial ();
 		
@@ -462,16 +448,16 @@ public class TabEnderecoControlador implements Initializable {
 		
 		cbEndRA.setValue(null);
 		
-		tfEndCep.setText("");
+		tfCep.setText("");
 		
 		cbEndUF.setValue(null);
 		
-		tfEndLat.setText("");
-		tfEndLon.setText("");
+		tfLat.setText("");
+		tfLon.setText("");
 	
 }
 
-	public void btnPesquisarHab (ActionEvent event) {
+	public void btnPesquisarHab () {
 	
 	
 		strPesquisa = tfPesquisar.getText();
@@ -484,73 +470,92 @@ public class TabEnderecoControlador implements Initializable {
 	
 }
 
-	public void btnEndLatLonHab (ActionEvent event) {
+	public void btnMapsHab () {
+		
+		tfLat.setText( ControladorPrincipal.capturarGoogleMaps().getLat() );
+		tfLon.setText( ControladorPrincipal.capturarGoogleMaps().getLon());
 		
 	}
 
-	public void btnEndMapsHab (ActionEvent event) {
-		
-		tfEndLat.setText( ControladorPrincipal.capturarGoogleMaps().getLat() );
-		tfEndLon.setText( ControladorPrincipal.capturarGoogleMaps().getLon());
-		
-	}
-
-	public void btnEndCoordHab (ActionEvent event) {
-		
-	}
 	
-	@FXML AnchorPane apPrincipal = new AnchorPane();
-	@FXML AnchorPane apPrin1 = new AnchorPane();
-	@FXML AnchorPane apPrin2 = new AnchorPane();
-	@FXML BorderPane bpPrincipal = new BorderPane();
-	@FXML ScrollBar sbPrincipal = new ScrollBar();
-
-
-	@Override
+	@FXML Pane pEndereco;
+	AnchorPane apPrincipal = new AnchorPane();
+	BorderPane bpPrincipal = new BorderPane();
+	ScrollPane spPrincipal = new ScrollPane();
+	Pane p1 = new Pane ();
+	
+	Pane p_lblDemanda = new Pane();
+	Pane pDadosBasicos = new Pane();
+	Pane pPersistencia = new Pane();
+	
+	@SuppressWarnings("unchecked")
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		AnchorPane.setTopAnchor(apPrin1, 0.0);
-	    AnchorPane.setLeftAnchor(apPrin1, 0.0);
-		AnchorPane.setRightAnchor(apPrin1, 0.0);
-	    AnchorPane.setBottomAnchor(apPrin1, 0.0);
-	
-	    AnchorPane.setLeftAnchor(apPrin2, 0.0);
-		AnchorPane.setRightAnchor(apPrin2, 0.0);
+		pEndereco.getChildren().add(apPrincipal);
 		
-		AnchorPane.setTopAnchor(sbPrincipal, 0.0);
-		AnchorPane.setBottomAnchor(sbPrincipal, 2.0);
-		AnchorPane.setRightAnchor(sbPrincipal, 0.0);
+		apPrincipal.minWidthProperty().bind(pEndereco.widthProperty());
+		apPrincipal.minHeightProperty().bind(pEndereco.heightProperty());
 		
-		AnchorPane.setTopAnchor(bpPrincipal, 0.0);
-	    AnchorPane.setLeftAnchor(bpPrincipal, 0.0);
-		AnchorPane.setRightAnchor(bpPrincipal, 0.0);
-	    AnchorPane.setBottomAnchor(bpPrincipal, 0.0);
+		apPrincipal.getChildren().add(spPrincipal);
+		
+		spPrincipal.setHbarPolicy(ScrollBarPolicy.NEVER);
+		spPrincipal.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		
+	    AnchorPane.setLeftAnchor(spPrincipal, 0.0);
+		AnchorPane.setRightAnchor(spPrincipal, 0.0);
+		AnchorPane.setTopAnchor(spPrincipal, 0.0);
+		AnchorPane.setBottomAnchor(spPrincipal, 47.0);
+		
+		spPrincipal.setPrefSize(200, 200);
+		
+	    bpPrincipal.minWidthProperty().bind(spPrincipal.widthProperty());
+	    bpPrincipal.setPrefHeight(1200);
+
+	    spPrincipal.setContent(bpPrincipal);
 	    
-	    // para rolar a tab //
-	    sbPrincipal.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            	apPrin2.setLayoutY(-new_val.doubleValue());
-            }
-        });
+	    p1.setMaxSize(1140, 680);
+	    p1.setMinSize(1140, 680);
+	    
+		bpPrincipal.setTop(p1);
+	    BorderPane.setAlignment(p1, Pos.CENTER);
 	    
 	    // para trazer o valor da entidade principal, no caso Endereco
 	    tcDesEnd.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endLogadouro"));
 		// para trazer valor de outra entidade, no caso RA
-	    
-		tcEndRA.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Endereco, String>, ObservableValue<String>>() {
+	    tcEndRA.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Endereco, String>, ObservableValue<String>>() {
 		    public ObservableValue<String> call(TableColumn.CellDataFeatures<Endereco, String> e) {
 		    	return new SimpleStringProperty(e.getValue().getEndRAFK().getRaNome());
 		       
 		    }
 		});
 		
+		tcDesEnd.setPrefWidth(409);
+		tcEndRA.setPrefWidth(232);
+		tcEndCid.setPrefWidth(232);
+			
+	    tvLista.getColumns().addAll(tcDesEnd, tcEndRA, tcEndCid);
+	    tvLista.setItems(obsList);
+	    
+	    tvLista.setPrefSize(900, 185);
+		tvLista.setLayoutX(120);
+		tvLista.setLayoutY(298);
+	    
+	    lblDataAtualizacao.setPrefSize(247, 22);
+	    lblDataAtualizacao.setLayoutX(772);
+	    lblDataAtualizacao.setLayoutY(493);
+	    
+	    obterDemanda ();
+	    obterDadosBasicos ();
+	    obterPersistencia ();
+	    
 		// para trazer o valor da entidade principal, no caso Endereco
-		tcEndCid.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endCEP")); // endCEP
+		//tcEndCid.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endCEP")); // endCEP
 	    
 	    cbEndRA.setItems(olEndRA);
 	    cbEndRA.setValue("Plano Piloto");
 	    cbEndUF.setItems(olEndUF);
+	    
+	    p1.getChildren().addAll(p_lblDemanda, pDadosBasicos, pPersistencia, lblDataAtualizacao, tvLista);
 	    
 	    cbEndRA.getSelectionModel().selectedIndexProperty().addListener(new
 	            ChangeListener<Number>() {
@@ -571,36 +576,228 @@ public class TabEnderecoControlador implements Initializable {
 	    	strRA = (String) newValue 
 	    );
 	    
-	    
-	    
-	    tvLista.setItems(obsList);
-	    
 	    // ao abrir fechar os campos para edicao //
 	    modularBotoesInicial();
 	    // ativar na tableview a possibilidade e selecionar uma opcao //
 	    selecionarEndereco();
 	   
-	    // Label para preencher com a demanda a ser trabalhada //
-	    lblDemanda2 = new Label();
-	    lblDemanda2.setStyle("-fx-font-weight: bold;");
-		lblDemanda2.setPrefSize(727, 26);	
-		lblDemanda2.setLayoutX(109);
-		lblDemanda2.setLayoutY(12);
-		
-		p_lblDemanda.getChildren().add(lblDemanda2);
-			
+	    btnNovo.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnNovoHab();
+	        }
+	    });
+		    
+	    btnSalvar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnSalvarHab();
+	        }
+	    });
+	    
+	    btnEditar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnEditarHab();
+	        }
+	    });
+	    
+	    btnCancelar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnCancelarHab();
+	        }
+	    });
+	    
+	    btnPesquisar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnPesquisarHab();
+	        }
+	    });
+	    
+	    btnMaps.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	 btnMapsHab ();
+	        }
+	    });
+	    
+	    btnExcluir.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnExcluirHab();
+	        }
+	    });
+	    
+	   
+	    	
 	}
+	
+	public void obterDemanda () {
+		
+		p_lblDemanda.setPrefSize(900, 50);
+		p_lblDemanda.setLayoutX(120);
+		p_lblDemanda.setLayoutY(20);
+		p_lblDemanda.setStyle("-fx-background-color: #E9E9E9;");
+		
+		Label lblDem = new Label ("Documento: ");
+		lblDem.setLayoutX(20);
+		lblDem.setLayoutY(16);
+		
+		// Label para preencher com a demanda a ser trabalhada //
+	    lblDemanda.setStyle("-fx-font-weight: bold;");
+	    lblDemanda.setPrefSize(750, 25);	
+		lblDemanda.setLayoutX(95);
+		lblDemanda.setLayoutY(13);
+		
+		btnCoord.setPrefSize(25, 25);
+		btnCoord.setLayoutX(856);
+		btnCoord.setLayoutY(13);
+		
+		p_lblDemanda.getChildren().addAll(lblDem, lblDemanda, btnCoord);
+		
+	}
+	
+	public void obterDadosBasicos () {
+		
+		pDadosBasicos.setPrefSize(900, 147);
+		pDadosBasicos.setLayoutX(120);
+		pDadosBasicos.setLayoutY(80);
+		pDadosBasicos.setStyle("-fx-background-color: #E9E9E9;");
+		
+		
+		Label lblEnd = new Label ("Endereço do  Empreendimento: ");
+		lblEnd.setLayoutX(12);
+		lblEnd.setLayoutY(38);
+		
+			tfEnd.setPrefSize(424, 25);
+			tfEnd.setLayoutX(13);
+			tfEnd.setLayoutY(61);
+
+		Label lblRA = new Label ("Região Administrativa: ");
+		lblRA.setLayoutX(450);
+		lblRA.setLayoutY(38);
+		
+			cbEndRA.setPrefSize(164	, 25);
+			cbEndRA.setLayoutX(449);
+			cbEndRA.setLayoutY(61);
+		
+		Label lblCep = new Label ("Cep: ");
+		lblCep.setLayoutX(626);
+		lblCep.setLayoutY(38);
+		
+			tfCep.setPrefSize(100, 25);
+			tfCep.setLayoutX(626);
+			tfCep.setLayoutY(61);
+		
+		Label lblCid = new Label ("Cidade: ");
+		lblCid.setLayoutX(735);
+		lblCid.setLayoutY(38);
+		
+			tfCid.setPrefSize(87, 25);
+			tfCid.setLayoutX(735);
+			tfCid.setLayoutY(61);
+		
+		Label lblUF = new Label ("UF: ");
+		lblUF.setLayoutX(834);
+		lblUF.setLayoutY(38);
+		
+			cbEndUF.setPrefSize(55	, 25);
+			cbEndUF.setLayoutX(833);
+			cbEndUF.setLayoutY(61);
+		
+		Label lblLat = new Label ("Latitude (Y): ");
+		lblLat.setLayoutX(203);
+		lblLat.setLayoutY(112);
+		
+			tfLat.setPrefSize(140, 25);
+			tfLat.setPromptText("-15.7754084");
+			tfLat.setLayoutX(280);
+			tfLat.setLayoutY(108);
+		
+		Label lblLon = new Label ("Longitude (X): ");
+		lblLon.setLayoutX(431);
+		lblLon.setLayoutY(112);
+			
+			tfLon.setPrefSize(140, 25);
+			tfLon.setPromptText("-47.9411395");
+			tfLon.setLayoutX(519);
+			tfLon.setLayoutY(108);
+			
+		btnMaps.setPrefSize(25, 25);	
+		btnMaps.setLayoutX(670);
+		btnMaps.setLayoutY(108);
+		
+		
+		pDadosBasicos.getChildren().addAll(
+				lblEnd, tfEnd, lblRA, cbEndRA, lblCep, tfCep, lblCid, tfCid, lblUF, cbEndUF,
+				lblLat, tfLat, lblLon, tfLon,
+				btnMaps
+				
+				);
+	}
+	
+    public void obterPersistencia () {
+    	
+   	    pPersistencia.setPrefSize(900, 50);
+   	    pPersistencia.setLayoutX(120);
+   	    pPersistencia.setLayoutY(233);
+   
+		btnNovo.setPrefSize(76, 25);
+		btnNovo.setLayoutX(42);
+		btnNovo.setLayoutY(12);
+	
+	    btnSalvar.setPrefSize(76, 25);
+	    btnSalvar.setLayoutX(129);
+	    btnSalvar.setLayoutY(12);
+	
+	    btnEditar.setPrefSize(76, 25);
+	    btnEditar.setLayoutX(216);
+	    btnEditar.setLayoutY(12);
+	
+	    btnExcluir.setPrefSize(76, 25);
+	    btnExcluir.setLayoutX(303);
+	    btnExcluir.setLayoutY(12);
+	    
+	    btnCancelar.setPrefSize(76, 25);
+	    btnCancelar.setLayoutX(390);
+	    btnCancelar.setLayoutY(12);
+	    
+	    btnPesquisar.setPrefSize(76, 25);
+	    btnPesquisar.setLayoutX(783);
+	    btnPesquisar.setLayoutY(12);
+	    
+	    tfPesquisar.setPrefSize(295, 25);
+	    tfPesquisar.setLayoutX(477);
+	    tfPesquisar.setLayoutY(12);
+	    
+	    pPersistencia.getChildren().addAll( 
+	    		btnNovo, btnSalvar, btnEditar, btnExcluir,
+	    		btnCancelar, tfPesquisar, btnPesquisar
+	    		
+	    		);
+	    
+	    
+    }
 	
 	//-- Modular os botoes na inicializacao do programa --//
 	private void modularBotoesInicial () {
 		
 		tfEnd.setDisable(true);
 		cbEndRA.setDisable(true);
-		tfEndCep.setDisable(true);
-		tfEndCid.setDisable(true);
+		tfCep.setDisable(true);
+		tfCid.setDisable(true);
 		cbEndUF.setDisable(true);
-		tfEndLat.setDisable(true);
-		tfEndLon.setDisable(true);
+		tfLat.setDisable(true);
+		tfLon.setDisable(true);
 		
 		btnSalvar.setDisable(true);
 		btnEditar.setDisable(true);
@@ -615,8 +812,6 @@ public class TabEnderecoControlador implements Initializable {
 	 	// --- conexao - listar enderecos --- //
 		EnderecoDao enderecoDao = new EnderecoDao();
 		List<Endereco> enderecoList = enderecoDao.listarEndereco(strPesquisa);
-		//obsList = FXCollections.observableArrayList();
-		
 		
 		if (!obsList.isEmpty()) {
 			obsList.clear();
@@ -641,8 +836,6 @@ public class TabEnderecoControlador implements Initializable {
     		obsList.add(e);
     		
 		}
-			
-		tvLista.setItems(obsList); 
 		
 	}
 	
@@ -659,10 +852,10 @@ public class TabEnderecoControlador implements Initializable {
 					
 					tfEnd.setText("");
 					
-					tfEndCep.setText("");
-					tfEndCid.setText("");
-					tfEndLat.setText("");
-					tfEndLon.setText("");
+					tfCep.setText("");
+					tfCid.setText("");
+					tfLat.setText("");
+					tfLon.setText("");
 					
 					btnNovo.setDisable(true);
 					btnSalvar.setDisable(true);
@@ -677,13 +870,13 @@ public class TabEnderecoControlador implements Initializable {
 					
 					cbEndRA.setValue(end.getEndRAFK().getRaNome()); 
 					
-					tfEndCep.setText(end.getEndCEP());
-					tfEndCid.setText(end.getEndCidade());
+					tfCep.setText(end.getEndCEP());
+					tfCid.setText(end.getEndCidade());
 					
 					cbEndUF.setValue(end.getEndUF());
 					
-					tfEndLat.setText(end.getEndDDLatitude().toString());
-					tfEndLon.setText(end.getEndDDLongitude().toString());
+					tfLat.setText(end.getEndDDLatitude().toString());
+					tfLon.setText(end.getEndDDLongitude().toString());
 					
 					tabIntCon.setEndereco(end);
 					tabUsCon.setEndereco(end);
@@ -702,12 +895,9 @@ public class TabEnderecoControlador implements Initializable {
 					}
 					*/
 					
-					System.out.println("srid Endereco " + end.getEndGeom().getSRID());
-					
-					FormatoData d = new FormatoData();
 					
 					// mostrar data de atualizacao //
-					
+					FormatoData d = new FormatoData();
 					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(end.getEndAtualizacao()));
 							lblDataAtualizacao.setTextFill(Color.BLACK);
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");

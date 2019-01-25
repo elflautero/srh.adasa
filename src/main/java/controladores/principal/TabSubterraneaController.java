@@ -1,4 +1,4 @@
-package controladores.fiscalizacao;
+package controladores.principal;
 
 import java.net.URL;
 import java.sql.Date;
@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import entidades.SubSistema;
 import entidades.Subterranea;
+import entidades.TipoPoco;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -39,10 +40,10 @@ public class TabSubterraneaController implements Initializable {
 	public Subterranea obterSubterranea () {
 		
 		// adicionar o id escolhido no combobox
-		subSistema.setSubID(subSistemaID);;
+		subSistema.setSubID(subSistemaID);
+		tipoPoco.setTipoPocoID(tipoPocoID);
 		
-		sub.setSubTipoCaptacao(cbTipoCaptacao.getValue());
-		
+		sub.setSubTipoPocoFK(tipoPoco);
 		sub.setSubSubSistemaFK(subSistema);
 		
 		sub.setSubVazao(tfVazao.getText());
@@ -65,10 +66,9 @@ public class TabSubterraneaController implements Initializable {
 	
 	public void imprimirSubterranea (Subterranea sub) {
 		
-		cbTipoCaptacao.setValue(sub.getSubTipoCaptacao());
-		
-		// mostrar a descricao do subsistema //
+		cbTipoPoco.setValue(sub.getSubTipoPocoFK().getTipoPocoDescricao());
 		cbSubSis.setValue(sub.getSubSubSistemaFK().getSubDescricao());
+		
 		tfVazao.setText(sub.getSubVazao());
 		tfEstatico.setText(sub.getSubEstatico());
 		tfDinamico.setText(sub.getSubDinamico());
@@ -76,10 +76,8 @@ public class TabSubterraneaController implements Initializable {
 		
 		cbSubCaesb.setValue(sub.getSubCaesb());
 		
-		Date dataOper = sub.getSubDataOperacao();
-		dpDataSubterranea.setValue(dataOper.toLocalDate());
-		
-		System.out.println(sub.getSubSubSistemaFK().getSubDescricao());
+		Date d = sub.getSubDataOperacao();
+		dpDataSubterranea.setValue(d.toLocalDate());
 		
 	}
 	
@@ -109,13 +107,16 @@ public class TabSubterraneaController implements Initializable {
 		int subSistemaID = 1;
 		final int [] listaSubsistema = new int [] { 1,2,3,4,5,6,7,8,9,10,11,12,13 };
 		
+		int tipoPocoID = 1;
+		final int [] listaTipoPoco = new int [] { 1,2 };
+		
 	
 		@FXML
-		ChoiceBox<String> cbTipoCaptacao = new ChoiceBox<String>();
-			ObservableList<String> olTipoCaptacao = FXCollections
+		ChoiceBox<String> cbTipoPoco = new ChoiceBox<String>();
+			ObservableList<String> olTipoPoco = FXCollections
 				.observableArrayList(
-						"Tubular", 
-						"Manual"
+						"Manual", 
+						"Tubular"
 						
 						); 
 			
@@ -130,15 +131,15 @@ public class TabSubterraneaController implements Initializable {
 	
 	
 	SubSistema subSistema = new SubSistema ();
+	TipoPoco tipoPoco = new TipoPoco();
 	
 	//-- INITIALIZE --//
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		
-		cbTipoCaptacao.setItems(olTipoCaptacao);
+		cbTipoPoco.setItems(olTipoPoco);
 		cbSubCaesb.setItems(olSubCaesb);
-	
 		cbSubSis.setItems(olSubSis);
 		
 		cbSubSis.getSelectionModel().selectedIndexProperty().addListener(new
@@ -152,6 +153,19 @@ public class TabSubterraneaController implements Initializable {
 	    		
             }
 	    });
+		
+		cbTipoPoco.getSelectionModel().selectedIndexProperty().addListener(new
+	            ChangeListener<Number>() {
+	    	public void changed(@SuppressWarnings("rawtypes") ObservableValue ov,
+	    		Number value, Number new_value) {
+	    		
+	    		if ( (Integer) new_value !=  -1)
+	    			tipoPocoID = listaTipoPoco [(int) new_value];
+	    		System.out.println(" tipo poço id" + tipoPocoID);
+	    		
+            }
+	    });
+		
 		
 		
 		//iVewSubt.setImage(imgSub);
