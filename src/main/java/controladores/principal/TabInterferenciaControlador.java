@@ -121,7 +121,7 @@ public class TabInterferenciaControlador  implements Initializable{
 	
 	int unidHidID = 1;
 	final int [] listaUHID = new int [] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,
-			22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42 };
+			22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41};
 	
 	int tipoOutorgaID = 1;
 	final int [] listaTipoOutorgaID = new int [] { 1,2,3,4,5,6,7 };
@@ -144,6 +144,8 @@ public class TabInterferenciaControlador  implements Initializable{
 			dpDataPublicacao.setDisable(false);
 			dpDataVencimento.setDisable(false);
 			tfNumeroAto.setDisable(false);
+			tfProcessoRenovacao.setDisable(false);
+			tfDespachoRenovacao.setDisable(false);
 			
 			tfLat.setDisable(false);
 			tfLon.setDisable(false);
@@ -222,6 +224,7 @@ public class TabInterferenciaControlador  implements Initializable{
 										inter.setInterUHFK(UniHid);
 										inter.setInterTipoOutorgaFK(tipoOutorga);
 										inter.setInterTipoAtoFK(tipoAto);
+										inter.setInterSituacaoProcessoFK(situacaoProcesso);
 											
 										inter.setInterLogadouro(endereco.getEndLogadouro());
 										
@@ -230,12 +233,13 @@ public class TabInterferenciaControlador  implements Initializable{
 											
 										inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 										
-										inter.setInterSituacaoProcessoFK(situacaoProcesso);
-										
 										inter.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
 										inter.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 										
 										inter.setInterNumeroAto(tfNumeroAto.getText());
+										
+										inter.setInterProcRenovacao(tfProcessoRenovacao.getText());
+										inter.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
 										
 										inter.setInterEnderecoFK(endereco);
 											
@@ -253,19 +257,8 @@ public class TabInterferenciaControlador  implements Initializable{
 											
 										Subterranea sub = new Subterranea ();
 										
+											sub = tabSubCon.obterSubterranea();
 											sub.setSubInterSubFK(inter);
-											
-											sub.setSubTipoPocoFK(tabSubCon.obterSubterranea().getSubTipoPocoFK());
-											sub.setSubSubSistemaFK(tabSubCon.obterSubterranea().getSubSubSistemaFK());
-											
-											sub.setSubVazao(tabSubCon.obterSubterranea().getSubVazao());
-											sub.setSubEstatico(tabSubCon.obterSubterranea().getSubEstatico());
-											sub.setSubDinamico(tabSubCon.obterSubterranea().getSubDinamico());
-											sub.setSubProfundidade(tabSubCon.obterSubterranea().getSubProfundidade());
-											
-											sub.setSubCaesb(tabSubCon.obterSubterranea().getSubCaesb());
-											sub.setSubDataOperacao(tabSubCon.obterSubterranea().getSubDataOperacao());
-											
 											inter.setIntSubFK(sub);
 											
 											InterferenciaDao interferenciaDao = new InterferenciaDao ();
@@ -313,7 +306,8 @@ public class TabInterferenciaControlador  implements Initializable{
 												inter.setInterUHFK(UniHid);
 												inter.setInterTipoOutorgaFK(tipoOutorga);
 												inter.setInterTipoAtoFK(tipoAto);
-													
+												inter.setInterSituacaoProcessoFK(situacaoProcesso);
+												
 												inter.setInterLogadouro(endereco.getEndLogadouro());
 												
 												inter.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
@@ -321,12 +315,13 @@ public class TabInterferenciaControlador  implements Initializable{
 													
 												inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 												
-												inter.setInterSituacaoProcessoFK(situacaoProcesso);
-												
 												inter.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
 												inter.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 												
 												inter.setInterNumeroAto(tfNumeroAto.getText());
+												
+												inter.setInterProcRenovacao(tfProcessoRenovacao.getText());
+												inter.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
 												
 												inter.setInterEnderecoFK(endereco);
 													
@@ -396,19 +391,27 @@ public class TabInterferenciaControlador  implements Initializable{
 						
 						else {
 							
-							Interferencia interferencia = new Interferencia();
+							Interferencia inter = new Interferencia();
 							
-							interferencia.setInterTipoInterferenciaFK(tipoInterferencia);
-							interferencia.setInterBaciaFK(baciaHid);
-							interferencia.setInterUHFK(UniHid);
+							inter.setInterTipoInterferenciaFK(tipoInterferencia);
+							inter.setInterBaciaFK(baciaHid);
+							inter.setInterUHFK(UniHid);
+							inter.setInterTipoOutorgaFK(tipoOutorga);
+							inter.setInterTipoAtoFK(tipoAto);
+							inter.setInterSituacaoProcessoFK(situacaoProcesso);
 							
-							interferencia.setInterLogadouro(endereco.getEndLogadouro());
-							interferencia.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
-							interferencia.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
+							inter.setInterLogadouro(endereco.getEndLogadouro()); //////////////  não precisa de salvar o logadouro
+							inter.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
+							inter.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
 							
-							interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+							inter.setInterNumeroAto(tfNumeroAto.getText());
+							
+							inter.setInterProcRenovacao(tfProcessoRenovacao.getText());
+							inter.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
+							
+							inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 						
-							interferencia.setInterEnderecoFK(endereco);
+							inter.setInterEnderecoFK(endereco);
 							
 							GeometryFactory geoFac = new GeometryFactory();
 							
@@ -419,25 +422,14 @@ public class TabInterferenciaControlador  implements Initializable{
 							
 							p.setSRID(4674);
 								
-							interferencia.setInterGeom(p);
+							inter.setInterGeom(p);
 							
-							/*
-							GeometryFactory geoFac = new GeometryFactory();
-							
-							
-							
-							interferencia.setInterGeoLatLon(geoFac.createPoint(
-									new Coordinate(
-									Double.parseDouble(tfLon.getText()),
-									Double.parseDouble(tfLat.getText())
-									)));
-							*/
 							
 							InterferenciaDao interferenciaDao = new InterferenciaDao ();
-							interferenciaDao.salvaInterferencia(interferencia);
+							interferenciaDao.salvaInterferencia(inter);
 							
-								obsList.remove(interferencia);
-								obsList.add(interferencia);
+								obsList.remove(inter);
+								obsList.add(inter);
 								
 									
 								tvLista.setItems(obsList); 
@@ -479,6 +471,7 @@ public class TabInterferenciaControlador  implements Initializable{
 		SituacaoProcesso situacaoProcesso = new  SituacaoProcesso();
 		situacaoProcesso.setSituacaoProcessoID(situacaoProcessoID);
 		
+		
 		// ver excecao de querer editar sem esconlher o endereco da interferencia...
 		
 		// habilitar os campos para edição //
@@ -487,13 +480,21 @@ public class TabInterferenciaControlador  implements Initializable{
 			cbTipoInterferencia.setDisable(false);
 			cbBacia.setDisable(false);
 			cbUnidHid.setDisable(false);
+			cbTipoOutorga.setDisable(false);
+			cbTipoAto.setDisable(false);
 			
 			tfLat.setDisable(false);
 			tfLon.setDisable(false);
 			
-					
+			cbSituacaoProcesso.setDisable(false);
+			dpDataPublicacao.setDisable(false);
+			dpDataVencimento.setDisable(false);
+			tfNumeroAto.setDisable(false);
+			tfProcessoRenovacao.setDisable(false);
+			tfDespachoRenovacao.setDisable(false);		
 		}
 		
+		// verificar se foi preenchido o campo das coordenadas //
 		else if (tfLat.getText().isEmpty()|| tfLon.getText().isEmpty()) { // ver de aceitar somente número 
 			
 			Alert a = new Alert (Alert.AlertType.ERROR);
@@ -521,19 +522,41 @@ public class TabInterferenciaControlador  implements Initializable{
 										
 										} else {
 										
-										Interferencia interferencia = tvLista.getSelectionModel().getSelectedItem();
+										Interferencia inter = tvLista.getSelectionModel().getSelectedItem();
 										
-											interferencia.setInterTipoInterferenciaFK(tipoInterferencia);
-											interferencia.setInterBaciaFK(baciaHid);
-											interferencia.setInterUHFK(UniHid);
+										inter.setInterTipoInterferenciaFK(tipoInterferencia);
+										inter.setInterBaciaFK(baciaHid);
+										inter.setInterUHFK(UniHid);
+										inter.setInterTipoOutorgaFK(tipoOutorga);
+										inter.setInterTipoAtoFK(tipoAto);
+										inter.setInterSituacaoProcessoFK(situacaoProcesso);
 										
-											interferencia.setInterLogadouro(endereco.getEndLogadouro());
-											interferencia.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
-											interferencia.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
+										inter.setInterLogadouro(endereco.getEndLogadouro()); // não precisa
+										inter.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
+										inter.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
+										
+										if (dpDataPublicacao.getValue() == null) {
+											inter.setInterDataPublicacao(null);;}
+											else {
+												inter.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
+												
+												}
+														
+										if (dpDataVencimento.getValue() == null) {
+											inter.setInterDataVencimento(null);}
+											else {
+												inter.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 											
-											interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+												}
 										
-											interferencia.setInterEnderecoFK(endereco);
+										inter.setInterNumeroAto(tfNumeroAto.getText());
+										
+										inter.setInterProcRenovacao(tfProcessoRenovacao.getText());
+										inter.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
+										
+										inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+										
+										inter.setInterEnderecoFK(endereco);
 											
 											GeometryFactory geoFac = new GeometryFactory();
 											
@@ -544,37 +567,28 @@ public class TabInterferenciaControlador  implements Initializable{
 											
 											p.setSRID(4674);
 												
-											interferencia.setInterGeom(p);
+											inter.setInterGeom(p);
 											
 										Subterranea sub = new Subterranea ();
 										
-											// fk interferencia //
-											sub.setSubInterSubFK(interferencia);
+											// obter os dados do pane subterranea //
+											sub = tabSubCon.obterSubterranea();
 											
-											sub.setSubTipoPocoFK(tabSubCon.obterSubterranea().getSubTipoPocoFK());
-											sub.setSubSubSistemaFK(tabSubCon.obterSubterranea().getSubSubSistemaFK());
-											
-											sub.setSubVazao(tabSubCon.obterSubterranea().getSubVazao());
-											
-											sub.setSubEstatico(tabSubCon.obterSubterranea().getSubEstatico());
-											sub.setSubDinamico(tabSubCon.obterSubterranea().getSubDinamico());
-											sub.setSubProfundidade(tabSubCon.obterSubterranea().getSubProfundidade());
-											
-											sub.setSubCaesb(tabSubCon.obterSubterranea().getSubCaesb());
-											sub.setSubDataOperacao(tabSubCon.obterSubterranea().getSubDataOperacao());
+											// manter a ligacao FK //
+											sub.setSubInterSubFK(inter);
 											
 											// id subterranea de edicao //
-											sub.setSubID(interferencia.getIntSubFK().getSubID());
+											sub.setSubID(inter.getIntSubFK().getSubID());
 											
-											interferencia.setIntSubFK(sub);
+											inter.setIntSubFK(sub);
 											
 											InterferenciaDao interferenciaDao = new InterferenciaDao ();
 													
 											// merge subterranea //
-											interferenciaDao.mergeInterferencia(interferencia);
+											interferenciaDao.mergeInterferencia(inter);
 								
-											obsList.remove(interferencia);
-											obsList.add(interferencia);
+											obsList.remove(inter);
+											obsList.add(inter);
 										
 										modularBotoes ();
 										
@@ -605,19 +619,41 @@ public class TabInterferenciaControlador  implements Initializable{
 									
 									} else {
 									
-											Interferencia interferencia = tvLista.getSelectionModel().getSelectedItem();
+											Interferencia inter = tvLista.getSelectionModel().getSelectedItem();
 											
-												interferencia.setInterTipoInterferenciaFK(tipoInterferencia);
-												interferencia.setInterBaciaFK(baciaHid);
-												interferencia.setInterUHFK(UniHid);
+												inter.setInterTipoInterferenciaFK(tipoInterferencia);
+												inter.setInterBaciaFK(baciaHid);
+												inter.setInterUHFK(UniHid);
+												inter.setInterTipoOutorgaFK(tipoOutorga);
+												inter.setInterTipoAtoFK(tipoAto);
+												inter.setInterSituacaoProcessoFK(situacaoProcesso);
 												
-												interferencia.setInterLogadouro(endereco.getEndLogadouro());
-												interferencia.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
-												interferencia.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
+												inter.setInterLogadouro(endereco.getEndLogadouro());
+												inter.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
+												inter.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
 												
-												interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+												if (dpDataPublicacao.getValue() == null) {
+													inter.setInterDataPublicacao(null);;}
+													else {
+														inter.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
+														
+														}
+																
+												if (dpDataVencimento.getValue() == null) {
+													inter.setInterDataVencimento(null);}
+													else {
+														inter.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
+													
+														}
+												
+												inter.setInterNumeroAto(tfNumeroAto.getText());
+												
+												inter.setInterProcRenovacao(tfProcessoRenovacao.getText());
+												inter.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
+												
+												inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 											
-												interferencia.setInterEnderecoFK(endereco);
+												inter.setInterEnderecoFK(endereco);
 												
 												GeometryFactory geoFac = new GeometryFactory();
 												
@@ -628,15 +664,15 @@ public class TabInterferenciaControlador  implements Initializable{
 												
 												p.setSRID(4674);
 												
-												interferencia.setInterGeom(p);
+												inter.setInterGeom(p);
 												
 											Superficial sup = new Superficial ();
 											
 												// fk interferencia //
-												sup.setSupInterFK(interferencia);
+												sup.setSupInterFK(inter);
 												
 												// id superficial de edicao //
-												sup.setSup_ID(interferencia.getIntSupFK().getSup_ID());
+												sup.setSup_ID(inter.getIntSupFK().getSup_ID());
 												
 												sup.setSupLocalCaptacaoFK(tabSupCon.obterSuperficial().getSupLocalCaptacaoFK());
 												sup.setSupFormaCaptacaoFK(tabSupCon.obterSuperficial().getSupFormaCaptacaoFK());
@@ -655,17 +691,17 @@ public class TabInterferenciaControlador  implements Initializable{
 												sup.setSupCaesb(tabSupCon.obterSuperficial().getSupCaesb());
 												
 												
-												interferencia.setIntSupFK(sup);
+												inter.setIntSupFK(sup);
 												
 											InterferenciaDao interferenciaDao = new InterferenciaDao ();
 											
 											// merge superficial e canal //
-											interferenciaDao.mergeInterferencia(interferencia);
+											interferenciaDao.mergeInterferencia(inter);
 											
 											//interferencia.setIntSupFK(sup);
 												
-											obsList.remove(interferencia);
-											obsList.add(interferencia);
+											obsList.remove(inter);
+											obsList.add(inter);
 											
 											modularBotoes ();
 											
@@ -683,56 +719,78 @@ public class TabInterferenciaControlador  implements Initializable{
 						
 						else {
 							
-							Interferencia interferencia = tvLista.getSelectionModel().getSelectedItem();
+							Interferencia inter= tvLista.getSelectionModel().getSelectedItem();
 							
-							interferencia.setInterTipoInterferenciaFK(tipoInterferencia);
-							interferencia.setInterBaciaFK(baciaHid);
-							interferencia.setInterUHFK(UniHid);
-						
-							interferencia.setInterLogadouro(endereco.getEndLogadouro());
-							interferencia.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
-							interferencia.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
+							inter.setInterTipoInterferenciaFK(tipoInterferencia);
+							inter.setInterBaciaFK(baciaHid);
+							inter.setInterUHFK(UniHid);
+							inter.setInterTipoOutorgaFK(tipoOutorga);
+							inter.setInterTipoAtoFK(tipoAto);
+							inter.setInterSituacaoProcessoFK(situacaoProcesso);
+					
+							inter.setInterLogadouro(endereco.getEndLogadouro());
+							inter.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
+							inter.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
 							
-							interferencia.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
-						
-							interferencia.setInterEnderecoFK(endereco);
-							
-							GeometryFactory geoFac = new GeometryFactory();
-							
-							Point p = geoFac.createPoint(new Coordinate(
-									Double.parseDouble(tfLon.getText()),
-									Double.parseDouble(tfLat.getText()
-									)));
-							
-							p.setSRID(4674);
-							
-							interferencia.setInterGeom(p);
-							
-							/*
-							GeometryFactory geoFac = new GeometryFactory();
-							
-							interferencia.setInterGeoLatLon(geoFac.createPoint(new Coordinate(
-									Double.parseDouble(tfLon.getText()),
-									Double.parseDouble(tfLat.getText())
-									)));
-									*/
-							
-							InterferenciaDao interferenciaDao = new InterferenciaDao ();
-							
-							//merge outras interferencias //
-							interferenciaDao.mergeInterferencia(interferencia);
-							
-								obsList.remove(interferencia);
-								obsList.add(interferencia);
+							if (dpDataPublicacao.getValue() == null) {
+								inter.setInterDataPublicacao(null);;}
+								else {
+									inter.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
+									
+									}
+											
+							if (dpDataVencimento.getValue() == null) {
+								inter.setInterDataVencimento(null);}
+								else {
+									inter.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 								
-								modularBotoes ();
+									}
+							
+							inter.setInterNumeroAto(tfNumeroAto.getText());
+							
+							inter.setInterProcRenovacao(tfProcessoRenovacao.getText());
+							inter.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
 								
-									//-- Alerta de endereco salvo --//
-									Alert a = new Alert (Alert.AlertType.INFORMATION);
-									a.setTitle("Parabéns!");
-									a.setContentText("Interferência editada com sucesso!");
-									a.setHeaderText(null);
-									a.show();
+							inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+							
+							inter.setInterEnderecoFK(endereco);
+								
+								GeometryFactory geoFac = new GeometryFactory();
+								
+								Point p = geoFac.createPoint(new Coordinate(
+										Double.parseDouble(tfLon.getText()),
+										Double.parseDouble(tfLat.getText()
+										)));
+								
+								p.setSRID(4674);
+								
+								inter.setInterGeom(p);
+								
+								/*
+								GeometryFactory geoFac = new GeometryFactory();
+								
+								interferencia.setInterGeoLatLon(geoFac.createPoint(new Coordinate(
+										Double.parseDouble(tfLon.getText()),
+										Double.parseDouble(tfLat.getText())
+										)));
+										*/
+								
+								InterferenciaDao interferenciaDao = new InterferenciaDao ();
+								
+								//merge outras interferencias //
+								interferenciaDao.mergeInterferencia(inter);
+								
+									obsList.remove(inter);
+									obsList.add(inter);
+									
+									modularBotoes ();
+									
+										//-- Alerta de endereco salvo --//
+										Alert a = new Alert (Alert.AlertType.INFORMATION);
+										a.setTitle("Parabéns!");
+										a.setContentText("Interferência editada com sucesso!");
+										a.setHeaderText(null);
+										a.show();
 							
 							
 						} // fim outras interferencias
@@ -879,21 +937,21 @@ public class TabInterferenciaControlador  implements Initializable{
 		olUniHid = FXCollections
 				.observableArrayList(
 						
-						"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22",
-						"23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42"
+						"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20",
+						"21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41"
 						); 
 		
 		olTipoOutorga = FXCollections
 				.observableArrayList(
 						
-						"Suspensão/Revogação",
-						"Transferência",
-						"Renovação",
-						"Modificação",
-						"Registro de Uso",
-						"Outorga Prévia",
-						"Outorga de Direito de Uso"
-						
+						"Outorga de Direito de Uso"	,
+						"Outorga Prévia"	,
+						"Registro de Uso"	,
+						"Modificação"	,
+						"Renovação"	,
+						"Transferência"	,
+						"Suspensão/Revogação"	
+
 						); 
 		
 		olTipoAto = FXCollections
@@ -1152,12 +1210,13 @@ public class TabInterferenciaControlador  implements Initializable{
 							DatePicker dpDataPublicacao = new DatePicker();
 							DatePicker dpDataVencimento = new DatePicker();
 							TextField tfNumeroAto = new TextField();
-							
+							TextField tfProcessoRenovacao = new TextField();
+							TextField tfDespachoRenovacao = new TextField();
 		
 			
 	public void obterDadosBasicos () {
 		
-		pDadosBasicos.setPrefSize(900, 197);
+		pDadosBasicos.setPrefSize(900, 205);
 		pDadosBasicos.setLayoutX(120);
 		pDadosBasicos.setLayoutY(83);
 		pDadosBasicos.setStyle("-fx-background-color: #E9E9E9;");
@@ -1224,38 +1283,60 @@ public class TabInterferenciaControlador  implements Initializable{
 			btnCapturarCoord.setLayoutX(686);
 			btnCapturarCoord.setLayoutY(82);
 			
+				Label lblRenovacao = new Label ("* no caso de renovação de outorga. "); // EBEBEB
+				lblRenovacao.setStyle("-fx-background-color: EBEBEB;-fx-font-size: 7.5pt ;");
+				lblRenovacao.setLayoutX(589);
+				lblRenovacao.setLayoutY(126);
 			
 			Label lblSituacaoProcesso = new Label ("Situação: ");
-			lblSituacaoProcesso.setLayoutX(223);
-			lblSituacaoProcesso.setLayoutY(134);
+			lblSituacaoProcesso.setLayoutX(51);
+			lblSituacaoProcesso.setLayoutY(143);
 			
-				cbSituacaoProcesso.setPrefSize(149, 25);
-				cbSituacaoProcesso.setLayoutX(223);
-				cbSituacaoProcesso.setLayoutY(160);
+				cbSituacaoProcesso.setPrefSize(168, 25);
+				cbSituacaoProcesso.setLayoutX(51);
+				cbSituacaoProcesso.setLayoutY(170);
 				
 				Label lblDataPublicacao = new Label ("Data de Publicação: ");
-				lblDataPublicacao.setLayoutX(383);
-				lblDataPublicacao.setLayoutY(134);
+				lblDataPublicacao.setLayoutX(229);
+				lblDataPublicacao.setLayoutY(143);
 				
 					dpDataPublicacao.setPrefSize(120, 25);
-					dpDataPublicacao.setLayoutX(382);
-					dpDataPublicacao.setLayoutY(160);
+					dpDataPublicacao.setLayoutX(229);
+					dpDataPublicacao.setLayoutY(170);
 			
 						Label lblDataVencimento = new Label ("Data de Vencimento: ");
-						lblDataVencimento.setLayoutX(512);
-						lblDataVencimento.setLayoutY(134);
+						lblDataVencimento.setLayoutX(358);
+						lblDataVencimento.setLayoutY(143);
 						
 							dpDataVencimento.setPrefSize(120, 25);
-							dpDataVencimento.setLayoutX(511);
-							dpDataVencimento.setLayoutY(160);
+							dpDataVencimento.setLayoutX(358);
+							dpDataVencimento.setLayoutY(170);
 							
 								Label lblNumeroAto = new Label ("Número do Ato: ");
-								lblNumeroAto.setLayoutX(642);
-								lblNumeroAto.setLayoutY(134);
+								lblNumeroAto.setLayoutX(489);
+								lblNumeroAto.setLayoutY(143);
 								
 									tfNumeroAto.setPrefSize(89, 25);
-									tfNumeroAto.setLayoutX(642);
-									tfNumeroAto.setLayoutY(160);
+									tfNumeroAto.setLayoutX(489);
+									tfNumeroAto.setLayoutY(170);
+									
+									Label lblProcOutorga = new Label ("Processo de Outorga: "); // EBEBEB
+									lblProcOutorga.setLayoutX(589);
+									lblProcOutorga.setLayoutY(143);
+									
+										tfProcessoRenovacao.setPrefSize(125, 25);
+										tfProcessoRenovacao.setLayoutX(589);
+										tfProcessoRenovacao.setLayoutY(170);
+										
+										Label lblDespachoRenovacao = new Label ("Depacho de outorga: "); // EBEBEB
+										lblDespachoRenovacao.setLayoutX(725);
+										lblDespachoRenovacao.setLayoutY(143);
+										
+											tfDespachoRenovacao.setPrefSize(125, 25);
+											tfDespachoRenovacao.setLayoutX(725);
+											tfDespachoRenovacao.setLayoutY(170);
+									
+									
 		
 		pDadosBasicos.getChildren().addAll(
 				
@@ -1263,7 +1344,8 @@ public class TabInterferenciaControlador  implements Initializable{
 				lblTipoOutorga, cbTipoOutorga, lblTipoAto, cbTipoAto,
 				lblLat, tfLat, lblLon, tfLon, btnCapturarCoord,
 				lblSituacaoProcesso, cbSituacaoProcesso,  lblDataPublicacao, dpDataPublicacao, 
-				lblDataVencimento, dpDataVencimento, lblNumeroAto, tfNumeroAto
+				lblDataVencimento, dpDataVencimento, lblNumeroAto, tfNumeroAto,
+				lblRenovacao, lblProcOutorga, tfProcessoRenovacao, lblDespachoRenovacao, tfDespachoRenovacao
 				);
 	}
 	
@@ -1472,15 +1554,14 @@ public class TabInterferenciaControlador  implements Initializable{
 					
 					cbTipoInterferencia.setValue(inter.getInterTipoInterferenciaFK().getTipoInterDescricao());
 					cbBacia.setValue(inter.getInterBaciaFK().getBaciaNome());
-					cbUnidHid.setValue(String.valueOf(inter.getInterUHFK().getObjectID()));
+					cbUnidHid.setValue(String.valueOf(inter.getInterUHFK().getUhID()));
 					cbTipoOutorga.setValue(inter.getInterTipoOutorgaFK().getTipoOutorgaDescricao());
 					cbTipoAto.setValue(inter.getInterTipoAtoFK().getTipoAtoDescricao());
+					cbSituacaoProcesso.setValue(inter.getInterSituacaoProcessoFK().getSituacaoProcessoDescricao());
 					
 					// latitude e longitude
 					tfLat.setText(inter.getInterDDLatitude().toString());
 					tfLon.setText(inter.getInterDDLongitude().toString());
-					
-					cbSituacaoProcesso.setValue(inter.getInterSituacaoProcessoFK().getSituacaoProcessoDescricao());
 					
 					Date dPub = inter.getInterDataPublicacao();
 					dpDataPublicacao.setValue(dPub.toLocalDate());
@@ -1489,7 +1570,8 @@ public class TabInterferenciaControlador  implements Initializable{
 					dpDataVencimento.setValue(dVen.toLocalDate());
 					
 					tfNumeroAto.setText(inter.getInterNumeroAto());
-					
+					tfProcessoRenovacao.setText(inter.getInterProcRenovacao());
+					tfDespachoRenovacao.setText(inter.getInterDespachoRenovacao());
 					
 					// mostrar data de atualizacao //
 					FormatoData d = new FormatoData();
@@ -1625,6 +1707,8 @@ public class TabInterferenciaControlador  implements Initializable{
 			dpDataPublicacao.setDisable(true);
 			dpDataVencimento.setDisable(true);
 			tfNumeroAto.setDisable(true);
+			tfProcessoRenovacao.setDisable(true);
+			tfDespachoRenovacao.setDisable(true);
 			
 			tfLat.setDisable(true);
 			tfLon.setDisable(true);

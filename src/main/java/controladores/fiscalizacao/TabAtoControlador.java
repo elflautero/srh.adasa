@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -38,6 +39,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.web.HTMLEditor;
+import principal.Alerta;
 import principal.FormatoData;
 
 
@@ -202,11 +204,19 @@ public class TabAtoControlador implements Initializable {
 	        }
 	    });
 	    
-	    btnCancelar.setOnAction(new EventHandler<ActionEvent>() {
+	    btnEditar.setOnAction(new EventHandler<ActionEvent>() {
 
 	        @Override
 	        public void handle(ActionEvent event) {
-	            btnCancelarHab();
+	            btnEditarHab();
+	        }
+	    });
+	    
+	    btnExcluir.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	            btnExcluirHab();
 	        }
 	    });
 	    
@@ -584,19 +594,13 @@ public class TabAtoControlador implements Initializable {
 			
 			fecharEditorHTML();
 			
-				Alert a = new Alert (Alert.AlertType.INFORMATION);
-				a.setTitle("Parabéns!!!");
-				a.setContentText("Cadastro excluído com sucesso!!!");
-				a.setHeaderText(null);
-				a.show();
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro excluído com sucesso!!!", ButtonType.OK));
 			
 			}	catch (Exception e) {
 				
-					Alert a = new Alert (Alert.AlertType.ERROR);
-					a.setTitle("Alerta!!!");
-					a.setContentText(e.toString());
-					a.setHeaderText("Erro ao escluir o cadastro!!!");
-					a.show();
+					Alerta a = new Alerta ();
+					a.alertar(new Alert(Alert.AlertType.ERROR, "Erro ao escluir o cadastro!!!", ButtonType.OK));
 				
 			};
 		

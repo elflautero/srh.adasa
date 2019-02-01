@@ -1,16 +1,19 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 import entidades.HibernateUtil;
 import entidades.Usuario;
 
-
 public class UsuarioDao {
 	
-public void salvarUsuario (Usuario usuario) {
+	public void salvarUsuario (Usuario usuario) {
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
@@ -32,7 +35,7 @@ public void salvarUsuario (Usuario usuario) {
 		q.setMaxResults(5);
 		List<Usuario> list = q.getResultList();
 		*/
-		
+		/*
 		List<Usuario> list = s.createQuery(
 				"SELECT u FROM Usuario AS u "
 				+ "JOIN FETCH u.usEnderecoFK AS e "
@@ -40,6 +43,26 @@ public void salvarUsuario (Usuario usuario) {
 				+ "LEFT JOIN FETCH e.demandas "
 				+ "WHERE (u.usNome LIKE '%"+strPesquisa+"%' OR u.usCPFCNPJ LIKE '%"+strPesquisa+"%')"
 				).list();
+		*/
+		
+		List<Usuario> list = new ArrayList<Usuario>();
+		
+		Criteria crit = s.createCriteria(Usuario.class, "us");
+		crit.createAlias("us.usEnderecoFK", "end", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("end.endRAFK", "endRAFK", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("end.interferencias", "interferencias", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencias.intSubFK", "subterranea", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencias.intSupFK", "superficial", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("interferencias.interTipoInterferenciaFK", "tipoInterferencia", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencias.interTipoOutorgaFK", "tipoOutorga", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("subterranea.subTipoPocoFK", "tipoPoco", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.add(Restrictions.like("us.usNome", '%' + strPesquisa + '%'))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		list = crit.list();
 		
 		/*
 		 * 

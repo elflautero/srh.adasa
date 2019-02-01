@@ -1,10 +1,10 @@
 package controladores.principal;
 
 import java.net.URL;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import controladores.fiscalizacao.TabAtoControlador;
@@ -17,24 +17,29 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -48,6 +53,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import principal.FormatoData;
+import principal.MalaDireta;
 
 public class TabUsuarioControlador implements Initializable {
 	
@@ -270,10 +276,6 @@ public class TabUsuarioControlador implements Initializable {
 						
 						obsList.add(us);
 						
-						
-						//-- selecionar --//
-						selecionarUsuario();
-						
 						modularBotoesInicial();
 						
 						Alert a = new Alert (Alert.AlertType.INFORMATION);
@@ -360,9 +362,6 @@ public class TabUsuarioControlador implements Initializable {
 			obsList.remove(us);
 			obsList.add(us);
 			
-			//-- selecionar --//
-			selecionarUsuario();
-			
 			modularBotoesInicial();
 			
 			Alert a = new Alert (Alert.AlertType.INFORMATION);
@@ -390,8 +389,6 @@ public class TabUsuarioControlador implements Initializable {
 			
 			obsList.remove(usuario);
 			
-			//-- selecionar --//
-			selecionarUsuario();
 			modularBotoesInicial();
 		
 				Alert a = new Alert (Alert.AlertType.INFORMATION);
@@ -440,8 +437,6 @@ public class TabUsuarioControlador implements Initializable {
 		strPesquisa = tfPesquisar.getText();
 		
 		listarUsuarios (strPesquisa);
-		
-		selecionarUsuario ();
 		
 		modularBotoesInicial();
 		
@@ -594,14 +589,17 @@ public class TabUsuarioControlador implements Initializable {
 		                }
 		        }
 		    });
-		    
+		    /*
 		    btnGerarRequerimento.setOnAction(new EventHandler<ActionEvent>() {
 
 		        @Override
 		        public void handle(ActionEvent event) {
-		        	btnGerarRequerimentoHab ();
+		        	btnGerarRequerimentoHab (); //btnGerarRequerimentoHab (Usuario us)
 		        }
 		    });
+		    */
+		    
+		    selecionarUsuario();
 		   
 	}
 	
@@ -612,61 +610,70 @@ public class TabUsuarioControlador implements Initializable {
 	
 	
 	
-	public void btnGerarRequerimentoHab () {
+	public void btnGerarRequerimentoHab (Usuario us) {
 		
-		WebView webRequerimento = new WebView();
-		WebEngine engReq = webRequerimento.getEngine();
-		
-		
-		HTMLEditor editor = new HTMLEditor();
-		
-		//engReq.load(getClass().getResource("/html/termoNotificacao.html").toExternalForm()); 
+		HTMLEditor htmlEditor = new HTMLEditor();
 		
 		ModelosDao modDao = new ModelosDao();
 		
-		List<ModelosHTML> listRequerimento = modDao.listarModelo("Outorga Prévia Subterrânea");
+		List<ModelosHTML> listRequerimento = modDao.listarModelo("Requerimento de Outorga Subterrânea");
 		
-		//System.out.println(listRequerimento.get(0).getModConteudo());
+		htmlEditor.setHtmlText(listRequerimento.get(0).getModConteudo());
 		
-		/*
-		//engReq.load(getClass().getResource(listRequerimento.get(0).getModConteudo()); 
-		engReq.loadContent(listRequerimento.get(0).getModConteudo());
+		MalaDireta ml = new MalaDireta();
+		ml.setHtmlRel(listRequerimento.get(0).getModConteudo());
+		ml.setUs(us);
+		ml.setEnd(us.getUsEnderecoFK());
+		ml.setInter(us.getUsEnderecoFK().getInterferencias().get(0));
 		
-		engReq.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>(){ 
+		htmlEditor.setHtmlText(ml.criarDocumento());
+		
+		// adicionar um novo botao ao htmlEditor //
+		final String TOP_TOOLBAR = ".top-toolbar";
+	  
+		ToolBar tooImprimir = new ToolBar();
+		Button btnImprimir = new Button("Imprimir");
+		
+        Node nod;
+        
+        nod = htmlEditor.lookup(TOP_TOOLBAR);
+        if (nod instanceof ToolBar) {
+        	tooImprimir = (ToolBar) nod;
+        }
+        
+        tooImprimir.getItems().add(btnImprimir);
+        tooImprimir.getItems().add(new Separator(Orientation.VERTICAL));
+		
+        // imprimir o requerimento //
+        btnImprimir.setOnAction(new EventHandler<ActionEvent>() {
 
-             public void changed(final ObservableValue<? extends Worker.State> observableValue, 
-
-                                 final Worker.State oldState, 
-                                 final Worker.State newState) 
-
-             { 
-             	if (newState == Worker.State.SUCCEEDED){  
-             		String strRequerimento = (String) engReq.executeScript("document.documentElement.outerHTML"); 
-             		
-             		System.out.println("string \n " + strRequerimento);
-             		
-             		editor.setHtmlText(strRequerimento);
-             		
-             		Scene scene = new Scene(editor);
-        			
-        			Stage stage = new Stage(StageStyle.UTILITY);
-        			stage.setWidth(1150);
-        			stage.setHeight(750);
-        	        stage.setScene(scene);
-        	        stage.setMaximized(false);
-        	        stage.setResizable(false);
-        	        
-        	        stage.show();
-             		
-             	} 
-             	
-            } 
-		}); 
-		
-		*/
-		editor.setHtmlText(listRequerimento.get(0).getModConteudo());
- 		
- 		Scene scene = new Scene(editor);
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	
+	        	ChoiceDialog<Printer> dialog = new ChoiceDialog<Printer>(Printer.getDefaultPrinter(), Printer.getAllPrinters());
+	        	dialog.setHeaderText("Escolha a impressora!");
+	        	dialog.setContentText("Impressoras disponíveis");
+	        	dialog.setTitle("Printer Choice");
+	        	Optional<Printer> opt = dialog.showAndWait();
+	        	if (opt.isPresent()) {
+	        	    //Printer printer = opt.get();
+	        	    
+	        	    PrinterJob job = PrinterJob.createPrinterJob();
+					 if (job != null) {
+					    boolean success = true;
+					    if (success) {
+					    	htmlEditor.print(job);
+					        job.endJob();
+					    }
+					 }
+	        	}
+	        	
+				 
+				 
+	        }
+	    });
+	    
+ 		Scene scene = new Scene(htmlEditor);
 		
 		Stage stage = new Stage(StageStyle.UTILITY);
 		stage.setWidth(1150);
@@ -676,9 +683,53 @@ public class TabUsuarioControlador implements Initializable {
         stage.setResizable(false);
         
         stage.show();
+        
+        
+      //WebView webRequerimento = new WebView();
+      		//WebEngine engReq = webRequerimento.getEngine();
+        
+      //engReq.load(getClass().getResource("/html/termoNotificacao.html").toExternalForm()); 
+		
+      		/*
+      		//engReq.load(getClass().getResource(listRequerimento.get(0).getModConteudo()); 
+      		engReq.loadContent(listRequerimento.get(0).getModConteudo());
+      		
+      		engReq.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>(){ 
+
+                   public void changed(final ObservableValue<? extends Worker.State> observableValue, 
+
+                                       final Worker.State oldState, 
+                                       final Worker.State newState) 
+
+                   { 
+                   	if (newState == Worker.State.SUCCEEDED){  
+                   		String strRequerimento = (String) engReq.executeScript("document.documentElement.outerHTML"); 
+                   		
+                   		System.out.println("string \n " + strRequerimento);
+                   		
+                   		editor.setHtmlText(strRequerimento);
+                   		
+                   		Scene scene = new Scene(editor);
+              			
+              			Stage stage = new Stage(StageStyle.UTILITY);
+              			stage.setWidth(1150);
+              			stage.setHeight(750);
+              	        stage.setScene(scene);
+              	        stage.setMaximized(false);
+              	        stage.setResizable(false);
+              	        
+              	        stage.show();
+                   		
+                   	} 
+                   	
+                  } 
+      		}); 
+      		
+      		*/
 	
 	
 	}
+	
 	
 	Button btnBuscarEnd = new Button();
 	
@@ -989,6 +1040,8 @@ public class TabUsuarioControlador implements Initializable {
 							lblDataAtualizacao.setTextFill(Color.BLACK);
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);}
+					
+					btnGerarRequerimentoHab (us);
 					
 					// copiar cpf do usuario ao selecionar //
 					Clipboard clip = Clipboard.getSystemClipboard();

@@ -113,6 +113,12 @@ public class Interferencia implements Serializable {
 	@Column (name="inter_Num_Ato", columnDefinition="varchar(20)")
 	private String interNumeroAto;
 	
+	@Column (name="inter_Proc_Renovacao",columnDefinition="varchar(40)")
+	private String interProcRenovacao;
+	
+	@Column (name="inter_Despacho_Renovacao",columnDefinition="varchar(250)")
+	private String interDespachoRenovacao;
+	
 
 		//CONSTRUTOR PADRÃO
 		public Interferencia () {
@@ -249,6 +255,22 @@ public class Interferencia implements Serializable {
 
 		public void setInterNumeroAto(String interNumeroAto) {
 			this.interNumeroAto = interNumeroAto;
+		}
+
+		public String getInterProcRenovacao() {
+			return interProcRenovacao;
+		}
+
+		public void setInterProcRenovacao(String interProcRenovacao) {
+			this.interProcRenovacao = interProcRenovacao;
+		}
+
+		public String getInterDespachoRenovacao() {
+			return interDespachoRenovacao;
+		}
+
+		public void setInterDespachoRenovacao(String interDespachoRenovacao) {
+			this.interDespachoRenovacao = interDespachoRenovacao;
 		}
 
 		

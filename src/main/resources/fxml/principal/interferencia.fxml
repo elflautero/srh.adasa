@@ -33,7 +33,7 @@
             <TextField fx:id="tfPesquisar" layoutX="477.0" layoutY="13.0" prefHeight="23.0" prefWidth="295.0" />
          </children>
       </Pane>
-      <Pane fx:id="pDadosBasicos" layoutX="120.0" layoutY="83.0" prefHeight="197.0" prefWidth="900.0">
+      <Pane fx:id="pDadosBasicos" layoutX="120.0" layoutY="83.0" prefHeight="205.0" prefWidth="900.0">
          <children>
             <Label layoutX="15.0" layoutY="6.0" text="Tipo de Interferência: " />
             <ChoiceBox fx:id="cbTipoCaptacao" layoutX="14.0" layoutY="32.0" prefHeight="25.0" prefWidth="215.0" />
@@ -50,14 +50,23 @@
             <ChoiceBox fx:id="cbTipoOutorga" layoutX="477.0" layoutY="32.0" prefHeight="25.0" prefWidth="238.0" />
             <Label layoutX="726.0" layoutY="6.0" text="Tipo de Ato: " />
             <ChoiceBox fx:id="cbTipoAto" layoutX="725.0" layoutY="32.0" prefHeight="25.0" prefWidth="149.0" />
-            <Label layoutX="205.0" layoutY="134.0" text="Situação: " />
-            <ChoiceBox fx:id="cbSituacao" layoutX="204.0" layoutY="160.0" prefHeight="25.0" prefWidth="168.0" />
-            <DatePicker fx:id="dpDataVencimento" layoutX="382.0" layoutY="160.0" prefHeight="25.0" prefWidth="120.0" />
-            <Label layoutX="512.0" layoutY="134.0" text="Data de Vencimento: " />
-            <Label layoutX="383.0" layoutY="134.0" text="Data de Publicação: " />
-            <DatePicker fx:id="dpDataPublicacao" layoutX="511.0" layoutY="160.0" prefHeight="25.0" prefWidth="120.0" />
-            <TextField fx:id="tfNumeroAto" layoutX="642.0" layoutY="160.0" prefHeight="25.0" prefWidth="89.0" />
-            <Label layoutX="642.0" layoutY="134.0" text="Número do Ato: " />
+            <Label layoutX="51.0" layoutY="143.0" text="Situação: " />
+            <ChoiceBox fx:id="cbSituacao" layoutX="51.0" layoutY="170.0" prefHeight="25.0" prefWidth="168.0" />
+            <DatePicker fx:id="dpDataVencimento" layoutX="229.0" layoutY="170.0" prefHeight="25.0" prefWidth="120.0" />
+            <Label layoutX="358.0" layoutY="143.0" text="Data de Vencimento: " />
+            <Label layoutX="229.0" layoutY="143.0" text="Data de Publicação: " />
+            <DatePicker fx:id="dpDataPublicacao" layoutX="358.0" layoutY="170.0" prefHeight="25.0" prefWidth="120.0" />
+            <TextField fx:id="tfNumeroAto" layoutX="489.0" layoutY="170.0" prefHeight="25.0" prefWidth="89.0" />
+            <Label layoutX="489.0" layoutY="143.0" text="Número do Ato: " />
+            <Label layoutX="589.0" layoutY="143.0" text="Processo de Outorga:" />
+            <Label layoutX="725.0" layoutY="143.0" text="Depacho de outorga:" />
+            <TextField layoutX="589.0" layoutY="170.0" prefHeight="25.0" prefWidth="125.0" />
+            <TextField layoutX="725.0" layoutY="170.0" prefHeight="25.0" prefWidth="125.0" />
+            <Label layoutX="589.0" layoutY="126.0" prefHeight="17.0" prefWidth="238.0" style="-fx-background-color: EBEBEB;" text="* no caso de renovação de outorga.">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <Pane fx:id="p_lblEndereco" layoutX="120.0" layoutY="20.0" prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #E9E9E9;">

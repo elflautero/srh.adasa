@@ -568,6 +568,14 @@ TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	        }
 	    });
 	    
+	    btnExcluir.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	           btnExcluirHab();
+	        }
+	    });
+	    
 	    btnCancelar.setOnAction(new EventHandler<ActionEvent>() {
 
 	        @Override

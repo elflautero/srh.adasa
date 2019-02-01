@@ -18,6 +18,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -43,6 +45,9 @@ public class ControladorModelosHTML implements Initializable {
 	@FXML Button btnHTML;
 	@FXML Button btnTexto;
 	
+	@FXML TabPane tabPane;
+	@FXML Tab tabTexto;
+	@FXML Tab tabHTML;
 	
 	@FXML TextField tfPesquisar;
 	
@@ -73,9 +78,13 @@ public class ControladorModelosHTML implements Initializable {
 		
 	public void btnHTMLHab (ActionEvent event) {
 		htmlEditor.setHtmlText(textAreaHTML.getText());
+		tabPane.getSelectionModel().select(tabTexto);
+	
 	}
 	public void btnTextoHab (ActionEvent event) {
 		textAreaHTML.setText(htmlEditor.getHtmlText());
+		tabPane.getSelectionModel().select(tabHTML);
+		
 	}
 	
 	public void btnNovoHabilitar (ActionEvent event) {
@@ -185,7 +194,6 @@ public class ControladorModelosHTML implements Initializable {
 		strPesquisar = tfPesquisar.getText();
 		
 		listarModelos (strPesquisar);
-		
 		
 	}
 	
