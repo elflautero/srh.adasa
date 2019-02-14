@@ -6,7 +6,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +23,7 @@ public class Demanda implements Serializable {
 	@Column (name="dem_ID")
 	private int demID;
 	
-	@ManyToOne (fetch = FetchType.LAZY) 
+	@ManyToOne //(fetch = FetchType.LAZY) 
 	@JoinColumn (name = "dem_Endereco_FK")
 	private Endereco demEnderecoFK;
 	

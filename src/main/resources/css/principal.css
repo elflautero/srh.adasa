@@ -1,11 +1,13 @@
 
+/* tamanho da fonte */
 .clFonteGeral { /* tamanho da fonte (letra) */
     -fx-font		: 13px "Arial";
 	-fx-font-family: "Roboto", "Arial", sans-serif;
 }
 
-.clPaneConversor { /* cl classe conversor  */
-	 -fx-background-color: #28353D;
+/* cl classe conversor - parte inferior */
+.clPaneConversor { 
+	 -fx-background-color: #28353D ;
 	 
 }
 
@@ -82,6 +84,46 @@
 .panesLaterais { /* cor dos  panes dentro das tabs laterais */
 	-fx-background-color: rgba(58,86,109,0.9); 
 	
+}
+
+.clLabelsEstiloTipoMapa{
+
+     -fx-text-fill	: #FFFFFF;
+     -fx-text-base-color: #FFFFFF;
+     -fx-font-weight: bold;
+}
+
+.clBotaoZoom {
+	
+	-fx-background-color	: white;
+	
+	-fx-background-radius: 0 0 0 0;
+	-fx-pref-width: 120px;
+	-fx-pref-height: 25px;
+	
+}
+
+.clBotaoMapaEstilo {
+	
+	-fx-background-color	: white;
+	
+	-fx-background-radius: 0 0 0 0;
+	-fx-pref-width: 25px;
+	-fx-pref-height: 25px;
+	
+}
+
+#btnNight {
+	-fx-background-color	:  #263C3F;
+}
+#btnBlueMap {
+	-fx-background-color	:  #30427A;
+}
+#btnGreenMap {
+	-fx-background-color	:  #537C35;
+}
+#btnRetroMap {
+	-fx-background-color	:  #E98D58;
 }
 
 

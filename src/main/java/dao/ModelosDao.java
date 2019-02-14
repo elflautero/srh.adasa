@@ -5,11 +5,26 @@ import java.util.List;
 import org.hibernate.Session;
 
 import entidades.HibernateUtil;
+import entidades.Interferencia;
 import entidades.ModelosHTML;
 
 public class ModelosDao {
 	
-public void salvarModelo (ModelosHTML mod) {
+	
+	public ModelosHTML obterModeloHTMl (Integer modeloID) {
+		
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		
+		s.beginTransaction();
+		
+		ModelosHTML modeloHTMl = s.get(ModelosHTML.class, modeloID);
+		
+		return modeloHTMl;
+		
+	}
+	
+	
+	public void salvarModelo (ModelosHTML mod) {
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
@@ -20,7 +35,7 @@ public void salvarModelo (ModelosHTML mod) {
 	}
 	
 @SuppressWarnings("unchecked")
-public List<ModelosHTML> listarModelo (String strPesquisa) {
+	public List<ModelosHTML> listarModelo (String strPesquisa) {
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		
@@ -37,7 +52,7 @@ public List<ModelosHTML> listarModelo (String strPesquisa) {
 		s.close();
 		return list;
 	}
-	
+
 	public void removerModelo(Integer id) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();

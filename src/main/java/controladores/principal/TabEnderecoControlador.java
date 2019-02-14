@@ -14,6 +14,7 @@ import controladores.fiscalizacao.TabVistoriaControlador;
 import dao.EnderecoDao;
 import entidades.Demanda;
 import entidades.Endereco;
+import entidades.Interferencia;
 import entidades.RA;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -41,6 +42,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import mapas.GoogleMap;
 import principal.Alerta;
 import principal.FormatoData;
 
@@ -229,18 +231,18 @@ public class TabEnderecoControlador implements Initializable {
 						
 					} else {
 					
-						RA ra = new RA ();
-						ra.setRaID(intRA);
-						ra.setRaNome(strRA);
+							RA ra = new RA ();
+								ra.setRaID(intRA);
+								ra.setRaNome(strRA);
 						
 						Endereco end = new Endereco();
 							
-							end.setEndLogadouro(tfEnd.getText());
-							end.setEndRAFK(ra);
-								
-							end.setEndCEP(tfCep.getText());
-							end.setEndCidade(tfCid.getText());
-							end.setEndUF(cbEndUF.getValue());
+								end.setEndLogadouro(tfEnd.getText());
+								end.setEndRAFK(ra);
+									
+								end.setEndCEP(tfCep.getText());
+								end.setEndCidade(tfCid.getText());
+								end.setEndUF(cbEndUF.getValue());
 							
 							try {
 								
@@ -260,7 +262,6 @@ public class TabEnderecoControlador implements Initializable {
 								
 								end.setEndAtualizacao(
 										Timestamp.valueOf((LocalDateTime.now())));
-										
 										
 										Demanda dem = new Demanda ();
 										
@@ -484,9 +485,13 @@ public class TabEnderecoControlador implements Initializable {
 	ScrollPane spPrincipal = new ScrollPane();
 	Pane p1 = new Pane ();
 	
+	// pane para mostrar a demanda envolvida no crud
 	Pane p_lblDemanda = new Pane();
 	Pane pDadosBasicos = new Pane();
 	Pane pPersistencia = new Pane();
+	
+	// pane para o mapa
+	Pane pEnderecoMapa = new Pane();
 	
 	@SuppressWarnings("unchecked")
 	public void initialize(URL url, ResourceBundle rb) {
@@ -555,7 +560,15 @@ public class TabEnderecoControlador implements Initializable {
 	    cbEndRA.setValue("Plano Piloto");
 	    cbEndUF.setItems(olEndUF);
 	    
-	    p1.getChildren().addAll(p_lblDemanda, pDadosBasicos, pPersistencia, lblDataAtualizacao, tvLista);
+	    
+	    pEnderecoMapa.setPrefSize(900, 400);
+	    pEnderecoMapa.setLayoutX(120);
+	    pEnderecoMapa.setLayoutY(526);
+	    pEnderecoMapa.getChildren().add(googleMaps);
+	    googleMaps.setWidth(900);
+	    googleMaps.setHeight(400);
+	    
+	    p1.getChildren().addAll(p_lblDemanda, pDadosBasicos, pPersistencia, lblDataAtualizacao, tvLista, pEnderecoMapa);
 	    
 	    cbEndRA.getSelectionModel().selectedIndexProperty().addListener(new
 	            ChangeListener<Number>() {
@@ -832,12 +845,15 @@ public class TabEnderecoControlador implements Initializable {
     		e.getEndUF();
     		e.getEndDDLatitude();
     		e.getEndDDLongitude();
+    		e.getDemandas();
     		
     		obsList.add(e);
     		
 		}
 		
 	}
+	
+	GoogleMap googleMaps = new GoogleMap();
 	
 	// método selecionar endereço -- //
 	 	public void selecionarEndereco () {
@@ -889,11 +905,13 @@ public class TabEnderecoControlador implements Initializable {
 					btnExcluir.setDisable(false);
 					btnCancelar.setDisable(false);
 					
+					
 					/*
 					if (end.getDemandas().size() != 0) { // colocar regra de só pode enditar escolhendo uma demanda...
 						demanda = end.getDemandas().get(0);
 					}
 					*/
+					
 					
 					
 					// mostrar data de atualizacao //
@@ -903,9 +921,10 @@ public class TabEnderecoControlador implements Initializable {
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);}
 						
-					
+//aquii 	ao excluir um endereco  Index: 0, Size: 0				
 					// setar a demanda 0 do endereco selecionado // 
 					setDemanda (end.getDemandas().get(0));               // *****  colocar try catch (para quando nao houver demanda associada //
+					
 					
 					
 					// setar na interferencia (tabinterferencia) este endereco selecinado //
@@ -913,35 +932,35 @@ public class TabEnderecoControlador implements Initializable {
 					tabUsCon.setEndereco(end);
 					tabVisCon.setEndereco(end);
 					
-					//eGeral = new Endereco(endTab);
+					// Abrir o mapa com o endereco selecionado e interferencias
 					
-					//main.pegarEnd(eGeral);
-					
-					
-					//Double lat = Double.parseDouble(tfEndLat.getText());
-					//Double  lng = Double.parseDouble(tfEndLon.getText() );
-					
-					/*
-					if (wv1 == null) {
+						// listar as interferencias
+						List<Interferencia> iList = end.getInterferencias();
 						
-						String strMarcador = "" +
-		                        "window.lat = " + lat + ";" +
-		                        "window.lon = " + lng + ";" +
-		                        "document.goToLocation(window.lat, window.lon);";
+							// preparar strings para transmitir para o javascript pelo metodo 'setEnderecoInterferencias()'
+							String strInterferencias = "";
+					
+							String strEndereco = end.getEndDDLatitude() + "," + end.getEndDDLongitude();
+							/* string para os detalhes das  interferencias como tipo 
+							de interferencia, bacia hid, uh e situação do processo */
+							String strDetalhes = "";
+					
+					for(Interferencia i : iList) {
 						
-						abrirMapa(strMarcador);
+						strInterferencias += "|" + i.getInterDDLatitude() + "," + i.getInterDDLongitude() ;
 						
-					} else
-					{
-						webEng.executeScript("" +
-		                        "window.lat = " + lat + ";" +
-		                        "window.lon = " + lng + ";" +
-		                        "document.goToLocation(window.lat, window.lon);"
-		                    );
-				
+						strDetalhes += "|" + i.getInterTipoInterferenciaFK().getTipoInterDescricao() + "," + i.getInterBaciaFK().getBaciaNome()
+								+ "," + i.getInterUHFK().getUhID()
+								+ "," +  i.getInterSituacaoProcessoFK().getSituacaoProcessoDescricao();
+						
 					}
-					*/
 					
+					/* chamar os metodo necessarios, primeiro as coordenadas e detalhes, 
+						zoom do mapa e deois centralizar o mapa de acordo com o endereco
+						*/
+					googleMaps.setEnderecoInterferencias(strEndereco, strInterferencias, strDetalhes);
+					googleMaps.setZoom (15);
+					googleMaps.setMapCenter(end.getEndDDLatitude(), end.getEndDDLongitude());
 					
 				}
 				
@@ -950,6 +969,7 @@ public class TabEnderecoControlador implements Initializable {
 			});
 			
 		}
-	 
+	
+
 }
 

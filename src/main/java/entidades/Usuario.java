@@ -1,16 +1,23 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Usuario implements Serializable {
@@ -23,9 +30,15 @@ public class Usuario implements Serializable {
 	@Column (name = "us_ID")
 	private int usID;
 	
-	@ManyToOne (fetch = FetchType.LAZY) // cascade = CascadeType.ALL
-	@JoinColumn (name = "us_Endereco_FK")
-	private Endereco usEnderecoFK;
+		//-- Lista de enderecos vinculados --//
+		@OneToMany (mappedBy = "endUsuarioFK", cascade = CascadeType.MERGE,
+				fetch = FetchType.LAZY, targetEntity = Endereco.class)
+		@Fetch(FetchMode.SUBSELECT)
+		private Set<Endereco> enderecos = new HashSet<Endereco>();
+		
+		//List<Endereco> enderecos = new ArrayList<Endereco>();
+		//private Set parts = new HashSet();
+	
 	
 	@Column (name = "us_Tipo", columnDefinition="varchar(8)")
 	private String usTipo;
@@ -80,12 +93,14 @@ public class Usuario implements Serializable {
 		this.usID = usID;
 	}
 
-	public Endereco getUsEnderecoFK() {
-		return usEnderecoFK;
+	
+	
+	public Set<Endereco> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setUsEnderecoFK(Endereco usEnderecoFK) {
-		this.usEnderecoFK = usEnderecoFK;
+	public void setEnderecos(Set<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 	public String getUsTipo() {

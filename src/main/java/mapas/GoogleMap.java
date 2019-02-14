@@ -205,6 +205,15 @@ public class GoogleMap extends Parent {
 	    	
 	    }
 	    
+	    public void setEnderecoInterferencias (String strEndereco, String strInterferencias, String strDetalhes) {
+	    	
+	    	invokeJS("setEnderecoInterferencias(\'" + ""+ strEndereco + ""  
+	    										+ "\', \'" + "" + strInterferencias + ""
+	    										+ "\', \'" + "" + strDetalhes + "" 
+	    										+ "\');"); 
+	    	
+	    }
+	    
 	    public void setZoomIn() {
 	    	invokeJS("setZoomIn();");
 	    }
@@ -231,6 +240,15 @@ public class GoogleMap extends Parent {
 	        String sLng = Double.toString(lng);
 	        
 	        invokeJS("setMapCenter(" + sLat + ", " + sLng + ")");
+	    }
+	    
+	    public void mudarEstiloMapa (int i) {
+	    	
+	    	invokeJS("mudarEstiloMapa(" + i + ")");
+	    }
+	    
+	    public void setZoom (int i) {
+	    	invokeJS("setZoom(" + i + ")");
 	    }
 
 	    public void switchSatellite() {
@@ -268,6 +286,7 @@ public class GoogleMap extends Parent {
 	    public ReadOnlyDoubleProperty widthProperty() {
 	        return webView.widthProperty();
 	    }
+	    
 	    
 	    private JSObject doc;
 	    private EventHandler<MapEvent> onMapLatLngChanged;

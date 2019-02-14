@@ -20,11 +20,11 @@ function initAutocomplete() {
 	// opcoes do mapa //
 	var mapOptions = {
 	        center: defLatLng,
-	        zoom: 4,
+	        zoom: 11,
 	        mapTypeId: google.maps.MapTypeId.ROADMAP,
 	        scaleControl: true,
-	        disableDefaultUI: true // desabilitar controles
-	    	//streetViewControl: true
+	        disableDefaultUI: true, // desabilitar controles
+	        styles: styles.darkBlue
 	    };
 	
 	// mapa //
@@ -41,7 +41,7 @@ function initAutocomplete() {
 	marker.addListener('click', function() {
 	    map.setZoom(12);
 	    map.setCenter(marker.getPosition());
-	    console.log(map.getZoom());
+	    
 	  });
 	
 	// ouvinte para  obter  as coordenadas do local clicado no  mapa //
@@ -126,3 +126,4 @@ function initAutocomplete() {
   layers[7] = new google.maps.TrafficLayer();
   
 }
+

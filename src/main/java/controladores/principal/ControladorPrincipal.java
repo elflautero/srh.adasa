@@ -68,8 +68,14 @@ public class ControladorPrincipal {
 	Button btnRoadMap;
 	Button btnSattelite;
 	Button btnHybrid;
+	
 	Button btnZoomOut;
 	Button btnZoomIn;
+	
+	Button btnNightMap;
+	Button btnBlueMap;
+	Button btnGreenMap;
+	Button btnRetroMap;
 	
 	CheckBox checkBacia;
 	CheckBox checkRiodDF;
@@ -454,6 +460,7 @@ public class ControladorPrincipal {
 				
 				apWebMap.getChildren().add(googleMaps);  //.setContent(googleMaps);
 				
+				
 				apMain.widthProperty().addListener(
 			    		(observable, oldValue, newValue) -> {
 			    			googleMaps.resizeWidthMap ((Double)newValue);
@@ -478,18 +485,17 @@ public class ControladorPrincipal {
 			
     	});
 	    
-	    
         btnHome = GlyphsDude.createIconButton(
         		FontAwesomeIcon.HOME,
         		"HOME", 
-        		"15px", 
+        		"20px", 
                 "11px",  
                 ContentDisplay.LEFT);
         
-        btnHome.getStyleClass().add("clBotoesLateral");
-        btnHome.setLayoutX(10.0);
-        btnHome.setLayoutY(16.0);
-        
+	        btnHome.getStyleClass().add("clBotoesLateral");
+	        btnHome.setLayoutX(10.0);
+	        btnHome.setLayoutY(16.0);
+	        
         btnSEI = GlyphsDude.createIconButton(
         		FontAwesomeIcon.CHROME,
         		"SEI - GDF", 
@@ -497,9 +503,9 @@ public class ControladorPrincipal {
                 "11px",  
                 ContentDisplay.LEFT);
         
-        btnSEI.getStyleClass().add("clBotoesLateral");
-        btnSEI.setLayoutX(10.0);
-        btnSEI.setLayoutY(55.0);
+	        btnSEI.getStyleClass().add("clBotoesLateral");
+	        btnSEI.setLayoutX(10.0);
+	        btnSEI.setLayoutY(55.0);
         
         btnAtendimento = GlyphsDude.createIconButton(
         		FontAwesomeIcon.PHONE_SQUARE,
@@ -508,9 +514,9 @@ public class ControladorPrincipal {
                 "11px",   
                 ContentDisplay.LEFT);
         
-        btnAtendimento.getStyleClass().add("clBotoesLateral");
-        btnAtendimento.setLayoutX(10.0);
-        btnAtendimento.setLayoutY(94.0);
+	        btnAtendimento.getStyleClass().add("clBotoesLateral");
+	        btnAtendimento.setLayoutX(10.0);
+	        btnAtendimento.setLayoutY(94.0);
         
         btnFiscalizacao = GlyphsDude.createIconButton(
         		FontAwesomeIcon.TICKET,
@@ -519,14 +525,14 @@ public class ControladorPrincipal {
                 "11px",  
                 ContentDisplay.LEFT);
         
-        btnFiscalizacao.getStyleClass().add("clBotoesLateral");
-        btnFiscalizacao.setLayoutX(10.0);
-        btnFiscalizacao.setLayoutY(133.0);
+	        btnFiscalizacao.getStyleClass().add("clBotoesLateral");
+	        btnFiscalizacao.setLayoutX(10.0);
+	        btnFiscalizacao.setLayoutY(133.0);
         
         btnEditorHTML = GlyphsDude.createIconButton(
            		FontAwesomeIcon.HTML5,
            		"EDITOR HTML", 
-           		"15px", 
+           		"20px", 
                    "11px",  
                    ContentDisplay.LEFT);
            
@@ -542,108 +548,155 @@ public class ControladorPrincipal {
                 "11px",   
                 ContentDisplay.LEFT);
         
-        btnConversor.getStyleClass().add("clBotoesLateral");
-        btnConversor.setLayoutX(10.0);
-        btnConversor.setLayoutY(211.0);
+	        btnConversor.getStyleClass().add("clBotoesLateral");
+	        btnConversor.setLayoutX(10.0);
+	        btnConversor.setLayoutY(211.0);
         
         
         // botao de aumentar o zoom //
         btnZoomIn = GlyphsDude.createIconButton(
         		FontAwesomeIcon.PLUS,
         		"", 
-        		"20px", 
-                "10px",  
+        		"10px", 
+                "9px",  
                 ContentDisplay.TOP);
-        btnZoomIn.getStyleClass().add("clBotoesLateral");
+        	btnZoomIn.getStyleClass().add("clBotaoZoom");
         
-        btnZoomIn.setOnAction((ActionEvent evt)->{
-        	googleMaps.setZoomIn();
-        });
+	        btnZoomIn.setOnAction((ActionEvent evt)->{
+	        	googleMaps.setZoomIn();
+	        });
         
-        btnZoomIn.setLayoutX(10.0);
-        btnZoomIn.setLayoutY(254.0);
-        
-        
+	        btnZoomIn.setLayoutX(10.0);
+	        btnZoomIn.setLayoutY(290.0);
+	        
         // botao de diminuir o zoom //
         btnZoomOut = GlyphsDude.createIconButton(
         		FontAwesomeIcon.MINUS,
         		"", 
-        		"20px", 
-                "10px",  
+        		"10px", 
+                "9px",  
                 ContentDisplay.TOP);
-        btnZoomOut.getStyleClass().add("clBotoesLateral");
+        	btnZoomOut.getStyleClass().add("clBotaoZoom");
         
-        btnZoomOut.setOnAction((ActionEvent evt)->{
-        	googleMaps.setZoomOut();
-        });
-        btnZoomOut.setLayoutX(10.0);
-        btnZoomOut.setLayoutY(308.0);
+	        btnZoomOut.setOnAction((ActionEvent evt)->{
+	        	googleMaps.setZoomOut();
+	        });
+	        
+	        btnZoomOut.setLayoutX(10.0);
+	        btnZoomOut.setLayoutY(327.0);
         
-        
-        Button btnTerrain = new Button("Terreno");
-    	Button btnRoadMap = new Button("Rodovias");
-    	Button btnSattelite = new Button("Satélite");
-    	Button btnHybrid = new Button("Híbrido");
+        Label lblTipoMapa = new Label("Tipo de Mapa");
+        	lblTipoMapa.setLayoutX(28.0);
+        		lblTipoMapa.setLayoutY(11.0);
+        		lblTipoMapa.getStyleClass().add("clLabelsEstiloTipoMapa");
+        		
+        		Label lblEstiloMapa = new Label("Estilo de Mapa");
+        			lblEstiloMapa.setLayoutX(26.0);
+        				lblEstiloMapa.setLayoutY(189.0);
+        				lblEstiloMapa.getStyleClass().add("clLabelsEstiloTipoMapa");
     	
-    	btnHybrid.getStyleClass().add("clBotoesLateral");
+       btnTerrain = new Button("TERRENO");
+       btnRoadMap = new Button("RODOVIAS");
+       btnSattelite = new Button("SATÉLITE");
+       btnHybrid = new Button("HÍBRIDO");
+    	
+    	btnNightMap = new Button();
+    		btnBlueMap = new Button();
+    			btnGreenMap = new Button();
+    				btnRetroMap = new Button();
+    	
+    	btnNightMap.setId("btnNight");
+	    	btnBlueMap.setId("btnBlueMap");
+		    	btnGreenMap.setId("btnGreenMap");
+		    		btnRetroMap.setId("btnRetroMap");
+		    		
+		    		btnNightMap.getStyleClass().add("clBotaoMapaEstilo");
+			    	btnBlueMap.getStyleClass().add("clBotaoMapaEstilo");
+				    	btnGreenMap.getStyleClass().add("clBotaoMapaEstilo");
+				    		btnRetroMap.getStyleClass().add("clBotaoMapaEstilo");
+				    		
+    	
+    	btnNightMap.setLayoutX(10.0);
+    	btnNightMap.setLayoutY(216.0);
+	    	btnBlueMap.setLayoutX(41.0);
+	    	btnBlueMap.setLayoutY(216.0);
+		    	btnGreenMap.setLayoutX(72.0);
+		    	btnGreenMap.setLayoutY(216.0);
+			    	btnRetroMap.setLayoutX(103.0);
+			    	btnRetroMap.setLayoutY(216.0);
+			    	
+			    	btnNightMap.setOnAction((ActionEvent evt)->{
+			        	googleMaps.mudarEstiloMapa(1);
+			        });	
+			    	
+				    	btnBlueMap.setOnAction((ActionEvent evt)->{
+				        	googleMaps.mudarEstiloMapa(2);
+				        });	 
+			    	
+				    		btnGreenMap.setOnAction((ActionEvent evt)->{
+					        	googleMaps.mudarEstiloMapa(3);
+					        });	    
+				    			btnRetroMap.setOnAction((ActionEvent evt)->{
+						        	googleMaps.mudarEstiloMapa(4);
+						        });	    	
+				    			 
     	
     	btnTerrain.setLayoutX(10.0);
-    	btnTerrain.setLayoutY(16.0);
+    		btnTerrain.setLayoutY(40.0);
     	
-    	btnTerrain.getStyleClass().add("clBotoesLateral");
+    			btnTerrain.getStyleClass().add("clBotoesLateral");
         
     	btnRoadMap.setLayoutX(10.0);
-    	btnRoadMap.setLayoutY(55.0);
+    		btnRoadMap.setLayoutY(75.0);
     	
-    	btnRoadMap.getStyleClass().add("clBotoesLateral");
+    			btnRoadMap.getStyleClass().add("clBotoesLateral");
         
     	btnSattelite.setLayoutX(10.0);
-    	btnSattelite.setLayoutY(94.0);
+    		btnSattelite.setLayoutY(110.0);
     	
-    	btnSattelite.getStyleClass().add("clBotoesLateral");
+    			btnSattelite.getStyleClass().add("clBotoesLateral");
         
     	btnHybrid.setLayoutX(10.0);
-    	btnHybrid.setLayoutY(133.0);
+    		btnHybrid.setLayoutY(145.0);
     	
-    	btnHybrid.getStyleClass().add("clBotoesLateral");
-    	
+    			btnHybrid.getStyleClass().add("clBotoesLateral");
     	
     	checkBacia = new CheckBox("Bacias");
-    	checkRiodDF  = new CheckBox("Rios do DF");
-    	checkRiosUniao  = new CheckBox("Rios da União");
-    	checkFraturado  = new CheckBox("Fraturado");
-    	checkPoroso  = new CheckBox("Poroso");
-    	checkUTM  = new CheckBox("UTM");
-    	checkTrafego  = new CheckBox("Tráfego");
+    		checkRiodDF  = new CheckBox("Rios do DF");
+    			checkRiosUniao  = new CheckBox("Rios da União");
+    				checkFraturado  = new CheckBox("Fraturado");
+				    	checkPoroso  = new CheckBox("Poroso");
+					    	checkUTM  = new CheckBox("UTM");
+					    		checkTrafego  = new CheckBox("Tráfego");
     	
     	Pane pCheck = new Pane ();
-    	pCheck.setPrefSize(120, 345);
-    	pCheck.setLayoutX(10.0);
-    	pCheck.setLayoutY(10.0);
+	    	pCheck.setPrefSize(120, 345);
+	    	pCheck.setLayoutX(10.0);
+	    	pCheck.setLayoutY(10.0);
     	
-    	pCheck.setStyle("-fx-background-color: white;");
-    	pCheck.getChildren().addAll(checkBacia, checkRiodDF, checkRiosUniao,  checkFraturado, checkPoroso,checkUTM, checkTrafego);
-    	
+		    	pCheck.setStyle("-fx-background-color: white;");
+		    	pCheck.getChildren().addAll(checkBacia, checkRiodDF, checkRiosUniao,  checkFraturado, checkPoroso,checkUTM, checkTrafego);
+		    	
     	checkBacia.setLayoutX(5.0);
     	checkBacia.setLayoutY(15.0);
     	
-    	checkRiodDF.setLayoutX(5.0);
-    	checkRiodDF.setLayoutY(40.0);
+	    	checkRiodDF.setLayoutX(5.0);
+	    	checkRiodDF.setLayoutY(40.0);
     	
-    	checkRiosUniao.setLayoutX(5.0);
-    	checkRiosUniao.setLayoutY(65.0);
+		    	checkRiosUniao.setLayoutX(5.0);
+		    	checkRiosUniao.setLayoutY(65.0);
     	
-    	checkFraturado.setLayoutX(5.0);
-    	checkFraturado.setLayoutY(90.0);
-    	
-    	checkPoroso.setLayoutX(5.0);
-    	checkPoroso.setLayoutY(115.0);
-    	
-    	checkUTM.setLayoutX(5.0);
-    	checkUTM.setLayoutY(140.0);
-    	
-    	checkTrafego.setLayoutX(5.0);
-    	checkTrafego.setLayoutY(165.0);
+			    	checkFraturado.setLayoutX(5.0);
+			    	checkFraturado.setLayoutY(90.0);
+			    	
+				    	checkPoroso.setLayoutX(5.0);
+				    	checkPoroso.setLayoutY(115.0);
+				    	
+					    	checkUTM.setLayoutX(5.0);
+					    	checkUTM.setLayoutY(140.0);
+					    	
+						    	checkTrafego.setLayoutX(5.0);
+						    	checkTrafego.setLayoutY(165.0);
     	
         tpPrincLatDir = new TabPane();
         tpPrinclatEsq = new TabPane();
@@ -664,13 +717,13 @@ public class ControladorPrincipal {
 	        tab2.setClosable(false);
         
         Pane pOrgaos = new Pane ();
-        pOrgaos.setPrefSize(130, 370);
-        pOrgaos.getStyleClass().add("panesLaterais");
+	        pOrgaos.setPrefSize(130, 370);
+	        pOrgaos.getStyleClass().add("panesLaterais");
         
         Pane pOrgaos2 = new Pane ();
-        pOrgaos2.setPrefSize(130, 370);
-        pOrgaos2.getStyleClass().add("panesLaterais");
-        
+	        pOrgaos2.setPrefSize(130, 370);
+	        pOrgaos2.getStyleClass().add("panesLaterais");
+	        
 
         pOrgaos.getChildren().addAll(btnHome, btnSEI, btnAtendimento, btnFiscalizacao, btnConversor, btnEditorHTML);
         
@@ -698,19 +751,23 @@ public class ControladorPrincipal {
        
         
         Pane pOpcoesMapa = new Pane ();
-        pOpcoesMapa.setPrefSize(130, 370);
-        pOpcoesMapa.getStyleClass().add("panesLaterais");
+	        pOpcoesMapa.setPrefSize(130, 370);
+	        pOpcoesMapa.getStyleClass().add("panesLaterais");
         
         
         Pane pShapes = new Pane ();
-        pShapes.setPrefSize(130, 370);
-        pShapes.getStyleClass().add("panesLaterais");
+	        pShapes.setPrefSize(130, 370);
+	        pShapes.getStyleClass().add("panesLaterais");
         
+	        pShapes.getChildren().addAll(pCheck);
         
-        
-        pOpcoesMapa.getChildren().addAll(btnTerrain, btnRoadMap, btnSattelite, btnHybrid, btnZoomIn, btnZoomOut);
-        pShapes.getChildren().addAll(pCheck);
-        
+        pOpcoesMapa.getChildren().addAll(
+        		lblTipoMapa, 
+        		btnTerrain, btnRoadMap, btnSattelite, btnHybrid, 
+        		lblEstiloMapa, btnNightMap, btnBlueMap, btnGreenMap, btnRetroMap,
+        		btnZoomIn, btnZoomOut);
+       
+       
         tab3.setContent(pOpcoesMapa);
         tab4.setContent(pShapes);
         

@@ -120,7 +120,6 @@ public class TabDemandaControlador implements Initializable {
 				Alerta a = new Alerta ();
 				a.alertar(new Alert(Alert.AlertType.ERROR, "Informe: Documento, Processo SEI!!!", ButtonType.OK));
 		
-				
 			} else {
 			
 					Demanda demanda = new Demanda();
@@ -150,7 +149,6 @@ public class TabDemandaControlador implements Initializable {
 					
 					demanda.setDemAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 					
-					
 					// salvar a demanda //
 					DemandaDao dao = new DemandaDao();
 					
@@ -168,7 +166,6 @@ public class TabDemandaControlador implements Initializable {
 					Alerta a = new Alerta ();
 					a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro salvo com sucesso!!!", ButtonType.OK));
 			
-					
 					}
 			
 		} catch (Exception ex) {
@@ -660,23 +657,18 @@ public class TabDemandaControlador implements Initializable {
 				
 				if (demanda.getDemDistribuicao() == null) {
 					dpDataDistribuicao.setValue(null);
-					System.out.println("data dis null");
 					
 	 				} else {
 	 					Date dataDis = demanda.getDemDistribuicao();
 	 					dpDataDistribuicao.setValue(dataDis.toLocalDate());
-	 					System.out.println("ok data dis");
 	 				}
 				
 				if (demanda.getDemRecebimento() == null) {
 					dpDataRecebimento.setValue(null);
-					System.out.println("data rec null");
 	 				} else {
 	 					
 	 					Date dataRec = demanda.getDemRecebimento();
 	 					dpDataRecebimento.setValue(dataRec.toLocalDate());
-	 					System.out.println("ok data rec");
-	 					
 	 				}
 				
 				tfResDen.setText(demanda.getDemDescricao());

@@ -53,14 +53,28 @@ public class EnderecoDao {
 		
 		
 		Criteria crit = s.createCriteria(Endereco.class, "e");
-		crit.createAlias("e.demandas", "d", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("e.endRAFK", "ra");
+		//crit.createAlias("e.demandas", "d", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("e.endRAFK", "ra", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("e.interferencias", "i", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("i.subTipoPocoFK", "tipoPoco", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.subSubSistemaFK", "subSistema", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("i.supFormaCaptacaoFK", "formaCaptacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.supLocalCaptacaoFK", "localCaptacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.supMetodoIrrigacaoFK", "metodoIrrigacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interSituacaoProcessoFK", "situacaoProcesso", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interTipoAtoFK", "tipoAto", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("i.interTipoInterferenciaFK", "tipoInter", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interBaciaFK", "baciaInter", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interUHFK", "unidaHidInter", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("i.interTipoOutorgaFK", "tipoOutorga", JoinType.LEFT_OUTER_JOIN);
+		
 		crit.add(Restrictions.like("endLogadouro", '%' + strPesquisa + '%'))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		list = crit.list();
-		
-		
-		//.setResultTransformer(crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY));
 		
 		s.getTransaction().commit();
 		s.close();

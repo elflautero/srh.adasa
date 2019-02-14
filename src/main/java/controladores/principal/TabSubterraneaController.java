@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 
+import entidades.GetterAndSetter;
 import entidades.SubSistema;
 import entidades.Subterranea;
 import entidades.TipoPoco;
@@ -18,19 +19,23 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import principal.Alerta;
 
 public class TabSubterraneaController implements Initializable {
 	
+	public Subterranea sub = new Subterranea();
+	
 	//Image imgSub = new Image(TabSubterraneaController.class.getResourceAsStream("/images/subterranea.png"));
 	//@FXML ImageView	iVewSubt = new ImageView();
-	
 	
 	@FXML TextField tfVazaoPoco;
 	@FXML TextField tfEstatico;
@@ -113,34 +118,14 @@ public class TabSubterraneaController implements Initializable {
 	
 	@FXML public DatePicker dpDataSubterranea;
 	
-	public Subterranea sub = new Subterranea();
-	
-	public Double mudaStringDouble (String s) {
-		
-		Double d;
-		try {d = Double.parseDouble(s); } 
-			catch (Exception e) {d = 0.0;};
-		return d;
-		
-	}
-	
-	public int mudaStringInterger(String s) {
-		
-		int i;
-		try {i = Integer.parseInt(s); } 
-			catch (Exception e) {i = 0;};
-		return i;
-		
-	}
-	
-
+	// variaveis de finalidade e reflexao //
 	String strVariaveisFinalidades [] = {"subFinalidade1", "subFinalidade2", "subFinalidade3", "subFinalidade4", "subFinalidade5"};
 	String strVariaveisSubfinaldades [] = {"subSubfinalidade1", "subSubfinalidade2", "subSubfinalidade3", "subSubfinalidade4", "subSubfinalidade5"};
 	String strVariaveisQuantidades [] = {"subQuantidade1", "subQuantidade2", "subQuantidade3", "subQuantidade4", "subQuantidade5"};
 	String strVariaveisConsumo [] = {"subConsumo1", "subConsumo2", "subConsumo3", "subConsumo4", "subConsumo5"};
 	String strVariaveisVazao [] = {"subVazao1", "subVazao2", "subVazao3", "subVazao4", "subVazao5"};
 	
-	// Vazao Mensal //
+	// variaveis de vazao mensal e reflexao //
 			String strVariaveisVazaoMes [] = {
 					
 					"subQDiaJan","subQDiaFev","subQDiaMar","subQDiaAbr","subQDiaMai","subQDiaJun",
@@ -162,6 +147,8 @@ public class TabSubterraneaController implements Initializable {
 			};
 	
 	public Subterranea obterSubterranea () {
+		
+		sub.setInterID(sub.getInterID());
 		
 		// adicionar o id escolhido no combobox
 		subSistema.setSubID(subSistemaID);
@@ -185,54 +172,125 @@ public class TabSubterraneaController implements Initializable {
 			}
 		
 		// Finalidades Sub Quan Cons e Vazao //
-		entidades.GetterAndSetter gs  = new entidades.GetterAndSetter();
+		GetterAndSetter gs  = new GetterAndSetter();
 		
 		for (int i = 0; i< strVariaveisFinalidades.length; i++) {
-			 gs.callSetter(sub, strVariaveisFinalidades[i], tfListFinalidades[i].getText());
-			 gs.callSetter(sub, strVariaveisSubfinaldades[i], tfListSubfinalidades[i].getText());
-			 gs.callSetter(sub, strVariaveisQuantidades[i],mudaStringDouble(tfListQuantidades[i].getText()));
-			 gs.callSetter(sub, strVariaveisConsumo[i], mudaStringDouble(tfListConsumo[i].getText()));
-			 gs.callSetter(sub, strVariaveisVazao[i], mudaStringDouble(tfListFinVazoes[i].getText()));
+			
+			String strQuantidade;
+			String strConsumo;
+			String strVazoes;
+			
+			gs.callSetter(sub, strVariaveisFinalidades[i], tfListFinalidades[i].getText());
+			gs.callSetter(sub, strVariaveisSubfinaldades[i], tfListSubfinalidades[i].getText());
+			
+			// Conferir se está vazio o campo
+			if (! tfListQuantidades[i].getText().isEmpty()) {
+						// Conferir se há letras e mudar por zero
+						strQuantidade = String.valueOf(tfListQuantidades[i].getText()).replace('.', ','); 
+				} else { strQuantidade = "0,0"; }
+			
+				try {	gs.callSetter(sub, strVariaveisQuantidades[i], NumberFormat.getInstance().parse(strQuantidade).doubleValue());
+							} catch (ParseException e) {e.printStackTrace();};
+							
+							// Conferir se está vazio o campo
+							if (! tfListConsumo[i].getText().isEmpty()) {
+										// Conferir se há letras e mudar por zero
+										strConsumo = String.valueOf(tfListConsumo[i].getText()).replace('.', ','); 
+								} else { strConsumo = "0,0"; }
+							
+								try {	
+										gs.callSetter(sub, strVariaveisConsumo[i], NumberFormat.getInstance().parse(strConsumo).doubleValue());
+											} catch (ParseException e) {e.printStackTrace();};
+											
+											// Conferir se está vazio o campo
+											if (! tfListFinVazoes[i].getText().isEmpty()) {
+														// Conferir se há letras e mudar por zero
+														strVazoes = String.valueOf(tfListFinVazoes[i].getText()).replace('.', ','); 
+												} else { strVazoes = "0,0"; }
+											
+												try {
+														gs.callSetter(sub, strVariaveisVazao[i], NumberFormat.getInstance().parse(strVazoes).doubleValue());
+														} catch (ParseException e) {e.printStackTrace();};
+							
+						
 		}
 		
-		// Buscar Vazao Total //
+		// Setar vazao total, soma das vazoes das finalidades requeridas. //
 		try {sub.setSubVazaoTotal(Double.parseDouble(lblCalTotal.getText())); } catch (Exception e) {sub.setSubVazaoTotal(0.0);};
 		
 		for (int i = 0; i< strVariaveisVazaoMes.length; i++) {
 			
-			String vazao = null;
+			String strVazoesMes;
+			String strVazoesHora;
+			String strPeriodos;
 			
-			 try {
-				
-				 vazao = String.valueOf(tfVazoesLD[0].getText()).replace('.', ','); System.out.println("de boa ");} 
+			// Conferir se está vazio o campo
+			if (! tfVazoesLD[i].getText().isEmpty()) {
+						// Conferir se há letras e mudar por zero
+						strVazoesMes = String.valueOf(tfVazoesLD[i].getText()).replaceAll("[a-zA-Z]", "0");
+						// Padronizar a forma de salvar, mudando virgula por ponto
+						strVazoesMes = strVazoesMes.replace('.', ','); 
+						
+				} else { strVazoesMes = "0,0"; }
 			
-						catch (Exception e) {vazao = "0,0"; System.out.println("exceção da string ");};
-					
-					//try { String.valueOf(tfVazoesLD[0].getText()).replace('.', ',');} cacth (Exception e) {};
+				try {
+					gs.callSetter(sub, strVariaveisVazaoMes[i], NumberFormat.getInstance().parse(strVazoesMes).doubleValue() );
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
 			
-			 try {
-				gs.callSetter(sub, strVariaveisVazaoMes[0], NumberFormat.getInstance().parse(vazao).doubleValue());
-				
-				System.out.println(NumberFormat.getInstance().parse(vazao).doubleValue());
-				
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			 
-			 //gs.callSetter(sub, strVariaveisVazaoHora[i], mudaStringInterger(tfVazoesHD[i].getText()));
-			// gs.callSetter(sub, strVariaveisTempo[i],mudaStringInterger(tfPeriodoDM[i].getText()));
-			 
-				// mudaStringDouble(tfVazoesLD[i].getText()
-				// NumberFormat.getInstance().parse(tf.getText()).doubleValue()
-				 
+						// Conferir se está vazio o campo
+						if (! tfVazoesHD[i].getText().isEmpty()) {
+									// Conferir se há letras e mudar por zero
+									strVazoesHora = String.valueOf(tfVazoesHD[i].getText()).replaceAll("[a-zA-Z , .]", "0"); 
+									/* 
+									 * ainda nao e o melhor 04/02/19, mudar o a-z por zero da certo, 
+									 * 		mas virgula e ponto seria melhor tirar tudo depois de virgula com substring
+									 * 
+									 * penso que nao precisa mais pois coloquei filtro no textfield para nao aceitar outros 
+									 *  	caracteres diferente de numero
+									 */
+									
+							} else { strVazoesHora = "0"; }
+						
+						try {
+							gs.callSetter(sub, strVariaveisVazaoHora[i], NumberFormat.getInstance().parse(strVazoesHora).intValue() );
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+						
+							// Conferir se está vazio o campo
+							if (! tfPeriodoDM[i].getText().isEmpty()) {
+										// Conferir se há letras e mudar por zero
+								strPeriodos = String.valueOf(tfPeriodoDM[i].getText()).replaceAll("[a-zA-Z , .]", "0"); 
+										/* 
+										 * ainda nao e o melhor 04/02/19, mudar o a-z por zero da certo, 
+										 * 		mas virgula e ponto seria melhor tirar tudo depois de virgula com substring
+										 * 
+										 * penso que nao precisa mais pois coloquei filtro no textfield para nao aceitar outros 
+										 *  	caracteres diferente de numero
+										 */
+										
+								} else { strPeriodos = "0"; }
+							
+							try {
+								gs.callSetter(sub, strVariaveisTempo[i], NumberFormat.getInstance().parse(strPeriodos).intValue() );
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+						
 			
 		}
 
+		sub.setInterID(this.sub.getInterID());
+		System.out.println("subterranea id - metodo obter subterranea " + sub.getInterID());
+		
 		return sub;
 	
 	}
 	
 	public void imprimirSubterranea (Subterranea sub) {
+		
 		
 		cbTipoPoco.setValue(sub.getSubTipoPocoFK().getTipoPocoDescricao());
 		cbSubSis.setValue(sub.getSubSubSistemaFK().getSubDescricao());
@@ -244,8 +302,12 @@ public class TabSubterraneaController implements Initializable {
 		
 		cbSubCaesb.setValue(sub.getSubCaesb());
 		
-		Date d = sub.getSubDataOperacao();
-		dpDataSubterranea.setValue(d.toLocalDate());
+		if (sub.getSubDataOperacao() == null) {
+			dpDataSubterranea.getEditor().clear();
+		} else {
+			Date d = sub.getSubDataOperacao();
+			dpDataSubterranea.setValue(d.toLocalDate());
+		}
 		
 		// tabela de finalidades e consumo  //
 		
@@ -273,8 +335,8 @@ public class TabSubterraneaController implements Initializable {
 			
 		}
 		
-		
-			
+		this.sub = sub;	
+	
 	}
 	
 	@FXML Pane tabSubterranea = new Pane ();
@@ -428,6 +490,7 @@ public class TabSubterraneaController implements Initializable {
             }
         });
 		
+		
 		tfEstatico.lengthProperty().addListener(new ChangeListener<Number>() {
 
             @Override
@@ -474,8 +537,11 @@ public class TabSubterraneaController implements Initializable {
                         // if it's 11th character then just setText to previous
                         // one
                     	tfProfundidade.setText(tfProfundidade.getText().substring(0, 5));
+                 
                     }
-                }
+                    
+                } // fim if length
+                
             }
         });
 		
@@ -518,6 +584,62 @@ public class TabSubterraneaController implements Initializable {
 			
 			gpFinalidades.add(btnCal, 7, i+1);
 			
+			tfQuant.lengthProperty().addListener(new ChangeListener<Number>() {
+
+	            @Override
+	            public void changed(ObservableValue<? extends Number> observable,
+	                    Number oldValue, Number newValue) {
+	                
+	                if (newValue.intValue() > oldValue.intValue()) {
+	                    // Check if the new character is greater than LIMIT
+	                    if (tfQuant.getText().length() >= 0) {
+
+	                    	/*   Nao permitir letras - variavel double, somente numeros com ponto ou virgula
+	                    	 */
+							if ( tfQuant.getText().matches("(.*)[a-zA-Z](.*)") == true ) {
+								// buscar letras entre os numeros
+								Alerta a = new Alerta ();
+								a.alertar(new Alert(Alert.AlertType.ERROR, "Somente números!!!", ButtonType.OK));
+								
+								// retirar caracter errado, como letra, virgula etc
+								tfQuant.setText(tfQuant.getText().substring(0, tfQuant.getText().length() - 1));
+							
+							}
+	                 
+	                    }
+	                    
+	                } // fim if length
+	            }
+	        });
+			
+			tfCon.lengthProperty().addListener(new ChangeListener<Number>() {
+
+	            @Override
+	            public void changed(ObservableValue<? extends Number> observable,
+	                    Number oldValue, Number newValue) {
+	                
+	                if (newValue.intValue() > oldValue.intValue()) {
+	                    // Check if the new character is greater than LIMIT
+	                    if (tfCon.getText().length() >= 0) {
+
+	                    	/*  Nao permitir letras - variavel double, somente numeros com ponto ou virgula
+	                    	 */
+							if ( tfCon.getText().matches("(.*)[a-zA-Z](.*)") == true ) {
+								// buscar letras entre os numeros
+								Alerta a = new Alerta ();
+								a.alertar(new Alert(Alert.AlertType.ERROR, "Somente números!!!", ButtonType.OK));
+								
+								// retirar caracter errado, como letra, virgula etc
+								tfCon.setText(tfCon.getText().substring(0, tfCon.getText().length() - 1));
+							
+							}
+	                 
+	                    }
+	                    
+	                } // fim if length
+	            }
+	        });
+			
 			cbFin.getSelectionModel().selectedItemProperty().addListener( 
 					
 			    	(ObservableValue<? extends String> observable, String oldValue, String newValue) ->
@@ -536,7 +658,7 @@ public class TabSubterraneaController implements Initializable {
 
 			        @Override
 			        public void handle(ActionEvent event) {
-			        	Double result = Double.parseDouble(tfQuant.getText()) * Double.parseDouble(tfCon.getText());
+			        	Double result = Double.parseDouble(tfQuant.getText().replace(",", ".")) * Double.parseDouble(tfCon.getText().replace(",", "."));
 			            tfVaz.setText(String.valueOf(result));
 			        }
 			    });
@@ -556,12 +678,70 @@ public class TabSubterraneaController implements Initializable {
 			TextField tfVazHD = tfVazoesHD [i] = new TextField();
 			gpVazoes.add(tfVazHD, i+1, 2);
 			
+			tfVazHD.lengthProperty().addListener(new ChangeListener<Number>() {
+
+	            @Override
+	            public void changed(ObservableValue<? extends Number> observable,
+	                    Number oldValue, Number newValue) {
+	                
+	                if (newValue.intValue() > oldValue.intValue()) {
+	                    // Check if the new character is greater than LIMIT
+	                    if (tfVazHD.getText().length() >= 0) {
+
+	                    	/*  Nao permitir virgula e ponto no tempo de captacao e nos dias 
+	                    	 *  por mes que sempre e um numero inteiro
+	                    	 */
+							if ( tfVazHD.getText().matches("(.*)\\D(.*)") == true ) {
+								// "(.*)\\D(.*)" buscar qualquer digito diferente de numero no meio do que foi digitado
+								Alerta a = new Alerta ();
+								a.alertar(new Alert(Alert.AlertType.ERROR, "Somente números!!!", ButtonType.OK));
+								
+								// retirar caracter errado, como letra, virgula etc
+								tfVazHD.setText(tfVazHD.getText().substring(0, tfVazHD.getText().length() - 1));
+							
+							}
+	                 
+	                    }
+	                    
+	                } // fim if length
+	            }
+	        });
+			
 		}
 
 		for (int i = 0; i<12; i++ ) {
 	
 			TextField tfPerDM = tfPeriodoDM [i] = new TextField();
 			gpVazoes.add(tfPerDM, i+1, 3);
+			
+			tfPerDM.lengthProperty().addListener(new ChangeListener<Number>() {
+
+	            @Override
+	            public void changed(ObservableValue<? extends Number> observable,
+	                    Number oldValue, Number newValue) {
+	                
+	                if (newValue.intValue() > oldValue.intValue()) {
+	                    // Check if the new character is greater than LIMIT
+	                    if (tfPerDM.getText().length() >= 0) {
+
+	                    	/*  Nao permitir virgula e ponto no tempo de captacao e nos dias 
+	                    	 *  por mes que sempre e um numero inteiro
+	                    	 */
+							if (tfPerDM.getText().matches("(.*)\\D(.*)") == true ) { 
+								// "(.*)\\D(.*)" buscar qualquer digito diferente de numero no meio do que foi digitado
+							    
+								Alerta a = new Alerta ();
+								a.alertar(new Alert(Alert.AlertType.ERROR, "Somente números!!!", ButtonType.OK));
+								
+								tfPerDM.setText(tfPerDM.getText().substring(0, tfPerDM.getText().length() - 1));
+							
+							}
+	                 
+	                    }
+	                    
+	                } // fim if length
+	            }
+	        });
 	
 		}
 		
@@ -616,6 +796,6 @@ public class TabSubterraneaController implements Initializable {
 	        }
 	    });
 		
-	}
+	} // fim metodo iniciarDadosFinalidade
 
 }

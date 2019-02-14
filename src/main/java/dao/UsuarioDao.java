@@ -48,18 +48,22 @@ public class UsuarioDao {
 		List<Usuario> list = new ArrayList<Usuario>();
 		
 		Criteria crit = s.createCriteria(Usuario.class, "us");
-		crit.createAlias("us.usEnderecoFK", "end", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("end.endRAFK", "endRAFK", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("end.interferencias", "interferencias", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("interferencias.intSubFK", "subterranea", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("interferencias.intSupFK", "superficial", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("us.enderecos", "e", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("e.endRAFK", "e_RA_FK", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("interferencias.interTipoInterferenciaFK", "tipoInterferencia", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("interferencias.interTipoOutorgaFK", "tipoOutorga", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("e.interferencias", "i", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("subterranea.subTipoPocoFK", "tipoPoco", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.subTipoPocoFK", "tipo_Poco", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.subSubSistemaFK", "subSistema", JoinType.LEFT_OUTER_JOIN);
 		
+		crit.createAlias("i.supFormaCaptacaoFK", "forma_Captacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.supLocalCaptacaoFK", "local_Captacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.supMetodoIrrigacaoFK", "metodo_Irrigacao", JoinType.LEFT_OUTER_JOIN);
+		
+		crit.createAlias("i.interTipoInterferenciaFK", "tipo_Interferencia", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("i.interTipoOutorgaFK", "tipo_Outorga", JoinType.LEFT_OUTER_JOIN);
+	
 		crit.add(Restrictions.like("us.usNome", '%' + strPesquisa + '%'))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		list = crit.list();

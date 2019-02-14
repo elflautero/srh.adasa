@@ -6,17 +6,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import controladores.fiscalizacao.TabAtoControlador;
 import dao.ModelosDao;
 import dao.UsuarioDao;
 import entidades.Endereco;
+import entidades.Interferencia;
 import entidades.ModelosHTML;
 import entidades.Usuario;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,6 +32,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ChoiceDialog;
@@ -52,6 +56,8 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.StringConverter;
+import principal.Alerta;
 import principal.FormatoData;
 import principal.MalaDireta;
 
@@ -59,6 +65,8 @@ public class TabUsuarioControlador implements Initializable {
 	
 	TabAtoControlador tabAtoControlador = new TabAtoControlador ();
 	
+	Usuario usuario = new Usuario();
+	Interferencia interferencia = new Interferencia();
 	static Endereco endereco = new Endereco ();
 	
 	public void setEndereco (Endereco endereco) {
@@ -68,10 +76,12 @@ public class TabUsuarioControlador implements Initializable {
 		// preencher o label com a demanda selecionada //
 		TabUsuarioControlador.lblEndereco.setText(
 				endereco.getEndLogadouro() 
-				+ ", Cidade: " + endereco.getEndCidade()
+				
 				+ ", CEP: " + endereco.getEndCEP()
+				+ ", Cidade: " + endereco.getEndCidade()
+				
 				);
-	
+		
 	}
 	
 	public static Endereco getEndereco () {
@@ -118,7 +128,18 @@ public class TabUsuarioControlador implements Initializable {
 		TableColumn<Usuario, String> tcEndereco = new TableColumn<>("Endereço");
 		
 		ObservableList<Usuario> obsList = FXCollections.observableArrayList();
-
+		
+		
+		ChoiceBox<Endereco> cbEndereco = new ChoiceBox<>();
+		ObservableList<Endereco> obsListEndereco = FXCollections.observableArrayList();
+		
+		ChoiceBox<Interferencia> cbInterferencia = new ChoiceBox<>();
+		ObservableList<Interferencia> obsListInterferencia = FXCollections.observableArrayList();
+		
+		Button btnGerarRequerimento = new Button("Gerar Requerimento");
+		
+		
+		
 		//Pane pUsuario;
 		//Label lblEndUsuario;
 		
@@ -198,7 +219,7 @@ public class TabUsuarioControlador implements Initializable {
 		cbTipoPessoa.setDisable(false);
 		
 		tfNome.setDisable(false);
-		tfCPFCNPJ.setDisable(false);  //tfEndUF.setDisable(false);
+		tfCPFCNPJ.setDisable(false);
 		
 		cbEndEmp.setDisable(false);
 		
@@ -224,11 +245,8 @@ public class TabUsuarioControlador implements Initializable {
 		
 		if (endereco.getEndLogadouro() == null) {
 			
-			Alert aLat = new Alert (Alert.AlertType.ERROR);
-			aLat.setTitle("Alerta!!!");
-			aLat.setContentText("Endereço relacionado ao usuário não selecionado!!!");
-			aLat.setHeaderText(null);
-			aLat.show();
+			Alerta a = new Alerta ();
+			a.alertar(new Alert(Alert.AlertType.ERROR, "Endereço relacionado ao usuário não selecionado!!!", ButtonType.OK));
 			
 		} else {
 			
@@ -237,11 +255,8 @@ public class TabUsuarioControlador implements Initializable {
 						
 						) {
 					
-					Alert a = new Alert (Alert.AlertType.ERROR);
-					a.setTitle("Alerta!!!");
-					a.setContentText("Informe: Tipo e Nome do Usuário!!!");
-					a.setHeaderText(null);
-					a.show();
+					Alerta a = new Alerta ();
+					a.alertar(new Alert(Alert.AlertType.ERROR, "Informe: Tipo e Nome do Usuário!!!", ButtonType.OK));
 					
 				} else {
 		
@@ -260,14 +275,21 @@ public class TabUsuarioControlador implements Initializable {
 							us.setUsEmail(tfEmail.getText());
 							
 							us.setUsDataAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
-							
-							
-						
+		
+						// chama instancia endereco //	
 						Endereco end = new Endereco();
 						
+							// iguala endereco ao selecionado pelo usuario
 							end = endereco;
-							//end.getUsuarios().add(usuario);
-							us.setUsEnderecoFK(end);
+							// neste endereco seta o usuario
+							end.setEndUsuarioFK(us);
+							// na lista de endereco que  pertence ao usuario adiciona o endereco em questao
+							us.getEnderecos().add(end);
+							
+							// aquii
+							for(Interferencia i:  end.getInterferencias()) {
+								System.out.println(" interferencias - btn salvar " + i.getInterDDLatitude());
+							}
 							
 						UsuarioDao  usDao = new UsuarioDao();
 						
@@ -278,13 +300,12 @@ public class TabUsuarioControlador implements Initializable {
 						
 						modularBotoesInicial();
 						
-						Alert a = new Alert (Alert.AlertType.INFORMATION);
-						a.setTitle("Parabéns!!!");
-						a.setContentText("Informe: Cadastro salvo com sucesso!!!");
-						a.setHeaderText(null);
-						a.show();
-				
+						//Alerta //
+						Alerta a = new Alerta ();
+						a.alertar(new Alert(Alert.AlertType.INFORMATION, "Informe: Cadastro salvo com sucesso!!!", ButtonType.OK));
 						
+						System.out.println("btn salvar " + usuario.getUsNome());
+					
 				}
 		}
 			
@@ -323,37 +344,52 @@ public class TabUsuarioControlador implements Initializable {
 					
 					) {
 				
-				Alert a = new Alert (Alert.AlertType.ERROR);
-				a.setTitle("Alerta!!!");
-				a.setContentText("Informe: Tipo e Nome do Usuário!!!");
-				a.setHeaderText(null);
-				a.show();
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.ERROR, "Informe: Tipo e Nome do Usuário!!!", ButtonType.OK));
 				
 			} else {
 	
-			//*  //eGeralUs
 			Usuario us = tvLista.getSelectionModel().getSelectedItem(); 
 			
-			// -- preencher os campos -- //
-			us.setUsTipo(cbTipoPessoa.getValue()); 
-			us.setUsNome(tfNome.getText());
-			us.setUsCPFCNPJ(tfCPFCNPJ.getText());
-			us.setUsLogadouro(tfLogadouro.getText()); 
+			System.out.println(us.getUsNome() + " id  " + us.getUsID());
 			
-			us.setUsRA(cbRA.getValue()); 
+			System.out.println("ra get value " + cbRA.getValue());
 			
-			us.setUsCEP(tfCEP.getText()); 
-			us.setUsCidade(tfCidade.getText()); 
+				// -- preencher os campos -- //
+				us.setUsTipo(cbTipoPessoa.getValue()); 
+				us.setUsNome(tfNome.getText());
+				us.setUsCPFCNPJ(tfCPFCNPJ.getText());
+				us.setUsLogadouro(tfLogadouro.getText()); 
+				
+				us.setUsRA(cbRA.getValue()); 
+				
+				us.setUsCEP(tfCEP.getText()); 
+				us.setUsCidade(tfCidade.getText()); 
+				
+				us.setUsEstado(cbUF.getValue()); 
+				
+				us.setUsTelefone(tfTelefone.getText());
+				us.setUsCelular(tfCelular.getText());
+				us.setUsEmail(tfEmail.getText());
+				us.setUsDataAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+				
 			
-			us.setUsEstado(cbUF.getValue()); 
+			Endereco end = new Endereco();
+				// captura um endereco relacionado
+				end = endereco;
+				// adiciona neste endereco o id usuario selecionado
+				end.setEndUsuarioFK(us);
+				// adiciona este endereco no setEnderecos do usuario
+				us.getEnderecos().add(end);
 			
-			us.setUsTelefone(tfTelefone.getText());
-			us.setUsCelular(tfCelular.getText());
-			us.setUsEmail(tfEmail.getText());
-			
-			us.setUsEnderecoFK(endereco);
-			
-			us.setUsDataAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+			/*
+			// para não dar repeticao de objetos //
+			for (int i = 0 ; i < us.getEnderecos().size(); i++) {
+				if (us.getEnderecos().hashCode(i) == (end.getEndID())) {
+					us.getEnderecos().remove(us.getEnderecos().hashCode(i));
+				}
+			}
+			*/
 			
 			UsuarioDao usDao = new UsuarioDao();
 			
@@ -364,12 +400,8 @@ public class TabUsuarioControlador implements Initializable {
 			
 			modularBotoesInicial();
 			
-			Alert a = new Alert (Alert.AlertType.INFORMATION);
-			a.setTitle("Parabéns!!!");
-			a.setContentText("Informe: Cadastro editado com sucesso!!!");
-			a.setHeaderText(null);
-			a.show();
-			
+			Alerta a = new Alerta ();
+			a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro editado com sucesso!!!", ButtonType.OK));
 			
 			}
 			
@@ -391,21 +423,15 @@ public class TabUsuarioControlador implements Initializable {
 			
 			modularBotoesInicial();
 		
-				Alert a = new Alert (Alert.AlertType.INFORMATION);
-				a.setTitle("Parabéns!!!");
-				a.setContentText("Cadastro excluído com sucesso!!!");
-				a.setHeaderText(null);
-				a.show();
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.INFORMATION, "Cadastro excluído com sucesso!!!", ButtonType.OK)); 
 	
 		}	catch (Exception e) {
 		
-				Alert a = new Alert (Alert.AlertType.ERROR);
-				a.setTitle("Alerta!!!");
-				a.setContentText(e.toString());
-				a.setHeaderText("Erro ao escluir o cadastro!!!");
-				a.show();
-				};
-		
+				Alerta a = new Alerta ();
+				a.alertar(new Alert(Alert.AlertType.ERROR, "Erro ao escluir o cadastro!!!", ButtonType.OK)); 
+				
+		}
 	}
 	
 	public void btnCancelarHab () {
@@ -510,9 +536,29 @@ public class TabUsuarioControlador implements Initializable {
 	    lblDataAtualizacao.setLayoutX(772);
 	    lblDataAtualizacao.setLayoutY(567);
 	    
-	    btnGerarRequerimento.setLayoutX(559);
-	    btnGerarRequerimento.setLayoutY(577);
+	    Label lblEndereco = new  Label("Endereço: ");
+	    lblEndereco.setLayoutX(121);
+	    lblEndereco.setLayoutY(574);
+	    
+	    Label lblInterferencia = new  Label("Interferência: ");
+	    lblInterferencia.setLayoutX(501);
+	    lblInterferencia.setLayoutY(574);
+	    
+	    cbEndereco.setPrefSize(368, 25);
+	    cbEndereco.setLayoutX(121);
+	    cbEndereco.setLayoutY(600);
+	    
+	    cbInterferencia.setPrefSize(368, 25);
+	    cbInterferencia.setLayoutX(501);
+	    cbInterferencia.setLayoutY(600);
+	    
+	    cbEndereco.setItems(obsListEndereco);
+	    cbInterferencia.setItems(obsListInterferencia);
 	   
+	    btnGerarRequerimento.setPrefSize(140, 25);
+	    btnGerarRequerimento.setLayoutX(880);
+	    btnGerarRequerimento.setLayoutY(600);
+	    
 		cbTipoPessoa.setValue("Física");
 		cbTipoPessoa.setItems(olTipoPessoa);
 		
@@ -524,7 +570,7 @@ public class TabUsuarioControlador implements Initializable {
 		tcNome.setPrefWidth(409);
 	    tcCPFCNPJ.setPrefWidth(232);
 	    tcEndereco.setPrefWidth(232);
-		
+	    
 		tcNome.setCellValueFactory(new PropertyValueFactory<Usuario, String>("usNome"));
 		tcCPFCNPJ.setCellValueFactory(new PropertyValueFactory<Usuario, String>("usCPFCNPJ"));
 		tcEndereco.setCellValueFactory(new PropertyValueFactory<Usuario, String>("usLogadouro"));
@@ -536,7 +582,11 @@ public class TabUsuarioControlador implements Initializable {
 		tvLista.setLayoutX(120);
 		tvLista.setLayoutY(372);
 		
-		p1.getChildren().addAll(p_lblEndereco, pDadosBasicos, pPersistencia, tvLista, lblDataAtualizacao, btnGerarRequerimento);
+		p1.getChildren().addAll(
+				p_lblEndereco, pDadosBasicos, pPersistencia, tvLista, 
+				lblDataAtualizacao, 
+				lblEndereco, cbEndereco, lblInterferencia, cbInterferencia,
+				btnGerarRequerimento);
 		
 		modularBotoesInicial();
 		
@@ -589,43 +639,115 @@ public class TabUsuarioControlador implements Initializable {
 		                }
 		        }
 		    });
-		    /*
+		 
 		    btnGerarRequerimento.setOnAction(new EventHandler<ActionEvent>() {
 
 		        @Override
 		        public void handle(ActionEvent event) {
-		        	btnGerarRequerimentoHab (); //btnGerarRequerimentoHab (Usuario us)
+		        	
+		        	btnGerarRequerimentoHab (usuario, interferencia);
+		        	
 		        }
 		    });
-		    */
+		
+		  
+		    
+		    btnExcluir.setOnAction(new EventHandler<ActionEvent>() {
+
+		        @Override
+		        public void handle(ActionEvent event) {
+		        	
+		        	  btnExcluirHab ();
+		        }
+		    });
+		
+		    cbEndereco.setConverter(new StringConverter<Endereco>() {
+				
+				public String toString(Endereco e) {
+					
+					return e.getEndLogadouro() + ", RA: " + e.getEndRAFK().getRaNome();
+				}
+				
+				public Endereco fromString(String string) {
+					
+					return null;
+				}
+			});
+		    
+		    
+		    cbEndereco.valueProperty().addListener(new ChangeListener<Endereco>() {
+	            @Override 
+	            public void changed(ObservableValue<? extends Endereco> ov, Endereco oldValue, Endereco newValue) {  
+	            	
+	            	obsListInterferencia.clear();
+	            	
+	            	if (newValue != null)
+					for(Interferencia i: newValue.getInterferencias()) {
+				
+						obsListInterferencia.add(i);
+						
+						
+					}
+	            	endereco = newValue;
+	            }    
+	        });
+		    
+		    cbInterferencia.setConverter(new StringConverter<Interferencia>() {
+				
+				public String toString(Interferencia i) {
+					
+					return i.getInterTipoInterferenciaFK().getTipoInterDescricao() + " --- " + i.getInterTipoOutorgaFK().getTipoOutorgaDescricao();
+				}
+				
+				public Interferencia fromString(String string) {
+					
+					return null;
+				}
+			});
+		    
+		    
+		    cbInterferencia.valueProperty().addListener(new ChangeListener<Interferencia>() {
+	            @Override 
+	            public void changed(ObservableValue<? extends Interferencia> ov, Interferencia oldValue, Interferencia newValue) {  
+	            	
+	            	if (newValue != null)
+					interferencia = newValue;
+	            }    
+	        });
+		    
 		    
 		    selecionarUsuario();
-		   
+		    selecionarInterferencia ();
+		    
 	}
 	
-	Button btnGerarRequerimento = new Button("Gerar Requerimento");
 	
 	WebView webTermo;
 	WebEngine engTermo;
 	
 	
-	
-	public void btnGerarRequerimentoHab (Usuario us) {
+	public void btnGerarRequerimentoHab (Usuario us, Interferencia inter) {
 		
 		HTMLEditor htmlEditor = new HTMLEditor();
 		
 		ModelosDao modDao = new ModelosDao();
 		
-		List<ModelosHTML> listRequerimento = modDao.listarModelo("Requerimento de Outorga Subterrânea");
+		List<ModelosHTML> listRequerimento = null;
 		
-		htmlEditor.setHtmlText(listRequerimento.get(0).getModConteudo());
+		if (inter.getInterTipoInterferenciaFK().getTipoInterDescricao().equals("Subterrânea")) {
+			
+			listRequerimento = modDao.listarModelo("Requerimento de Outorga Subterrânea");
+		} 
 		
-		MalaDireta ml = new MalaDireta();
+		if (inter.getInterTipoInterferenciaFK().getTipoInterDescricao().equals("Superficial")) {
+			
+			listRequerimento = modDao.listarModelo("Requerimento de Outorga Superficial");
+		} 
+		
+		MalaDireta ml = new MalaDireta(usuario, interferencia, endereco);
+		
 		ml.setHtmlRel(listRequerimento.get(0).getModConteudo());
-		ml.setUs(us);
-		ml.setEnd(us.getUsEnderecoFK());
-		ml.setInter(us.getUsEnderecoFK().getInterferencias().get(0));
-		
+			
 		htmlEditor.setHtmlText(ml.criarDocumento());
 		
 		// adicionar um novo botao ao htmlEditor //
@@ -652,7 +774,7 @@ public class TabUsuarioControlador implements Initializable {
 	        	
 	        	ChoiceDialog<Printer> dialog = new ChoiceDialog<Printer>(Printer.getDefaultPrinter(), Printer.getAllPrinters());
 	        	dialog.setHeaderText("Escolha a impressora!");
-	        	dialog.setContentText("Impressoras disponíveis");
+	        	dialog.setContentText("Impressoras disponíveis...");
 	        	dialog.setTitle("Printer Choice");
 	        	Optional<Printer> opt = dialog.showAndWait();
 	        	if (opt.isPresent()) {
@@ -968,8 +1090,8 @@ public class TabUsuarioControlador implements Initializable {
 							usuario.getUsEmail();
 							
 							usuario.getUsDataAtualizacao();
-							
-							usuario.getUsEnderecoFK();
+							// capturar os enderecos  relacionados
+							usuario.getEnderecos();
 							
 					obsList.add(usuario);
 						
@@ -1011,6 +1133,8 @@ public class TabUsuarioControlador implements Initializable {
 					btnExcluir.setDisable(false);
 					btnCancelar.setDisable(false);
 					
+					System.out.println(" usuário null");
+					
 				} else {
 
 					// -- preencher os campos -- //
@@ -1030,9 +1154,7 @@ public class TabUsuarioControlador implements Initializable {
 					tfTelefone.setText(us.getUsTelefone());
 					tfCelular.setText(us.getUsCelular());
 					tfEmail.setText(us.getUsEmail());
-					
-					// mudar o endereço relacionado //
-					setEndereco(us.getUsEnderecoFK());
+	
 					
 					// mostrar data de atualizacao //
 					FormatoData d = new FormatoData();
@@ -1041,7 +1163,36 @@ public class TabUsuarioControlador implements Initializable {
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);}
 					
-					btnGerarRequerimentoHab (us);
+					usuario = us;
+					
+					obsListEndereco.clear();
+					
+					for(Endereco e:  usuario.getEnderecos()) {
+						System.out.println("enderecos selecionados por usuario " + e.getEndLogadouro());
+						
+						for (Interferencia i: e.getInterferencias()) {
+							System.out.println(" insterferencias selecionadas por usuario  " + i.getInterDDLatitude());
+						}
+					}
+					
+					
+					Set<Endereco> setEnderecos = us.getEnderecos();
+					
+					for(Endereco e: setEnderecos) {
+						System.out.println(e.getEndLogadouro());
+						
+						obsListEndereco.add(e);
+						/*
+						 * para atualizar o endereço com qualquer um dos  relacionados
+						 * 		o objeto endereco não pode ficar vazio
+						 */
+						endereco = e;
+				
+					}
+					
+					obsListInterferencia.clear();
+					
+					setEndereco (endereco);
 					
 					// copiar cpf do usuario ao selecionar //
 					Clipboard clip = Clipboard.getSystemClipboard();
@@ -1061,5 +1212,35 @@ public class TabUsuarioControlador implements Initializable {
 				}
 			});
 	}
+	
+	public void selecionarInterferencia () {
+		
+		
+         
+		
+		
+		/*
+		tvListaInterferencia.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
+				
+				Interferencia inter = (Interferencia) newValue;
+				
+				if (inter == null) {
+					
+					System.out.println("metodo selecionar interferencia - não há interferencia ");
+					
+				} else {
 
+					interferencia = inter;
+					
+					System.out.println(inter.getInterDDLatitude());
+					
+				}
+				}
+			});
+			*/
+	}
+	
+	
+	
 }

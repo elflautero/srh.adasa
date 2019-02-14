@@ -1,39 +1,26 @@
 package entidades;
 
-import java.io.Serializable;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-public class Subterranea implements Serializable {
+@PrimaryKeyJoinColumn(name="sub_Interferencia_FK")
+public class Subterranea extends Interferencia {
 	
-	private static final long serialVersionUID = 8669422759075749625L;
+	private static final long serialVersionUID = 7955498803306632784L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column (name="sub_ID")
-	private int subID;
-	
-		//-- OneToOne subterrâneo e interferência --//
-		@OneToOne 
-		@JoinColumn (name = "sup_Interferencia_FK")  // mudar o nome para sub_Inter_FK
-		private Interferencia subInterFK;
-	
-			@ManyToOne (fetch = FetchType.LAZY) 
-			@JoinColumn (name = "sub_Tipo_Poco_FK")
-			private TipoPoco subTipoPocoFK; // Manual Tubular
-			
-				@ManyToOne (fetch = FetchType.EAGER) 
-				@JoinColumn (name = "sub_Subsistema_FK")
-				private SubSistema subSubSistemaFK;
+		@ManyToOne (fetch = FetchType.EAGER) 
+		@JoinColumn (name = "sub_Tipo_Poco_FK")
+		private TipoPoco subTipoPocoFK; // Manual Tubular
+		
+			@ManyToOne (fetch = FetchType.EAGER) 
+			@JoinColumn (name = "sub_Subsistema_FK")
+			private SubSistema subSubSistemaFK;
 
 	@Column (name="sub_Caesb", columnDefinition="varchar(3)")
 	private String subCaesb;  // tem caesb () sim () não
@@ -223,7 +210,6 @@ public class Subterranea implements Serializable {
 	@Column (name="sub_Tempo_Cap_Ago")
 	private int subTempoCapAgo;
 	
-	
 	// SETEMBRO //
 	@Column (name="sub_Q_Dia_Set")
 	private Double subQDiaSet;
@@ -275,16 +261,6 @@ public class Subterranea implements Serializable {
 		return subSubSistemaFK;
 	}
 
-	public Interferencia getSubInterFK() {
-		return subInterFK;
-	}
-
-
-	public void setSubInterFK(Interferencia subInterFK) {
-		this.subInterFK = subInterFK;
-	}
-
-
 	public java.sql.Date getSubDataOperacao() {
 		return subDataOperacao;
 	}
@@ -299,24 +275,6 @@ public class Subterranea implements Serializable {
 		this.subSubSistemaFK = subSubSistemaFK;
 	}
 
-
-	public int getSubID() {
-		return subID;
-	}
-
-	public void setSubID(int subID) {
-		this.subID = subID;
-	}
-
-	public Interferencia getSubInterSubFK() {
-		return subInterFK;
-	}
-
-	public void setSubInterSubFK(Interferencia subInterSub) {
-		this.subInterFK = subInterSub;
-	}
-
-	
 	public String getSubCaesb() {
 		return subCaesb;
 	}
@@ -874,7 +832,4 @@ public class Subterranea implements Serializable {
 		this.subFinalidade5 = subFinalidade5;
 	}
 
-	
-	
-	
 }

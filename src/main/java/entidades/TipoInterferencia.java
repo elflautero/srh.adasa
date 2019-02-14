@@ -25,7 +25,7 @@ public class TipoInterferencia implements Serializable {
 	private static final long serialVersionUID = -8628868832732571370L;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column (name="ID_TIPO_INTERFERENCIA")  // @Column (name="dem_documento", columnDefinition="varchar(80)")
+	@Column (name="ID_TIPO_INTERFERENCIA") 
 	private int tipoInterID; 
 	
 	@Column (name="DESCRICAO", columnDefinition="varchar(95)")

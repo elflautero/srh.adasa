@@ -61,22 +61,21 @@ public class Endereco implements Serializable{
 	
 	//-- Lista de enderecos vinculados --//
 	@OneToMany (mappedBy = "demEnderecoFK", cascade = CascadeType.MERGE,
-			fetch = FetchType.LAZY, targetEntity = Demanda.class)
+			 fetch = FetchType.EAGER, targetEntity = Demanda.class)
 	@Fetch(FetchMode.SUBSELECT) 
 	private List<Demanda> demandas = new ArrayList<Demanda>();
 	
 	
 		//-- Lista de interferencias vinculadas --//
 		@OneToMany (mappedBy = "interEnderecoFK", cascade = CascadeType.MERGE,
-				fetch = FetchType.LAZY, targetEntity = Interferencia.class)
+				fetch = FetchType.LAZY, targetEntity = Interferencia.class) // 
 		@Fetch(FetchMode.SUBSELECT) 
 		private List<Interferencia> interferencias = new ArrayList<Interferencia>();
 		
-				//-- Lista de usuários vinculados --//
-				@OneToMany (mappedBy = "usEnderecoFK", cascade = CascadeType.MERGE,
-						fetch = FetchType.LAZY, targetEntity = Usuario.class)
-				@Fetch(FetchMode.SUBSELECT)
-				private List<Usuario> usuarios = new ArrayList<Usuario>();
+				@ManyToOne (fetch = FetchType.LAZY)
+				@JoinColumn (name = "end_Usuario_FK")
+				private Usuario endUsuarioFK;
+				
 	/*
 						//-- Lista de fiscais vinculados --//
 						@OneToMany (mappedBy = "fis_End_Codigo", cascade = CascadeType.MERGE,
@@ -86,7 +85,7 @@ public class Endereco implements Serializable{
 				*/
 								//-- Lista de vistorias vinculados --//
 								@OneToMany (mappedBy = "visEnderecoFK", cascade = CascadeType.MERGE,
-										fetch = FetchType.LAZY, targetEntity = Vistoria.class)
+										fetch = FetchType.LAZY, targetEntity = Vistoria.class) // fetch = FetchType.LAZY, 
 								@Fetch(FetchMode.SUBSELECT) 
 								private List<Vistoria> vistorias = new ArrayList<Vistoria>();
 		
@@ -193,14 +192,6 @@ public class Endereco implements Serializable{
 		this.endAtualizacao = endAtualizacao;
 	}
 
-	public List<Usuario> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
-
 	public Geometry getEndGeom() {
 		return endGeom;
 	}
@@ -224,8 +215,14 @@ public class Endereco implements Serializable{
 	public void setVistorias(List<Vistoria> vistorias) {
 		this.vistorias = vistorias;
 	}
-	
-	
+
+	public Usuario getEndUsuarioFK() {
+		return endUsuarioFK;
+	}
+
+	public void setEndUsuarioFK(Usuario endUsuarioFK) {
+		this.endUsuarioFK = endUsuarioFK;
+	}
 
 	
 	
