@@ -33,10 +33,8 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
@@ -47,35 +45,25 @@ import mapas.GoogleMap;
 
 public class ControladorPrincipal {
 	
-	@FXML AnchorPane apMain;
+	@FXML AnchorPane apPrincipal;
 	
 	// para chamar a parte da fiscalizacao //
 	ControladorAtendimento controladorAtendimento;
 	ControladorFiscalizacao controladorFiscalizacao;
-	
 	ControladorModelosHTML controladorModelosHTML;
 	
-	@FXML Pane pMainTop;
-	@FXML BorderPane bpFiscalizacao;
-	@FXML Pane pConversor;
-	@FXML Pane pConversorCentro;
+	Button btnTerrain = new Button();
+	Button btnRoadMap = new Button();
+	Button btnSattelite = new Button();
+	Button btnHybrid = new Button();
 	
+	Button btnZoomOut = new Button();
+	Button btnZoomIn = new Button();
 	
-	TabPane tpPrincLatDir = new TabPane ();
-	TabPane tpPrinclatEsq = new TabPane ();
-	
-	Button btnTerrain;
-	Button btnRoadMap;
-	Button btnSattelite;
-	Button btnHybrid;
-	
-	Button btnZoomOut;
-	Button btnZoomIn;
-	
-	Button btnNightMap;
-	Button btnBlueMap;
-	Button btnGreenMap;
-	Button btnRetroMap;
+	Button btnNightMap = new Button();
+	Button btnBlueMap = new Button();
+	Button btnGreenMap = new Button();
+	Button btnRetroMap = new Button();
 	
 	CheckBox checkBacia;
 	CheckBox checkRiodDF;
@@ -85,47 +73,50 @@ public class ControladorPrincipal {
 	CheckBox checkUTM;
 	CheckBox checkTrafego;
 	
+	TabPane tpLateralDireita = new TabPane();
+	TabPane tpLateralEsquera = new TabPane();
+	
+	Tab tabLD1 = new Tab();
+	Tab tabLD2 = new Tab();
+	
+	Tab tabLE1 = new Tab();
+	Tab tabLE2 = new Tab();
+	
+	Pane pLD1 = new Pane();
+	Pane pLD2 = new Pane();
+	Pane pLE1 = new Pane();
+	Pane pLE2 = new Pane();
+	
+	StackPane spCentroTabPanes = new  StackPane();
+	StackPane spConversorCoordenadas = new  StackPane();
+	
+	Pane paneConversor = new Pane();
+	Pane pConvCentral = new Pane();
+
+	Pane pSuperior = new Pane();
 	
 	Pane pBrowserSEI;
-	Pane pFis;
-	Pane pFiscalizacao;
+		Pane pFiscalizacao;
+			Pane pAtendimento;
+				Pane pOutorga;
 	
-	Pane pAten;
-	Pane pAtendimento;
+	Pane pBroSEICadastros;
+		Pane pFiscCadastros;
+			Pane pAtenCadastros;
+				Pane pOutCadastros;
 	
-	
-	
-	@FXML ScrollPane spWebMap;
-	@FXML ScrollPane spWebBrowser;
-	
-	@FXML AnchorPane apWebMap;
-	
-	@FXML Button btnConverteCoord;
-	
-	Button btnHome;
-	Button btnMapa;
-	Button btnConversor;
-	Button btnAtendimento;
-	Button btnFiscalizacao;
-	Button btnSEI;
-	Button btnEditorHTML;
-	
-	@FXML StackPane stackPMainSearch;
-	@FXML StackPane stackPaneTop;
-	
-	@FXML BorderPane bpCenter;
-
-	WebView wMaps;
-	WebView wBrowser;
+	Button btnHome = new Button();
+	Button btnMapa = new Button();
+	Button btnConversor = new Button();
+	Button btnAtendimento = new Button();
+	Button btnFiscalizacao = new Button();
+	Button btnSEI = new Button();
+	Button btnEditorHTML = new Button();
 	
 	static GoogleMap googleMaps;
 	
-	@FXML ComboBox <String> cbConverterCoord;
 	ObservableList<String> olcbMainConverteCoord;
 	
-	@FXML VBox vbLateralEsq;
-	@FXML VBox vbLateralDir;
-		
 	Double dblSearch;
 	Double dblBrowser;
 	Double dblFiscal;
@@ -159,16 +150,142 @@ public class ControladorPrincipal {
 	public static Label lblUTM;
 	
 	
+	ComboBox<String> cbConverterCoord = new ComboBox<>();
+	
+	Button btnConverteCoord = new Button("BUSCAR");
+	
 	ComboBox<String> cbNorteSul;
 	ObservableList<String> cbNorteSulOpcoes;
 	
 	ComboBox<String> cbLesteOeste;
 	ObservableList<String> cbLesteOesteOpcoes;
 	
+	Pane pWebMap = new Pane();
+	
+	ScrollPane spWebBrowser;
+	WebView wBrowser;
 	
 	
 	@FXML 
 	private void initialize() {
+		
+	    Platform.runLater(new Runnable(){
+
+			public void run() {
+				
+				googleMaps = new GoogleMap();
+				
+				
+				pWebMap.getChildren().add(googleMaps); 
+				
+				pWebMap.widthProperty().addListener(
+			    		(observable, oldValue, newValue) -> {
+			    			googleMaps.resizeWidthMap ((Double)newValue);
+			    			
+				    	    }
+			    		);
+				
+				pWebMap.heightProperty().addListener(
+			    		(observable, oldValue, newValue) -> {
+			    			googleMaps.resizeHeightMap((Double)newValue) ;
+			    			
+				    	    }
+			    		);
+			    	
+				AnchorPane.setTopAnchor(pWebMap, 0.0);
+				AnchorPane.setLeftAnchor(pWebMap , 0.0);
+			    AnchorPane.setRightAnchor(pWebMap , 0.0);
+			    AnchorPane.setBottomAnchor(pWebMap, 0.0);
+			    
+			}
+	   
+    	});
+	  
+	    pLE1.setPrefSize(140, 370);
+		pLE2.setPrefSize(140, 370);
+		
+		tabLE1.setContent(pLE1);
+		tabLE2.setContent(pLE2);
+		
+	    pLD1.setPrefSize(140, 370);
+	    pLD2.setPrefSize(140, 370);
+		
+		tabLD1.setContent(pLD1);
+		tabLD2.setContent(pLD2);
+		
+		tpLateralEsquera.getTabs().addAll(tabLE1, tabLE2);
+		tpLateralDireita.getTabs().addAll(tabLD1, tabLD2);
+		
+		AnchorPane.setTopAnchor(tpLateralEsquera, 200.0);
+		AnchorPane.setLeftAnchor(tpLateralEsquera, 10.0);
+		
+		AnchorPane.setTopAnchor(tpLateralDireita, 200.0);
+		AnchorPane.setRightAnchor(tpLateralDireita, 10.0);
+
+	    pSuperior.setPrefSize(600, 25);
+	    pSuperior.getStyleClass().add("classePaneSuperior");
+	   
+	    AnchorPane.setTopAnchor(pSuperior, 0.0);
+		AnchorPane.setRightAnchor(pSuperior, 0.0);
+		AnchorPane.setLeftAnchor(pSuperior, 0.0);
+		
+		
+		AnchorPane.setTopAnchor(spCentroTabPanes, 100.0);
+		AnchorPane.setRightAnchor(spCentroTabPanes, 110.0);
+		AnchorPane.setLeftAnchor(spCentroTabPanes, 110.0);
+		AnchorPane.setBottomAnchor(spCentroTabPanes, 105.0);
+		
+		spCentroTabPanes.setDisable(true);
+	    StackPane.setAlignment(spCentroTabPanes, Pos.TOP_CENTER);
+	    
+		paneConversor.setMinSize(1050, 100);
+		paneConversor.setMaxSize(1050, 100);
+	
+		  	cbConverterCoord.setPrefSize(100, 30);
+	  		cbConverterCoord.setLayoutX(11);
+	  		cbConverterCoord.setLayoutY(53);
+	  		cbConverterCoord.getStyleClass().add("classePressedHover");
+	  		
+		  		pConvCentral.setPrefSize(829, 40);
+		  		pConvCentral.setLayoutX(108);
+		  		pConvCentral.setLayoutY(48);
+			  		
+			  		btnConverteCoord.setPrefSize(100, 30);
+			  		btnConverteCoord.setLayoutX(937);
+			  		btnConverteCoord.setLayoutY(53);
+			  		btnConverteCoord.getStyleClass().add("classePressedHover");
+			  		
+	  		
+			  			paneConversor.getChildren().addAll(cbConverterCoord, pConvCentral, btnConverteCoord); 
+		  	
+						  	olcbMainConverteCoord = FXCollections.observableArrayList(
+					    	        " DD ",
+					    	        " DMS ",
+					    	        " UTM "
+					    	    ); 
+	
+									AnchorPane.setRightAnchor(spConversorCoordenadas, 0.0);
+									AnchorPane.setLeftAnchor(spConversorCoordenadas, 0.0);
+									AnchorPane.setBottomAnchor(spConversorCoordenadas, 15.0);
+		
+										spConversorCoordenadas.getChildren().add(paneConversor);
+										spConversorCoordenadas.setDisable(false);
+
+											StackPane.setAlignment(paneConversor, Pos.TOP_CENTER);
+		    
+											
+		    inicializarConversorCoordenadas();
+			inicializarTabLateralEsquerda();
+			inicializarTabLateralDireita();
+		    
+		apPrincipal.getChildren().addAll( pWebMap, tpLateralEsquera, tpLateralDireita, pSuperior,spCentroTabPanes, spConversorCoordenadas);
+		
+		apPrincipal.getStylesheets().add("/css/principal_mapa_azul.css");
+			
+	}
+	
+	
+	private void inicializarConversorCoordenadas () {
 		
 		olcbMainConverteCoord = FXCollections.observableArrayList(
     	        " DD ",
@@ -185,41 +302,41 @@ public class ControladorPrincipal {
             	
                 if (newValue == " DD ") {
                 	
-                	tfLatDD = new TextField("-15"); // <TextField fx:id="tfLat1" layoutX="28.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" />
+                	tfLatDD = new TextField("-15");
                 	tfLatDD.setPrefSize(193.0, 30.0);
                 	tfLatDD.setLayoutX(11.0); 
                 	tfLatDD.setLayoutY(6.0);
+	                	
+	                	tfLonDD = new TextField("-47"); 
+	                	tfLonDD.setPrefSize(193.0, 30.0);
+	                	tfLonDD.setLayoutX(216.0); 
+	                	tfLonDD.setLayoutY(6.0);
                 	
-                	tfLonDD = new TextField("-47"); // <TextField fx:id="tfLon1" layoutX="224.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" promptText="..." />
-                	tfLonDD.setPrefSize(193.0, 30.0);
-                	tfLonDD.setLayoutX(216.0); 
-                	tfLonDD.setLayoutY(6.0);
+		                	lblCoord1 = new Label();
+		                	lblCoord1.setAlignment(Pos.CENTER); 
+		                	lblCoord1.setPrefSize(193.0, 30.0);
+		                	lblCoord1.setLayoutX(421.0);
+		                	lblCoord1.setLayoutY(6.0);
+		                	lblCoord1.setStyle("-fx-background-color: white;");
                 	
-                	lblCoord1 = new Label();
-                	lblCoord1.setAlignment(Pos.CENTER); // <Label fx:id="lblCoord11" layoutX="420.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: white;" />
-                	lblCoord1.setPrefSize(193.0, 30.0);
-                	lblCoord1.setLayoutX(421.0);
-                	lblCoord1.setLayoutY(6.0);
-                	lblCoord1.setStyle("-fx-background-color: white;");
+			                	lblCoord2 = new Label();
+			                	lblCoord2.setAlignment(Pos.CENTER);
+			                	lblCoord2.setPrefSize(193.0, 30.0);
+			                	lblCoord2.setLayoutX(626.0); 
+			                	lblCoord2.setLayoutY(6.0);
+			                	lblCoord2.setStyle("-fx-background-color: white;");
                 	
-                	lblCoord2 = new Label(); // <Label fx:id="lblCoord21" layoutX="616.0" layoutY="12.0" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: white;" />
-                	lblCoord2.setAlignment(Pos.CENTER);
-                	lblCoord2.setPrefSize(193.0, 30.0);
-                	lblCoord2.setLayoutX(626.0); 
-                	lblCoord2.setLayoutY(6.0);
-                	lblCoord2.setStyle("-fx-background-color: white;");
-                	
-                	pConversorCentro.getChildren().clear();
-                	pConversorCentro.getChildren().addAll(tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
-                	
-                	btnConverteCoord.setOnAction((ActionEvent evt)->{
+				                	pConvCentral.getChildren().clear();
+				                	pConvCentral.getChildren().addAll(tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
+				                	
+				                		btnConverteCoord.setOnAction((ActionEvent evt)->{
                     	
-                		String typeCoordinate = cbConverterCoord.getValue();
+				                			String typeCoordinate = cbConverterCoord.getValue();
                 		
-            			googleMaps.convDD (typeCoordinate, tfLatDD.getText(), tfLonDD.getText());
+				                				googleMaps.convDD (typeCoordinate, tfLatDD.getText(), tfLonDD.getText());
             			
-            			copiarCoord (lblCoord1);
-            			copiarCoord (lblCoord2);
+							            			copiarCoord (lblCoord1);
+							            			copiarCoord (lblCoord2);
                         
                     });
                 	
@@ -235,51 +352,51 @@ public class ControladorPrincipal {
                 	cbNorteSul = new ComboBox<>(cbNorteSulOpcoes);
                 	cbNorteSul.setValue("S");
                 	
-                	cbNorteSul.setPrefSize(65.0, 30.0); // <ComboBox fx:id="cbNorteSul" layoutX="11.0" layoutY="11.0" prefHeight="40.0" prefWidth="65.0" />
-                	cbNorteSul.setLayoutX(11.0);
-                	cbNorteSul.setLayoutY(6.0);
-                	
-                	tfZonaUTM = new TextField("23"); // <TextField fx:id="tfUTM" layoutX="88.0" layoutY="12.0" prefHeight="40.0" prefWidth="65.0" />
-                	tfZonaUTM.setPrefSize(65.0, 30.0);
-                	tfZonaUTM.setLayoutX(88.0); 
-                	tfZonaUTM.setLayoutY(6.0);
-                	
-                	
-                	tfLatDD = new TextField("284947"); // <TextField fx:id="tfLat" layoutX="165.0" layoutY="12.0" prefHeight="40.0" prefWidth="150.0" />
-                	tfLatDD.setPrefSize(150.0, 30.0);
-                	tfLatDD.setLayoutX(165.0); 
-                	tfLatDD.setLayoutY(6.0);
-                	
-                	tfLonDD = new TextField("8340702"); // <TextField fx:id="tfLon" layoutX="326.0" layoutY="12.0" prefHeight="40.0" prefWidth="150.0" promptText="..." />
-                	tfLonDD.setPrefSize(150, 30);
-                	tfLonDD.setLayoutX(326.0); 
-                	tfLonDD.setLayoutY(6.0);
-                	
-                	lblCoord1 = new Label(); // <Label fx:id="lblCoord1" layoutX="487.0" layoutY="13.0" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: white;" />
-                	lblCoord1.setAlignment(Pos.CENTER);
-                	lblCoord1.setPrefSize(160, 30);
-                	lblCoord1.setLayoutX(487.0);
-                	lblCoord1.setLayoutY(6.0);
-                	lblCoord1.setStyle("-fx-background-color: white;");
-                	
-                	lblCoord2 = new Label(); // <Label fx:id="lblCoord2" layoutX="658.0" layoutY="13.0" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: white;" />
-                	lblCoord2.setAlignment(Pos.CENTER);
-                	lblCoord2.setPrefSize(160, 30);
-                	lblCoord2.setLayoutX(658.0); 
-                	lblCoord2.setLayoutY(6.0);
-                	lblCoord2.setStyle("-fx-background-color: white;");
-                	
-                	pConversorCentro.getChildren().clear();
-                	pConversorCentro.getChildren().addAll(cbNorteSul, tfZonaUTM, tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
-                	
-                	btnConverteCoord.setOnAction((ActionEvent evt)->{
-                		
-                		String typeCoordinate = cbConverterCoord.getValue();
-                		String utmLatLon = tfZonaUTM.getText() + " " + cbNorteSul.getValue() + " " + tfLatDD.getText() + " " + tfLonDD.getText();
-                		
-                		googleMaps.convUTM(typeCoordinate, utmLatLon);
-                		copiarCoord(lblCoord1);
-            			copiarCoord(lblCoord2);
+	                	cbNorteSul.setPrefSize(65.0, 30.0);
+	                	cbNorteSul.setLayoutX(11.0);
+	                	cbNorteSul.setLayoutY(6.0);
+	                	cbNorteSul.getStyleClass().add("classePressedHover");
+	                	
+		                	tfZonaUTM = new TextField("23"); 
+		                	tfZonaUTM.setPrefSize(65.0, 30.0);
+		                	tfZonaUTM.setLayoutX(88.0); 
+		                	tfZonaUTM.setLayoutY(6.0);
+	                	
+			                	tfLatDD = new TextField("284947"); 
+			                	tfLatDD.setPrefSize(150.0, 30.0);
+			                	tfLatDD.setLayoutX(165.0); 
+			                	tfLatDD.setLayoutY(6.0);
+	                	
+				                	tfLonDD = new TextField("8340702"); 
+				                	tfLonDD.setPrefSize(150, 30);
+				                	tfLonDD.setLayoutX(326.0); 
+				                	tfLonDD.setLayoutY(6.0);
+	                	
+					                	lblCoord1 = new Label(); 
+					                	lblCoord1.setAlignment(Pos.CENTER);
+					                	lblCoord1.setPrefSize(160, 30);
+					                	lblCoord1.setLayoutX(487.0);
+					                	lblCoord1.setLayoutY(6.0);
+					                	lblCoord1.setStyle("-fx-background-color: white;");
+	                	
+						                	lblCoord2 = new Label();
+						                	lblCoord2.setAlignment(Pos.CENTER);
+						                	lblCoord2.setPrefSize(160, 30);
+						                	lblCoord2.setLayoutX(658.0); 
+						                	lblCoord2.setLayoutY(6.0);
+						                	lblCoord2.setStyle("-fx-background-color: white;");
+	                	
+							                	pConvCentral.getChildren().clear();
+							                	pConvCentral.getChildren().addAll(cbNorteSul, tfZonaUTM, tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
+	                	
+	                	btnConverteCoord.setOnAction((ActionEvent evt)->{
+	                		
+	                		String typeCoordinate = cbConverterCoord.getValue();
+	                		String utmLatLon = tfZonaUTM.getText() + " " + cbNorteSul.getValue() + " " + tfLatDD.getText() + " " + tfLonDD.getText();
+	                		
+	                		googleMaps.convUTM(typeCoordinate, utmLatLon);
+	                		copiarCoord(lblCoord1);
+	            			copiarCoord(lblCoord2);
                 		
                     });
                 }
@@ -295,9 +412,10 @@ public class ControladorPrincipal {
                 	cbNorteSul = new ComboBox<>(cbNorteSulOpcoes);
                 	cbNorteSul.setValue("S");
                 	
-                	cbNorteSul.setPrefSize(65.0, 30.0); // <ComboBox fx:id="cbNorteSul" layoutX="173.0" layoutY="12.0" prefHeight="40.0" prefWidth="65.0" />
+                	cbNorteSul.setPrefSize(65.0, 30.0);
                 	cbNorteSul.setLayoutX(173.0);
                 	cbNorteSul.setLayoutY(6.0);
+                	cbNorteSul.getStyleClass().add("classePressedHover");
                 	
                 	
                 	cbLesteOesteOpcoes = FXCollections.observableArrayList(
@@ -308,40 +426,40 @@ public class ControladorPrincipal {
                 	cbLesteOeste = new ComboBox<>(cbLesteOesteOpcoes);
                 	cbLesteOeste.setValue("W");
                 	
-                	cbLesteOeste.setPrefSize(65.0, 30.0); //  <ComboBox fx:id="cbLesteOeste" layoutX="410.0" layoutY="12.0" prefHeight="40.0" prefWidth="65.0" />
+                	cbLesteOeste.setPrefSize(65.0, 30.0); 
                 	cbLesteOeste.setLayoutX(410.0);
                 	cbLesteOeste.setLayoutY(6.0);
+                	cbLesteOeste.getStyleClass().add("classePressedHover");
                 	
                 	
-                	tfLatDD = new TextField("15 00 00"); //  <TextField fx:id="tfLat11" layoutX="12.0" layoutY="12.0" prefHeight="40.0" prefWidth="150.0" />
+                	tfLatDD = new TextField("15 00 00");
                 	tfLatDD.setPrefSize(150.0, 30.0);
                 	tfLatDD.setLayoutX(12.0); 
                 	tfLatDD.setLayoutY(6.0);
                 	
-                	tfLonDD = new TextField("47 00 00"); // <TextField fx:id="tfLon11" layoutX="249.0" layoutY="12.0" prefHeight="40.0" prefWidth="150.0" promptText="..." />
+                	tfLonDD = new TextField("47 00 00");
                 	tfLonDD.setPrefSize(150, 30);
                 	tfLonDD.setLayoutX(249.0); 
                 	tfLonDD.setLayoutY(6.0);
                 	
-                	lblCoord1 = new Label(); // <Label fx:id="lblCoord111" layoutX="487.0" layoutY="12.0" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: white;" />
+                	lblCoord1 = new Label(); 
                 	lblCoord1.setAlignment(Pos.CENTER);
                 	lblCoord1.setPrefSize(160, 30);
                 	lblCoord1.setLayoutX(487.0);
                 	lblCoord1.setLayoutY(6.0);
                 	lblCoord1.setStyle("-fx-background-color: white;");
                 	
-                	lblCoord2 = new Label(); //  <Label fx:id="lblCoord211" layoutX="657.0" layoutY="12.0" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: white;" />
+                	lblCoord2 = new Label();
                 	lblCoord2.setAlignment(Pos.CENTER);
                 	lblCoord2.setPrefSize(160, 30);
                 	lblCoord2.setLayoutX(657.0); 
                 	lblCoord2.setLayoutY(6.0);
                 	lblCoord2.setStyle("-fx-background-color: white;");
                 	
-                	pConversorCentro.getChildren().clear();
-                	pConversorCentro.getChildren().addAll(tfLatDD, cbNorteSul,tfLonDD, cbLesteOeste, lblCoord1, lblCoord2 );
+                	pConvCentral.getChildren().clear();
+                	pConvCentral.getChildren().addAll(tfLatDD, cbNorteSul,tfLonDD, cbLesteOeste, lblCoord1, lblCoord2 );
                 	
                 	btnConverteCoord.setOnAction((ActionEvent evt)->{
-                		
                 		
                 		String typeCoordinate = cbConverterCoord.getValue();
                 		
@@ -384,9 +502,8 @@ public class ControladorPrincipal {
     	lblCoord2.setLayoutY(6.0);
     	lblCoord2.setStyle("-fx-background-color: white;");
     	
-    	pConversorCentro.getChildren().clear();
-    	pConversorCentro.getChildren().addAll(tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
-    	
+    	pConvCentral.getChildren().clear();
+    	pConvCentral.getChildren().addAll(tfLatDD, tfLonDD, lblCoord1, lblCoord2 );
     	
     	lblDD = new Label();
 		lblDD.setPrefSize(246.0, 30.0);
@@ -413,7 +530,7 @@ public class ControladorPrincipal {
 		copiarCoord (lblDMS);
 		copiarCoord (lblUTM);
 		
-		pConversor.getChildren().addAll(lblDD, lblDMS, lblUTM);
+		paneConversor.getChildren().addAll(lblDD, lblDMS, lblUTM);
     	
 		btnConverteCoord.setOnAction((ActionEvent evt)->{
         	
@@ -425,134 +542,375 @@ public class ControladorPrincipal {
 			copiarCoord (lblCoord2);
             
         });
+	}
+	
+	
+	private void inicializarTabLateralEsquerda () {
 		
-    	// vb lado direito e esquerdo
-    	AnchorPane.setRightAnchor(vbLateralDir, 5.0);
-    	AnchorPane.setLeftAnchor(vbLateralEsq, 5.0);
-    	
-		// Pane Main Top
-		AnchorPane.setTopAnchor(stackPaneTop, 0.0);
-	    AnchorPane.setLeftAnchor(stackPaneTop, 0.0);
-	    AnchorPane.setRightAnchor(stackPaneTop, 0.0);
-	    
-	    // Pane Main Bottom
-	    AnchorPane.setLeftAnchor(stackPMainSearch, 0.0);
-	    AnchorPane.setRightAnchor(stackPMainSearch, 0.0);
-	    AnchorPane.setBottomAnchor(stackPMainSearch, 15.0);
-	    
-	    // BorderPane - Center
-	    AnchorPane.setTopAnchor(bpCenter, 150.0);
-	    AnchorPane.setLeftAnchor(bpCenter, 0.0);
-	    AnchorPane.setRightAnchor(bpCenter, 0.0);
-	    AnchorPane.setBottomAnchor(bpCenter, 115.0);
-	    
-	    bpCenter.setDisable(true);
-	   
-	   
-	    StackPane.setAlignment(pConversor,Pos.CENTER);
-	    StackPane.setAlignment(pMainTop,Pos.CENTER);
-	  
-	    Platform.runLater(new Runnable(){
-
-			public void run() {
-				
-				googleMaps = new GoogleMap();
-				
-				apWebMap.getChildren().add(googleMaps);  //.setContent(googleMaps);
-				
-				
-				apMain.widthProperty().addListener(
-			    		(observable, oldValue, newValue) -> {
-			    			googleMaps.resizeWidthMap ((Double)newValue);
-			    			
-				    	    }
-			    		);
-				
-				apMain.heightProperty().addListener(
-			    		(observable, oldValue, newValue) -> {
-			    			googleMaps.resizeHeightMap((Double)newValue);
-			    			
-				    	    }
-			    		);
-				
-				AnchorPane.setTopAnchor(spWebMap, 30.0);
-				AnchorPane.setLeftAnchor(spWebMap, 0.0);
-			    AnchorPane.setRightAnchor(spWebMap, 0.0);
-			    AnchorPane.setBottomAnchor(spWebMap, 0.0);
-			    
-			}
-	   
-			
-    	});
-	    
-        btnHome = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.HOME,
-        		"HOME", 
-        		"20px", 
-                "11px",  
-                ContentDisplay.LEFT);
-        
-	        btnHome.getStyleClass().add("clBotoesLateral");
-	        btnHome.setLayoutX(10.0);
-	        btnHome.setLayoutY(16.0);
+		  btnHome = GlyphsDude.createIconButton(
+	        		FontAwesomeIcon.HOME,
+	        		"HOME", 
+	        		"20px", 
+	                "11px",  
+	                ContentDisplay.LEFT);
 	        
-        btnSEI = GlyphsDude.createIconButton(
+		       	btnHome.getStyleClass().add("classeBotoesLateral");
+		        btnHome.setLayoutX(10.0);
+		        btnHome.setLayoutY(16.0);
+		        
+		  btnSEI = GlyphsDude.createIconButton(
         		FontAwesomeIcon.CHROME,
         		"SEI - GDF", 
         		"15px", 
                 "11px",  
                 ContentDisplay.LEFT);
-        
-	        btnSEI.getStyleClass().add("clBotoesLateral");
-	        btnSEI.setLayoutX(10.0);
-	        btnSEI.setLayoutY(55.0);
-        
-        btnAtendimento = GlyphsDude.createIconButton(
+	        
+		        btnSEI.getStyleClass().add("classeBotoesLateral");
+		        btnSEI.setLayoutX(10.0);
+		        btnSEI.setLayoutY(55.0);
+	        
+		  btnAtendimento = GlyphsDude.createIconButton(
         		FontAwesomeIcon.PHONE_SQUARE,
         		"ATENDIMENTO", 
         		"20px", 
                 "11px",   
                 ContentDisplay.LEFT);
-        
-	        btnAtendimento.getStyleClass().add("clBotoesLateral");
-	        btnAtendimento.setLayoutX(10.0);
-	        btnAtendimento.setLayoutY(94.0);
-        
-        btnFiscalizacao = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.TICKET,
-        		"FISCALIZAÇÃO", 
-        		"20px", 
-                "11px",  
-                ContentDisplay.LEFT);
-        
-	        btnFiscalizacao.getStyleClass().add("clBotoesLateral");
-	        btnFiscalizacao.setLayoutX(10.0);
-	        btnFiscalizacao.setLayoutY(133.0);
-        
-        btnEditorHTML = GlyphsDude.createIconButton(
-           		FontAwesomeIcon.HTML5,
-           		"EDITOR HTML", 
-           		"20px", 
-                   "11px",  
-                   ContentDisplay.LEFT);
-           
-           btnEditorHTML.getStyleClass().add("clBotoesLateral");
-           btnEditorHTML.setLayoutX(10.0);
-           btnEditorHTML.setLayoutY(172.0);
-           
-        
-        btnConversor = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.GLOBE,
-        		"CONVERSOR", 
-        		"20px", 
-                "11px",   
-                ContentDisplay.LEFT);
-        
-	        btnConversor.getStyleClass().add("clBotoesLateral");
-	        btnConversor.setLayoutX(10.0);
-	        btnConversor.setLayoutY(211.0);
-        
-        
+	        
+		       	btnAtendimento.getStyleClass().add("classeBotoesLateral");
+		        btnAtendimento.setLayoutX(10.0);
+		        btnAtendimento.setLayoutY(94.0);
+	        
+	       btnFiscalizacao = GlyphsDude.createIconButton(
+	        		FontAwesomeIcon.TICKET,
+	        		"FISCALIZAÇÃO", 
+	        		"20px", 
+	                "11px",  
+	                ContentDisplay.LEFT);
+	        
+		        btnFiscalizacao.getStyleClass().add("classeBotoesLateral");
+		        btnFiscalizacao.setLayoutX(10.0);
+		        btnFiscalizacao.setLayoutY(133.0);
+	        
+	        btnEditorHTML = GlyphsDude.createIconButton(
+	           		FontAwesomeIcon.HTML5,
+	           		"EDITOR HTML", 
+	           		"20px", 
+	                   "11px",  
+	                   ContentDisplay.LEFT);
+	           
+	           btnEditorHTML.getStyleClass().add("classeBotoesLateral");
+	           btnEditorHTML.setLayoutX(10.0);
+	           btnEditorHTML.setLayoutY(172.0);
+	           
+	        
+	        btnConversor = GlyphsDude.createIconButton(
+	        		FontAwesomeIcon.GLOBE,
+	        		"CONVERSOR", 
+	        		"20px", 
+	                "11px",   
+	                ContentDisplay.LEFT);
+	        
+			        btnConversor.getStyleClass().add("classeBotoesLateral");
+			        btnConversor.setLayoutX(10.0);
+			        btnConversor.setLayoutY(211.0);
+		        
+		        Text iconTabHome = GlyphsDude.createIcon(FontAwesomeIcon.HOME, "20px");
+		        iconTabHome.getStyleClass().add("classeIconTab");
+		        
+		        
+			        tabLE1.setGraphic(iconTabHome);
+			        tabLE1.setClosable(false);
+		      
+		        Text iconTabHome2 = GlyphsDude.createIcon(FontAwesomeIcon.CROP, "20px");
+		        iconTabHome2.getStyleClass().add("classeIconTab");
+		        
+			        tabLE2.setGraphic(iconTabHome2);
+			        tabLE2.setClosable(false);
+		       
+			        pLE1.getStyleClass().add("classePanesLaterais");
+		        
+			        pLE2.getStyleClass().add("classePanesLaterais");
+			        
+			        pLE1.getChildren().addAll(btnHome, btnSEI, btnAtendimento, btnFiscalizacao, btnConversor, btnEditorHTML);
+		        
+		        tabLE1.setContent(pLE1);
+		        tabLE2.setContent(pLE2);
+		    
+		        // traslalte transition do conversor de coordenadas, para sumir deslizando para baixo
+		        downSearch = new TranslateTransition(new Duration(350), (spConversorCoordenadas));
+		        downSearch.setToY(130.0);
+		        upSearch = new TranslateTransition(new Duration(350), spConversorCoordenadas);
+		        upSearch.setToY(2.0);
+		     
+		        btnAtendimento.setOnAction((ActionEvent evt)->{
+		        	
+		        	if (pAtendimento == null) {
+		        		
+		        		pAtendimento = new Pane();
+		        		
+			        		downAtend = new TranslateTransition(new Duration(350), pAtendimento);
+			        		downAtend.setToY(880.0);
+			                upAtend = new TranslateTransition(new Duration(350), pAtendimento);
+			                upAtend.setToY(0.0);
+		        
+			        	    AnchorPane.setTopAnchor(pAtendimento, 150.0);
+			        	    AnchorPane.setLeftAnchor(pAtendimento, 160.0);
+			        	    AnchorPane.setRightAnchor(pAtendimento, 160.0);
+			        	    AnchorPane.setBottomAnchor(pAtendimento, 115.0);
+			        	    
+			        	    // Para abrir o pane fora do campo de vis�o
+			        	    pAtendimento.setTranslateY(880.0);
+
+			        	    apPrincipal.getChildren().add(pAtendimento);
+		        	    
+		        		
+		        	}
+		        	
+		        	dblAtend =  pAtendimento.getTranslateY();
+		        	
+			        	if(dblAtend.equals(0.0)){
+			            	
+			            	downAtend.play(); 
+			            	if (pBrowserSEI != null)
+			            	pBrowserSEI.setTranslateY(880.0);
+			            	if (pFiscalizacao != null)
+		            			pFiscalizacao.setTranslateY(880.0);
+			        		} 
+			            	
+			            	else {
+			            			
+			            		upAtend.play();
+			            		if (pBrowserSEI != null)
+			            		pBrowserSEI.setTranslateY(880.0);
+			            		if (pFiscalizacao != null)
+			            			pFiscalizacao.setTranslateY(880.0);
+			            		}
+			        	
+			        			
+		        	
+						        	if (pAtenCadastros == null) {
+						
+						        		pAtenCadastros = new Pane();
+							        	
+							        	controladorAtendimento = new ControladorAtendimento();
+							        	
+							        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/atendimento/Atendimento.fxml"));
+										
+										loader.setRoot(pAtenCadastros);
+										loader.setController(controladorAtendimento);
+										try {
+											loader.load();
+										} catch (IOException e) {
+											System.out.println("erro na abertura do pane atendimento");
+											e.printStackTrace();
+										}
+										
+										pAtenCadastros.minWidthProperty().bind(pAtendimento.widthProperty());
+										pAtenCadastros.minHeightProperty().bind(pAtendimento.heightProperty());
+										
+										pAtenCadastros.maxWidthProperty().bind(pAtendimento.widthProperty());
+										pAtenCadastros.maxHeightProperty().bind(pAtendimento.heightProperty());
+										
+										pAtenCadastros.setStyle("-fx-background-color: transparent;");
+										
+										pAtendimento.getChildren().add(pAtenCadastros);
+										
+						        		}
+		        	});
+		        
+		        btnFiscalizacao.setOnAction((ActionEvent evt)->{
+		        	
+		        	if (pFiscalizacao == null) {
+		        		
+		        		pFiscalizacao = new Pane();
+		        		
+			        		downFiscal = new TranslateTransition(new Duration(350), pFiscalizacao);
+			                downFiscal.setToY(880.0);
+			                upFiscal = new TranslateTransition(new Duration(350), pFiscalizacao);
+			                upFiscal.setToY(0.0);
+		        
+			        	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
+			        	    AnchorPane.setLeftAnchor(pFiscalizacao, 160.0);
+			        	    AnchorPane.setRightAnchor(pFiscalizacao, 160.0);
+			        	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
+			        	    
+			        	    // Para abrir o pane fora do campo de vis�o
+			        	    pFiscalizacao.setTranslateY(880.0);
+
+			        	    apPrincipal.getChildren().add(pFiscalizacao);
+		        	    
+		        		
+		        	}
+		        	
+		        	dblFiscal =  pFiscalizacao.getTranslateY();
+		        	
+			        	if(dblFiscal.equals(0.0)){
+			            	
+			            	downFiscal.play(); 
+			            	if (pBrowserSEI != null)
+			            	pBrowserSEI.setTranslateY(880.0);
+			            	if (pAtendimento != null)
+			            		pAtendimento.setTranslateY(880.0);
+			        		} 
+			            	
+			            	else {
+			            			
+			            		upFiscal.play();
+			            		if (pBrowserSEI != null)
+			            		pBrowserSEI.setTranslateY(880.0);
+			            		if (pAtendimento != null)
+			            			pAtendimento.setTranslateY(880.0);
+				        		
+			            		}
+		        	
+						        	if (pFiscCadastros == null) {
+						
+						        		pFiscCadastros = new Pane();
+							        	
+							        	controladorFiscalizacao = new ControladorFiscalizacao();
+							        	
+							        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/Fiscalizacao.fxml"));
+										
+										loader.setRoot(pFiscCadastros);
+										loader.setController(controladorFiscalizacao);
+										try {
+											loader.load();
+										} catch (IOException e) {
+											System.out.println("erro na abertura do pane fiscalizacao");
+											e.printStackTrace();
+										}
+										
+										pFiscCadastros.minWidthProperty().bind(pFiscalizacao.widthProperty());
+										pFiscCadastros.minHeightProperty().bind(pFiscalizacao.heightProperty());
+										
+										pFiscCadastros.maxWidthProperty().bind(pFiscalizacao.widthProperty());
+										pFiscCadastros.maxHeightProperty().bind(pFiscalizacao.heightProperty());
+										
+										pFiscCadastros.setStyle("-fx-background-color: transparent;"); 
+										
+										pFiscalizacao.getChildren().add(pFiscCadastros);
+										
+						        		}
+		        	});
+						    
+		        btnConversor.setOnAction((ActionEvent evt)->{
+		        	
+		        	dblSearch =  spConversorCoordenadas.getTranslateY();
+		        	
+		            if(dblSearch.equals(0.0) || dblSearch.equals(2.0)){
+		            	
+		                downSearch.play();
+			            
+		            	} else {
+			            	
+			            upSearch.play();
+			            	  
+			            }
+		            
+		        });
+		        
+		        btnSEI.setOnAction((ActionEvent evt)->{
+		        	
+		        	
+		        	if (wBrowser == null ) {
+		        		
+		        		spWebBrowser = new ScrollPane();
+		        		pBrowserSEI = new Pane();
+		        		
+		        		downBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
+			            downBrowser.setToY(880.0);
+			            upBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
+			            upBrowser.setToY(0.0);
+			        	
+			        	AnchorPane.setTopAnchor(pBrowserSEI, 150.0);
+			    	    AnchorPane.setLeftAnchor(pBrowserSEI, 160.0);
+			    	    AnchorPane.setRightAnchor(pBrowserSEI, 160.0);
+			    	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0);
+
+			    	    pBrowserSEI.setTranslateY(880.0);
+			    	    
+			    	    apPrincipal.getChildren().add(pBrowserSEI);
+
+			        	wBrowser = new WebView();
+			        	WebEngine weBrowser = wBrowser.getEngine();
+			        	weBrowser.load("https://sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI");
+			        	
+			        	spWebBrowser.setContent(wBrowser);
+			        	
+			        	spWebBrowser.prefWidthProperty().bind((pBrowserSEI.widthProperty()));
+			        	spWebBrowser.prefHeightProperty().bind(pBrowserSEI.heightProperty());
+			        	
+			        	wBrowser.prefWidthProperty().bind(spWebBrowser.widthProperty().subtract(10.0));
+			        	wBrowser.prefHeightProperty().bind(spWebBrowser.heightProperty().subtract(10.0));
+			
+			        	wBrowser.maxWidthProperty().bind(spWebBrowser.widthProperty());
+			        	wBrowser.maxHeightProperty().bind(spWebBrowser.heightProperty());
+			        	
+			        	spWebBrowser.maxWidthProperty().bind(pBrowserSEI.widthProperty());
+			        	spWebBrowser.maxHeightProperty().bind(pBrowserSEI.heightProperty());
+			        	
+			        	pBrowserSEI.getChildren().add(spWebBrowser);
+		        	
+		        	}
+		        	
+		        	
+		        	dblBrowser =  pBrowserSEI.getTranslateY();
+		        	
+		        	
+		        	if(dblBrowser.equals(0.0)){
+		            	
+		            	downBrowser.play();
+		            	
+		            	if (pFiscalizacao != null)
+		            	pFiscalizacao.setTranslateY(880.0);//downFiscal.play();
+		            	if (pAtendimento != null)
+		            		pAtendimento.setTranslateY(880.0);
+		        		
+			            } else {
+			            
+			            	upBrowser.play();
+			            	if (pFiscalizacao != null)
+			            	pFiscalizacao.setTranslateY(880.0);
+			            	if (pAtendimento != null)
+			            		pAtendimento.setTranslateY(880.0);
+			            
+			            }
+			            
+		        });
+		        
+		        btnEditorHTML.setOnAction((ActionEvent evt)->{
+		        	
+		        	Pane pEndereco = new Pane();
+		        	controladorModelosHTML = new ControladorModelosHTML();
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modelosHTML/ModelosHTML.fxml"));
+					loader.setRoot(pEndereco);
+					loader.setController(controladorModelosHTML);
+					
+					try {
+						loader.load();
+					} catch (IOException e) {
+						System.out.println("erro leitura do pane - chamada legislação");
+						e.printStackTrace();
+					}
+					
+					Scene scene = new Scene(pEndereco);
+					Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
+					stage.setWidth(1177);
+					stage.setHeight(800);
+			        stage.setScene(scene);
+			        stage.setMaximized(false);
+			        stage.setResizable(false);
+			        stage.setAlwaysOnTop(true); 
+			        stage.show();
+		        	
+		        });
+		        
+	}
+	
+	
+	private void inicializarTabLateralDireita () {
+		
+		
         // botao de aumentar o zoom //
         btnZoomIn = GlyphsDude.createIconButton(
         		FontAwesomeIcon.PLUS,
@@ -560,7 +918,7 @@ public class ControladorPrincipal {
         		"10px", 
                 "9px",  
                 ContentDisplay.TOP);
-        	btnZoomIn.getStyleClass().add("clBotaoZoom");
+        	btnZoomIn.getStyleClass().add("classeBotoesLateral");
         
 	        btnZoomIn.setOnAction((ActionEvent evt)->{
 	        	googleMaps.setZoomIn();
@@ -576,7 +934,7 @@ public class ControladorPrincipal {
         		"10px", 
                 "9px",  
                 ContentDisplay.TOP);
-        	btnZoomOut.getStyleClass().add("clBotaoZoom");
+        	btnZoomOut.getStyleClass().add("classeBotoesLateral");
         
 	        btnZoomOut.setOnAction((ActionEvent evt)->{
 	        	googleMaps.setZoomOut();
@@ -588,12 +946,12 @@ public class ControladorPrincipal {
         Label lblTipoMapa = new Label("Tipo de Mapa");
         	lblTipoMapa.setLayoutX(28.0);
         		lblTipoMapa.setLayoutY(11.0);
-        		lblTipoMapa.getStyleClass().add("clLabelsEstiloTipoMapa");
+        		lblTipoMapa.getStyleClass().add("classeLabel");
         		
         		Label lblEstiloMapa = new Label("Estilo de Mapa");
         			lblEstiloMapa.setLayoutX(26.0);
         				lblEstiloMapa.setLayoutY(189.0);
-        				lblEstiloMapa.getStyleClass().add("clLabelsEstiloTipoMapa");
+        				lblEstiloMapa.getStyleClass().add("classeLabel");
     	
        btnTerrain = new Button("TERRENO");
        btnRoadMap = new Button("RODOVIAS");
@@ -610,10 +968,10 @@ public class ControladorPrincipal {
 		    	btnGreenMap.setId("btnGreenMap");
 		    		btnRetroMap.setId("btnRetroMap");
 		    		
-		    		btnNightMap.getStyleClass().add("clBotaoMapaEstilo");
-			    	btnBlueMap.getStyleClass().add("clBotaoMapaEstilo");
-				    	btnGreenMap.getStyleClass().add("clBotaoMapaEstilo");
-				    		btnRetroMap.getStyleClass().add("clBotaoMapaEstilo");
+		    		btnNightMap.getStyleClass().add("classeMapaEstilo");
+			    	btnBlueMap.getStyleClass().add("classeMapaEstilo");
+				    	btnGreenMap.getStyleClass().add("classeMapaEstilo");
+				    		btnRetroMap.getStyleClass().add("classeMapaEstilo");
 				    		
     	
     	btnNightMap.setLayoutX(10.0);
@@ -627,39 +985,53 @@ public class ControladorPrincipal {
 			    	
 			    	btnNightMap.setOnAction((ActionEvent evt)->{
 			        	googleMaps.mudarEstiloMapa(1);
+			        	apPrincipal.getStylesheets().clear();
+			        	apPrincipal.getStylesheets().add("/css/principal_mapa_escuro.css");
+			      
+			        	
 			        });	
 			    	
 				    	btnBlueMap.setOnAction((ActionEvent evt)->{
 				        	googleMaps.mudarEstiloMapa(2);
+				        	apPrincipal.getStylesheets().clear();
+				        	apPrincipal.getStylesheets().add("/css/principal_mapa_azul.css");
+				        	
 				        });	 
 			    	
 				    		btnGreenMap.setOnAction((ActionEvent evt)->{
 					        	googleMaps.mudarEstiloMapa(3);
+					        	
+					        	apPrincipal.getStylesheets().clear();
+					        	apPrincipal.getStylesheets().add("/css/principal_mapa_verde.css");
+					        	
 					        });	    
 				    			btnRetroMap.setOnAction((ActionEvent evt)->{
 						        	googleMaps.mudarEstiloMapa(4);
+						        	
+						        	apPrincipal.getStylesheets().clear();
+						        	apPrincipal.getStylesheets().add("/css/principal_mapa_salmao.css");
 						        });	    	
 				    			 
     	
     	btnTerrain.setLayoutX(10.0);
     		btnTerrain.setLayoutY(40.0);
     	
-    			btnTerrain.getStyleClass().add("clBotoesLateral");
+    			btnTerrain.getStyleClass().add("classeBotoesLateral");
         
     	btnRoadMap.setLayoutX(10.0);
     		btnRoadMap.setLayoutY(75.0);
     	
-    			btnRoadMap.getStyleClass().add("clBotoesLateral");
+    			btnRoadMap.getStyleClass().add("classeBotoesLateral");
         
     	btnSattelite.setLayoutX(10.0);
     		btnSattelite.setLayoutY(110.0);
     	
-    			btnSattelite.getStyleClass().add("clBotoesLateral");
+    			btnSattelite.getStyleClass().add("classeBotoesLateral");
         
     	btnHybrid.setLayoutX(10.0);
     		btnHybrid.setLayoutY(145.0);
     	
-    			btnHybrid.getStyleClass().add("clBotoesLateral");
+    			btnHybrid.getStyleClass().add("classeBotoesLateral");
     	
     	checkBacia = new CheckBox("Bacias");
     		checkRiodDF  = new CheckBox("Rios do DF");
@@ -698,96 +1070,33 @@ public class ControladorPrincipal {
 						    	checkTrafego.setLayoutX(5.0);
 						    	checkTrafego.setLayoutY(165.0);
     	
-        tpPrincLatDir = new TabPane();
-        tpPrinclatEsq = new TabPane();
-        
-       
-        Text iconTabHome = GlyphsDude.createIcon(FontAwesomeIcon.HOME, "20px");
-        iconTabHome.setFill(Color.WHITE);
-        
-	        Tab tab1 = new Tab();
-	        tab1.setGraphic(iconTabHome);
-	        tab1.setClosable(false);
-        
-        Text iconTabHome2 = GlyphsDude.createIcon(FontAwesomeIcon.CROP, "20px");
-        iconTabHome2.setFill(Color.WHITE);
-        
-	        Tab tab2 = new Tab();
-	        tab2.setGraphic(iconTabHome2);
-	        tab2.setClosable(false);
-        
-        Pane pOrgaos = new Pane ();
-	        pOrgaos.setPrefSize(130, 370);
-	        pOrgaos.getStyleClass().add("panesLaterais");
-        
-        Pane pOrgaos2 = new Pane ();
-	        pOrgaos2.setPrefSize(130, 370);
-	        pOrgaos2.getStyleClass().add("panesLaterais");
-	        
-
-        pOrgaos.getChildren().addAll(btnHome, btnSEI, btnAtendimento, btnFiscalizacao, btnConversor, btnEditorHTML);
-        
-        tab1.setContent(pOrgaos);
-        tab2.setContent(pOrgaos2);
-        
-        tpPrinclatEsq.getTabs().addAll(tab1, tab2);
-        tpPrinclatEsq.getStyleClass().add("tbPrincLat");
         
         Text iconTabMap1 = GlyphsDude.createIcon(FontAwesomeIcon.MAP, "20px");
-        iconTabMap1.setFill(Color.WHITE);
+        iconTabMap1.getStyleClass().add("classeIconTab");
         
-        Tab tab3 = new Tab();
-        tab3.setGraphic(iconTabMap1);
-        
-        tab3.setClosable(false);
-        
+        tabLD1.setGraphic(iconTabMap1);
+        tabLD1.setClosable(false);
         
         Text iconTabMap2 = GlyphsDude.createIcon(FontAwesomeIcon.OBJECT_GROUP, "20px");
-        iconTabMap2.setFill(Color.WHITE);
+        iconTabMap2.getStyleClass().add("classeIconTab");
         
-        Tab tab4 = new Tab();
-        tab4.setGraphic(iconTabMap2);
-        tab4.setClosable(false);
+        tabLD2.setGraphic(iconTabMap2);
+        tabLD2.setClosable(false);
        
+	        pLD1.getStyleClass().add("classePanesLaterais");
         
-        Pane pOpcoesMapa = new Pane ();
-	        pOpcoesMapa.setPrefSize(130, 370);
-	        pOpcoesMapa.getStyleClass().add("panesLaterais");
-        
-        
-        Pane pShapes = new Pane ();
-	        pShapes.setPrefSize(130, 370);
-	        pShapes.getStyleClass().add("panesLaterais");
-        
-	        pShapes.getChildren().addAll(pCheck);
-        
-        pOpcoesMapa.getChildren().addAll(
+	        pLD1.getChildren().addAll(
         		lblTipoMapa, 
         		btnTerrain, btnRoadMap, btnSattelite, btnHybrid, 
         		lblEstiloMapa, btnNightMap, btnBlueMap, btnGreenMap, btnRetroMap,
         		btnZoomIn, btnZoomOut);
-       
-       
-        tab3.setContent(pOpcoesMapa);
-        tab4.setContent(pShapes);
+	        
+	        pLD2.getStyleClass().add("classePanesLaterais");
+	        pLD2.getChildren().addAll(pCheck);
         
-        tpPrincLatDir.getStyleClass().add("tbPrincLat");
-        tpPrincLatDir.getTabs().addAll(tab3, tab4);
-      
-        vbLateralEsq.getChildren().addAll(tpPrinclatEsq);
-        vbLateralDir.getChildren().addAll(tpPrincLatDir);
+        tabLD1.setContent(pLD1);
+        tabLD2.setContent(pLD2);
         
-        
-        vbLateralEsq.setAlignment(Pos.TOP_CENTER);
-        vbLateralDir.setAlignment(Pos.TOP_CENTER);
-        
-       
-        downSearch = new TranslateTransition(new Duration(350), (stackPMainSearch));
-        downSearch.setToY(130.0);
-        upSearch = new TranslateTransition(new Duration(350), stackPMainSearch);
-        upSearch.setToY(2.0);
-        
-       
         checkBacia.setOnAction((ActionEvent evt)->{
         	googleMaps.openShape(6);
         });
@@ -833,272 +1142,6 @@ public class ControladorPrincipal {
         	googleMaps.switchHybrid();
         });
         
-        btnAtendimento.setOnAction((ActionEvent evt)->{
-        	
-        	if (pAtendimento == null) {
-        		
-        		pAtendimento = new Pane();
-        		
-	        		downAtend = new TranslateTransition(new Duration(350), pAtendimento);
-	        		downAtend.setToY(880.0);
-	                upAtend = new TranslateTransition(new Duration(350), pAtendimento);
-	                upAtend.setToY(0.0);
-        
-	        	    AnchorPane.setTopAnchor(pAtendimento, 150.0);
-	        	    AnchorPane.setLeftAnchor(pAtendimento, 150.0);
-	        	    AnchorPane.setRightAnchor(pAtendimento, 150.0);
-	        	    AnchorPane.setBottomAnchor(pAtendimento, 115.0);
-	        	    
-	        	    // Para abrir o pane fora do campo de vis�o
-	        	    pAtendimento.setTranslateY(880.0);
-
-	        	    apMain.getChildren().add(pAtendimento);
-        	    
-        		
-        	}
-        	
-        	dblAtend =  pAtendimento.getTranslateY();
-        	
-	        	if(dblAtend.equals(0.0)){
-	            	
-	            	downAtend.play(); 
-	            	if (pBrowserSEI != null)
-	            	pBrowserSEI.setTranslateY(880.0);
-	            	if (pFiscalizacao != null)
-            			pFiscalizacao.setTranslateY(880.0);
-	        		} 
-	            	
-	            	else {
-	            			
-	            		upAtend.play();
-	            		if (pBrowserSEI != null)
-	            		pBrowserSEI.setTranslateY(880.0);
-	            		if (pFiscalizacao != null)
-	            			pFiscalizacao.setTranslateY(880.0);
-	            		}
-	        	
-	        			
-        	
-				        	if (pAten == null) {
-				
-				        		pAten = new Pane();
-					        	
-					        	controladorAtendimento = new ControladorAtendimento();
-					        	
-					        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/atendimento/Atendimento.fxml"));
-								
-								loader.setRoot(pAten);
-								loader.setController(controladorAtendimento);
-								try {
-									loader.load();
-								} catch (IOException e) {
-									System.out.println("erro na abertura do pane atendimento");
-									e.printStackTrace();
-								}
-								
-								pAten.minWidthProperty().bind(pAtendimento.widthProperty());
-								pAten.minHeightProperty().bind(pAtendimento.heightProperty());
-								
-								pAten.maxWidthProperty().bind(pAtendimento.widthProperty());
-								pAten.maxHeightProperty().bind(pAtendimento.heightProperty());
-								
-								pAten.setStyle("-fx-background-color: transparent;");
-								
-								pAtendimento.getChildren().add(pAten);
-								
-				        		}
-        	});
-        
-        btnFiscalizacao.setOnAction((ActionEvent evt)->{
-        	
-        	if (pFiscalizacao == null) {
-        		
-        		pFiscalizacao = new Pane();
-        		
-	        		downFiscal = new TranslateTransition(new Duration(350), pFiscalizacao);
-	                downFiscal.setToY(880.0);
-	                upFiscal = new TranslateTransition(new Duration(350), pFiscalizacao);
-	                upFiscal.setToY(0.0);
-        
-	        	    AnchorPane.setTopAnchor(pFiscalizacao, 150.0);
-	        	    AnchorPane.setLeftAnchor(pFiscalizacao, 150.0);
-	        	    AnchorPane.setRightAnchor(pFiscalizacao, 150.0);
-	        	    AnchorPane.setBottomAnchor(pFiscalizacao, 115.0);
-	        	    
-	        	    // Para abrir o pane fora do campo de vis�o
-	        	    pFiscalizacao.setTranslateY(880.0);
-
-	        	    apMain.getChildren().add(pFiscalizacao);
-        	    
-        		
-        	}
-        	
-        	dblFiscal =  pFiscalizacao.getTranslateY();
-        	
-	        	if(dblFiscal.equals(0.0)){
-	            	
-	            	downFiscal.play(); 
-	            	if (pBrowserSEI != null)
-	            	pBrowserSEI.setTranslateY(880.0);
-	            	if (pAtendimento != null)
-	            		pAtendimento.setTranslateY(880.0);
-	        		} 
-	            	
-	            	else {
-	            			
-	            		upFiscal.play();
-	            		if (pBrowserSEI != null)
-	            		pBrowserSEI.setTranslateY(880.0);
-	            		if (pAtendimento != null)
-	            			pAtendimento.setTranslateY(880.0);
-		        		
-	            		}
-        	
-				        	if (pFis == null) {
-				
-				        		pFis = new Pane();
-					        	
-					        	controladorFiscalizacao = new ControladorFiscalizacao();
-					        	
-					        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/fiscalizacao/Fiscalizacao.fxml"));
-								
-								loader.setRoot(pFis);
-								loader.setController(controladorFiscalizacao);
-								try {
-									loader.load();
-								} catch (IOException e) {
-									System.out.println("erro na abertura do pane fiscalizacao");
-									e.printStackTrace();
-								}
-								
-								pFis.minWidthProperty().bind(pFiscalizacao.widthProperty());
-								pFis.minHeightProperty().bind(pFiscalizacao.heightProperty());
-								
-								pFis.maxWidthProperty().bind(pFiscalizacao.widthProperty());
-								pFis.maxHeightProperty().bind(pFiscalizacao.heightProperty());
-								
-								pFis.setStyle("-fx-background-color: transparent;");
-								
-								pFiscalizacao.getChildren().add(pFis);
-								
-				        		}
-        	});
-				    
-        btnConversor.setOnAction((ActionEvent evt)->{
-        	
-        	dblSearch =  stackPMainSearch.getTranslateY();
-        	
-            if(dblSearch.equals(0.0) || dblSearch.equals(2.0)){
-            	
-                downSearch.play();
-	            
-            	} else {
-	            	
-	            upSearch.play();
-	            	  
-	            }
-            
-        });
-        
-        btnSEI.setOnAction((ActionEvent evt)->{
-        	
-        	
-        	if (wBrowser == null ) {
-        		
-        		spWebBrowser = new ScrollPane();
-        		pBrowserSEI = new Pane();
-        		
-        		downBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
-	            downBrowser.setToY(880.0);
-	            upBrowser = new TranslateTransition(new Duration(350), pBrowserSEI);
-	            upBrowser.setToY(0.0);
-	        	
-	        	AnchorPane.setTopAnchor(pBrowserSEI, 150.0);
-	    	    AnchorPane.setLeftAnchor(pBrowserSEI, 150.0);
-	    	    AnchorPane.setRightAnchor(pBrowserSEI, 150.0);
-	    	    AnchorPane.setBottomAnchor(pBrowserSEI, 115.0);
-
-	    	    pBrowserSEI.setTranslateY(880.0);
-	    	    
-	    	    apMain.getChildren().add(pBrowserSEI);
-
-	    	    
-	        	
-	        	wBrowser = new WebView();
-	        	WebEngine weBrowser = wBrowser.getEngine();
-	        	weBrowser.load("https://sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI");
-	        	
-	        	spWebBrowser.setContent(wBrowser);
-	        	
-	        	spWebBrowser.prefWidthProperty().bind((pBrowserSEI.widthProperty()));
-	        	spWebBrowser.prefHeightProperty().bind(pBrowserSEI.heightProperty());
-	        	
-	        	wBrowser.prefWidthProperty().bind(spWebBrowser.widthProperty().subtract(10.0));
-	        	wBrowser.prefHeightProperty().bind(spWebBrowser.heightProperty().subtract(10.0));
-	
-	        	wBrowser.maxWidthProperty().bind(spWebBrowser.widthProperty());
-	        	wBrowser.maxHeightProperty().bind(spWebBrowser.heightProperty());
-	        	
-	        	spWebBrowser.maxWidthProperty().bind(pBrowserSEI.widthProperty());
-	        	spWebBrowser.maxHeightProperty().bind(pBrowserSEI.heightProperty());
-	        	
-	        	pBrowserSEI.getChildren().add(spWebBrowser);
-        	
-        	}
-        	
-        	
-        	dblBrowser =  pBrowserSEI.getTranslateY();
-        	
-        	
-        	if(dblBrowser.equals(0.0)){
-            	
-            	downBrowser.play();
-            	
-            	if (pFiscalizacao != null)
-            	pFiscalizacao.setTranslateY(880.0);//downFiscal.play();
-            	if (pAtendimento != null)
-            		pAtendimento.setTranslateY(880.0);
-        		
-	            } else {
-	            
-	            	upBrowser.play();
-	            	if (pFiscalizacao != null)
-	            	pFiscalizacao.setTranslateY(880.0);
-	            	if (pAtendimento != null)
-	            		pAtendimento.setTranslateY(880.0);
-	            
-	            }
-	            
-        });
-        
-        btnEditorHTML.setOnAction((ActionEvent evt)->{
-        	
-        	Pane pEndereco = new Pane();
-        	controladorModelosHTML = new ControladorModelosHTML();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modelosHTML/ModelosHTML.fxml"));
-			loader.setRoot(pEndereco);
-			loader.setController(controladorModelosHTML);
-			
-			try {
-				loader.load();
-			} catch (IOException e) {
-				System.out.println("erro leitura do pane - chamada legislação");
-				e.printStackTrace();
-			}
-			
-			Scene scene = new Scene(pEndereco);
-			Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
-			stage.setWidth(1177);
-			stage.setHeight(800);
-	        stage.setScene(scene);
-	        stage.setMaximized(false);
-	        stage.setResizable(false);
-	        stage.setAlwaysOnTop(true); 
-	        stage.show();
-        	
-        });
-        
-        	
 	}
 	
 	// ao clicar copiar o valor da coordenada para utilizar em navegadores //
@@ -1120,211 +1163,7 @@ public class ControladorPrincipal {
 	    });
 		
 	}
-	
-	
+
 }
 
-
-/*
- if (wBrowser == null ) {
-        		
-	        	spWebBrowser = new ScrollPane();
-	        	
-	        	wBrowser = new WebView();
-	        	WebEngine weBrowser = wBrowser.getEngine();
-	        	weBrowser.load("https://sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI");
-	        	
-	        	spWebBrowser.setContent(wBrowser);
-	        	
-	        	pBrowserSEI.prefWidthProperty().bind(pCenter.widthProperty());
-	        	
-	        	wBrowser.prefWidthProperty().bind(pBrowserSEI.widthProperty().subtract(20.0));
-	        	wBrowser.prefHeightProperty().bind(pBrowserSEI.heightProperty().subtract(10.0));
-	        	
-	        	spWebBrowser.prefWidthProperty().bind((pBrowserSEI.widthProperty()));
-	        	spWebBrowser.prefHeightProperty().bind(pBrowserSEI.heightProperty());
-	
-	        	wBrowser.maxWidthProperty().bind(pBrowserSEI.widthProperty().subtract(20.0));
-	        	wBrowser.maxHeightProperty().bind(pBrowserSEI.heightProperty());
-	        	
-	        	spWebBrowser.maxWidthProperty().bind(pBrowserSEI.widthProperty());
-	        	spWebBrowser.maxHeightProperty().bind(pBrowserSEI.heightProperty());
-	        	
-	        	pBrowserSEI.getChildren().add(spWebBrowser);
-        	
-        	}
- */
-
-
-
-/*
- pRegisterExtern.setPrefSize(1155, 806);
-	    
-	    AnchorPane.setTopAnchor(pRegisterExtern, 150.0);
-	    AnchorPane.setBottomAnchor(pRegisterExtern, 45.0);
-	    
-	    
-	    pRegisterExtern.setStyle("-fx-background-color: orange;"); //
-	    
-	    // Para come�ar fora da vis�o da tela
-	    //bpCenter.setTranslateY(880);
-	    pRegisterExtern.setTranslateY(880);
-	    
-	    
-	    apMain.getChildren().add(pRegisterExtern);
-	    
-	   
-	    pCenter.layoutXProperty().addListener(
-	    		(observable, oldValue, newValue) -> {
-	    			pRegisterExtern.layoutXProperty().setValue(newValue);
-		    	     
-		    	    }
-	    		);
-	   	
-	  
-	    bpCenter.layoutYProperty().addListener(
-	    		(obs, oldVal, newVal) -> {
-	    			pRegisterExtern.setLayoutY(((double) newVal));
-		    	     
-		    	    }
-	    		);
- */
-
-
-/*
- 
-    	    Pane pBrowser = new Pane ();
-    	    
-    	    AnchorPane.setTopAnchor(pBrowser, 150.0);
-    	    AnchorPane.setBottomAnchor(pBrowser, 45.0);
-    	    
-    	    pBrowser.getChildren().add(wBrowser);
-    	    
-    	    
-    	    pBrowser.setLayoutX(pCenter.getLayoutX());
-    		pBrowser.setLayoutY((bpCenter.getLayoutY()));
-    		    	
-    	    
-    		pRegisterExtern.getChildren().add(pBrowser);
-    	    
-    	    TranslateTransition downBrowser = new TranslateTransition(new Duration(350), pBrowser);
-        	downBrowser.setToY(222.0);
-            TranslateTransition upBrowser = new TranslateTransition(new Duration(350), pBrowser);
-            upBrowser.setToY(2.0);
- */
-
-/* a��o btnSEI para mudar o fundo para map ou site sei
- 
- btnSEI.setOnAction((ActionEvent evt)->{
-        	
-        	System.out.println(" translagte y"  + spWebMap.getTranslateY() + " e " + spWebMap.getTranslateX());
-       
-        	Double d =  spWebMap.getTranslateY();
-        	
-            if(d.equals(0.0) || d.equals(2.0)){
-        	
-            		downSPMap.play();
-            	
-	            } else {
-	            	
-	            	upSPMap.play();
-	           
-	            }
-        	
-        	System.out.println("largura altura wMaps " + wMaps.getWidth() + " e " + wMaps.getHeight());
-        	
-            
-        });
- 
- 
- */ // tentar mudar a classe css de um bot�o
-
-
-
-/*
-btnRegister.getStyleClass().clear();
-btnRegister.getStyleClass().add("btnMainClassTransRegister");
-
-stackPaneTop.getStyleClass().clear();
-stackPaneTop.getStyleClass().add("stackPaneClassRegister");
-*/
-
-
-/*  browser para colocar o sei
- 
-wBrowser = new WebView();
-WebEngine weBrowser = wBrowser.getEngine();
-weBrowser.load("https://sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI");
-
-
-spWebBrowser.setContent(wBrowser);
-
-wBrowser.minWidthProperty().bind(apMain.widthProperty());
-wBrowser.minHeightProperty().bind(apMain.heightProperty());
-
-AnchorPane.setTopAnchor(spWebBrowser, 120.0);
-AnchorPane.setLeftAnchor(spWebBrowser, 0.0);
-AnchorPane.setRightAnchor(spWebBrowser, 0.0);
-AnchorPane.setBottomAnchor(spWebBrowser, 0.0);
-
-*/
-
-/*
- btnMapa = GlyphsDude.createIconButton(
-        		FontAwesomeIcon.MAP,
-        		"MAPA", 
-        		"11px", 
-                "11px",  
-                ContentDisplay.LEFT);
-        btnMapa.getStyleClass().add("clBotoesLateral");
-        btnMapa.setLayoutX(25.0);
-        btnMapa.setLayoutY(96.0);
-
-
-
-        btnMapa.setOnAction((ActionEvent evt)->{
-        	
-        	googleMaps.setMarkerPosition(-15.0,-47.0);
-	    	googleMaps.setMapCenter(-15.0,-47.0);
-	    	System.out.println("bnt map clicado");
-        }
-        );
-        */
-
-
-
-/*
-public void copiarCoordenadas () {
-	
-	lblCoord1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                if(mouseEvent.getClickCount() == 1){
-                    
-                	Clipboard clip = Clipboard.getSystemClipboard();
-                    ClipboardContent conteudo = new ClipboardContent();
-                    conteudo.putString(lblCoord1.getText());
-                    clip.setContent(conteudo);
-                }
-            }
-        }
-    });
-	
-	lblCoord2.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                if(mouseEvent.getClickCount() == 1){
-                    
-                	Clipboard clip = Clipboard.getSystemClipboard();
-                    ClipboardContent conteudo = new ClipboardContent();
-                    conteudo.putString(lblCoord2.getText());
-                    clip.setContent(conteudo);
-                }
-            }
-        }
-    });
-}
-*/
 

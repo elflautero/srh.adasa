@@ -47,7 +47,7 @@ public class TabDemandaControlador implements Initializable {
 	
 	// transmitir para os outros controladores o objeto do crud //
 	TabEnderecoControlador tabEndCon = new TabEnderecoControlador();
-	EditarEnderecoControlador edEndCon = new EditarEnderecoControlador();
+	EditarEnderecoControlador enditarEnderecoControlador = new EditarEnderecoControlador();
 	
 	// --- String para primeira pesquisa --- //
 	String strPesquisa = "";
@@ -55,7 +55,7 @@ public class TabDemandaControlador implements Initializable {
 	TextField tfDocumento = new TextField();
 	TextField tfDocSei  = new TextField();
 	TextField tfProcSei  = new TextField();
-	TextField tfResDen  = new TextField();
+	TextField tfResDemanda  = new TextField();
 
 	 Button btnNovo = new Button("Novo");
 	 Button btnSalvar = new Button("Salvar");
@@ -89,7 +89,7 @@ public class TabDemandaControlador implements Initializable {
 		dpDataDistribuicao.getEditor().clear();
 		dpDataRecebimento.getEditor().clear();
 		
-		tfResDen.setText("");
+		tfResDemanda.setText("");
 		
 		dpDataDistribuicao.setDisable(false);
 		dpDataRecebimento.setDisable(false);
@@ -97,7 +97,7 @@ public class TabDemandaControlador implements Initializable {
 		tfDocumento.setDisable(false);
 		tfDocSei.setDisable(false);
 		tfProcSei.setDisable(false);
-		tfResDen.setDisable(false);
+		tfResDemanda.setDisable(false);
 		
 		btnSalvar.setDisable(false);
 		btnEditar.setDisable(true);
@@ -145,7 +145,7 @@ public class TabDemandaControlador implements Initializable {
 								demanda.setDemRecebimento(Date.valueOf(dpDataRecebimento.getValue()));
 								}
 					
-					demanda.setDemDescricao(tfResDen.getText());
+					demanda.setDemDescricao(tfResDemanda.getText());
 					
 					demanda.setDemAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 					
@@ -156,7 +156,7 @@ public class TabDemandaControlador implements Initializable {
 					
 					// enviar o objeto Demanda para a tabEndereco //
 					tabEndCon.setDemanda(demanda);
-					edEndCon.setDemanda(demanda);
+					enditarEnderecoControlador.setObjetoDeEdicao(demanda);
 					
 					// adicionar a lista //
 					obsList.add(demanda);
@@ -193,7 +193,7 @@ public class TabDemandaControlador implements Initializable {
 			dpDataDistribuicao.setDisable(false);
 			dpDataRecebimento.setDisable(false);
 			
-			tfResDen.setDisable(false);
+			tfResDemanda.setDisable(false);
 			
 		} else {
 			
@@ -232,7 +232,7 @@ public class TabDemandaControlador implements Initializable {
 						
 						demanda.setDemAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 								
-						demanda.setDemDescricao(tfResDen.getText());
+						demanda.setDemDescricao(tfResDemanda.getText());
 						 
 						DemandaDao dDao = new DemandaDao();
 						
@@ -245,7 +245,7 @@ public class TabDemandaControlador implements Initializable {
 						// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
 						
 						tabEndCon.setDemanda(demanda);
-						edEndCon.setDemanda(demanda);
+						enditarEnderecoControlador.setObjetoDeEdicao(demanda);
 						
 						
 						// para trazer o resultado por id (do maior para o menor) //
@@ -299,7 +299,7 @@ public class TabDemandaControlador implements Initializable {
 		modularBotoesInicial();
 	}
 	
-	// -- botão pesquisar denúncia -- //
+	// -- botão pesquisar demanda -- //
 	public void btnPesquisarHab () {
 		
 		strPesquisa = (String) tfPesquisar.getText();
@@ -431,7 +431,7 @@ public class TabDemandaControlador implements Initializable {
 
 	        @Override
 	        public void handle(ActionEvent event) {
-	        	btnEndDetalhesHabilitar();
+	        	editarEnderecoEmpreendimento();
 	        }
 	    });
 	    
@@ -496,19 +496,19 @@ public class TabDemandaControlador implements Initializable {
 	    dpDataRecebimento.setLayoutX(469); //504
 	    dpDataRecebimento.setLayoutY(87);
 	    
-	    Label lblResDen = new Label("Resumo da Denúncia: ");
-	    lblResDen.setLayoutX(19);
-	    lblResDen.setLayoutY(100);
+	    Label lblResDemanda = new Label("Resumo da Demanda: ");
+	    lblResDemanda.setLayoutX(19);
+	    lblResDemanda.setLayoutY(100);
 	    
-	    tfResDen.setPrefSize(865, 25);
-	    tfResDen.setLayoutX(19);
-	    tfResDen.setLayoutY(124);
+	    tfResDemanda.setPrefSize(865, 25);
+	    tfResDemanda.setLayoutX(19);
+	    tfResDemanda.setLayoutY(124);
 	   
 	    pDadosBasicos.getChildren().addAll( 
 	    		
 	    		lblDoc, tfDocumento, lblDocSEI, tfDocSei, lblProcSEI, tfProcSei,
 	    		lblDistribuicao, dpDataDistribuicao, lblRecebimento, dpDataRecebimento,
-	    		lblResDen, tfResDen
+	    		lblResDemanda, tfResDemanda
 				
 				);
 	    
@@ -587,7 +587,7 @@ public class TabDemandaControlador implements Initializable {
 
 	public void listarDemandas(String strPesquisa) {
 		
-		// -- Conexão e pesquisa de den�ncias -- //
+		// -- Conexão e pesquisa de demandas -- //
 		DemandaDao demandaDao = new DemandaDao();	//passar classe
 		List<Demanda> demandaList = demandaDao.listarDemandas(strPesquisa); //passar string de pesquisar
 	
@@ -621,10 +621,10 @@ public class TabDemandaControlador implements Initializable {
         
 	}
 	
-	// -- selecionar denúncia -- //
+	// -- selecionar demandas -- //
 	public void selecionarDemanda () {
 		
-		// TableView - selecionar denúncia ao clicar //
+		// TableView - selecionar demandas ao clicar //
 		tvLista.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			
 			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
@@ -640,7 +640,7 @@ public class TabDemandaControlador implements Initializable {
 				dpDataRecebimento.getEditor().clear();
 				dpDataDistribuicao.getEditor().clear();
 				
-				tfResDen.setText("");
+				tfResDemanda.setText("");
 				
 				btnNovo.setDisable(true);
 				btnSalvar.setDisable(true);
@@ -671,7 +671,7 @@ public class TabDemandaControlador implements Initializable {
 	 					dpDataRecebimento.setValue(dataRec.toLocalDate());
 	 				}
 				
-				tfResDen.setText(demanda.getDemDescricao());
+				tfResDemanda.setText(demanda.getDemDescricao());
 				
 				
 				// endereço relacionado //
@@ -689,8 +689,6 @@ public class TabDemandaControlador implements Initializable {
 					lblDemEnd.setTextFill(Color.RED);	
 				}
 				
-				
-				
 				// mostrar data de atualizacao //
 				FormatoData d = new FormatoData();
 				try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(demanda.getDemAtualizacao()));  // d.formatarData(demanda.getDemAtualizacao())
@@ -700,7 +698,7 @@ public class TabDemandaControlador implements Initializable {
 				
 				//Levar a demanda para cadastrar o endereco //
 				tabEndCon.setDemanda(demanda);
-				edEndCon.setDemanda(demanda);
+				enditarEnderecoControlador.setObjetoDeEdicao(demanda);
 				
 				// copiar número sei da demanda ao selecionar //
 				Clipboard clip = Clipboard.getSystemClipboard();
@@ -724,13 +722,13 @@ public class TabDemandaControlador implements Initializable {
 		
 	}
 	
-	public void btnEndDetalhesHabilitar () {
+	public void editarEnderecoEmpreendimento () {
 		
 			Pane pEndereco = new Pane();
-			edEndCon = new EditarEnderecoControlador();
+			enditarEnderecoControlador = new EditarEnderecoControlador();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/principal/EditarEndereco.fxml"));
 			loader.setRoot(pEndereco);
-			loader.setController(edEndCon);
+			loader.setController(enditarEnderecoControlador);
 			
 			try {
 				loader.load();
@@ -760,7 +758,7 @@ public class TabDemandaControlador implements Initializable {
 			dpDataDistribuicao.setDisable(true);
 			dpDataRecebimento.setDisable(true);
 			
-			tfResDen.setDisable(true);
+			tfResDemanda.setDisable(true);
 			
 			btnSalvar.setDisable(true);
 			btnEditar.setDisable(true);

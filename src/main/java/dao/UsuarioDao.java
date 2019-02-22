@@ -47,24 +47,24 @@ public class UsuarioDao {
 		
 		List<Usuario> list = new ArrayList<Usuario>();
 		
-		Criteria crit = s.createCriteria(Usuario.class, "us");
+		Criteria crit = s.createCriteria(Usuario.class, "usuario");
 		
-		crit.createAlias("us.enderecos", "e", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("e.endRAFK", "e_RA_FK", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("usuario.enderecos", "endereco", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("endereco.endRAFK", "RA_FK", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("e.interferencias", "i", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("endereco.interferencias", "interferencia", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("i.subTipoPocoFK", "tipo_Poco", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("i.subSubSistemaFK", "subSistema", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencia.subTipoPocoFK", "tipo_Poco", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencia.subSubSistemaFK", "subSistema", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("i.supFormaCaptacaoFK", "forma_Captacao", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("i.supLocalCaptacaoFK", "local_Captacao", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("i.supMetodoIrrigacaoFK", "metodo_Irrigacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencia.supFormaCaptacaoFK", "forma_Captacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencia.supLocalCaptacaoFK", "local_Captacao", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencia.supMetodoIrrigacaoFK", "metodo_Irrigacao", JoinType.LEFT_OUTER_JOIN);
 		
-		crit.createAlias("i.interTipoInterferenciaFK", "tipo_Interferencia", JoinType.LEFT_OUTER_JOIN);
-		crit.createAlias("i.interTipoOutorgaFK", "tipo_Outorga", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencia.interTipoInterferenciaFK", "tipo_Interferencia", JoinType.LEFT_OUTER_JOIN);
+		crit.createAlias("interferencia.interTipoOutorgaFK", "tipo_Outorga", JoinType.LEFT_OUTER_JOIN);
 	
-		crit.add(Restrictions.like("us.usNome", '%' + strPesquisa + '%'))
+		crit.add(Restrictions.like("usuario.usNome", '%' + strPesquisa + '%'))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		list = crit.list();
 		

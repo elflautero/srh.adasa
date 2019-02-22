@@ -9,8 +9,8 @@
     
     		<!-- Configuração de conexão com o Banco de Dados -->
     		
-		<property name="connection.url">jdbc:sqlserver://srvsqlhomolog1;databaseName=DB_SRH;integratedSecurity=true;</property>
-		<!-- <property name="connection.url">jdbc:sqlserver://SRVHOST4\PROD;databaseName=GisDB;integratedSecurity=true;</property>-->
+		<property name="connection.url"></property>
+		<!-- <property name="connection.url"></property>-->
     	<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
     	<property name="connection.username"></property>
     	<property name="connection.password"></property>

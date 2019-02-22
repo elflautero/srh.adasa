@@ -287,7 +287,6 @@ public class GoogleMap extends Parent {
 	        return webView.widthProperty();
 	    }
 	    
-	    
 	    private JSObject doc;
 	    private EventHandler<MapEvent> onMapLatLngChanged;
 	    private WebView webView;

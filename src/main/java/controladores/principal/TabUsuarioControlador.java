@@ -1,5 +1,6 @@
 package controladores.principal;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -19,10 +20,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -64,6 +65,7 @@ import principal.MalaDireta;
 public class TabUsuarioControlador implements Initializable {
 	
 	TabAtoControlador tabAtoControlador = new TabAtoControlador ();
+	EditarEnderecoControlador enditarEnderecoControlador = new EditarEnderecoControlador();
 	
 	Usuario usuario = new Usuario();
 	Interferencia interferencia = new Interferencia();
@@ -74,13 +76,20 @@ public class TabUsuarioControlador implements Initializable {
 		TabUsuarioControlador.endereco = endereco;
 		
 		// preencher o label com a demanda selecionada //
+		
+		if (endereco != null) {
+		
 		TabUsuarioControlador.lblEndereco.setText(
 				endereco.getEndLogadouro() 
-				
 				+ ", CEP: " + endereco.getEndCEP()
 				+ ", Cidade: " + endereco.getEndCidade()
-				
 				);
+		
+		lblEndereco.setTextFill(Color.BLACK);
+		} else {
+			lblEndereco.setText("Não há endereco de empreendimento cadastrado!");
+			lblEndereco.setTextFill(Color.RED);	
+		}
 		
 	}
 	
@@ -125,13 +134,13 @@ public class TabUsuarioControlador implements Initializable {
 		
 		TableColumn<Usuario, String> tcNome = new TableColumn<>("Nome");
 		TableColumn<Usuario, String> tcCPFCNPJ = new TableColumn<>("CPF/CNPJ");
-		TableColumn<Usuario, String> tcEndereco = new TableColumn<>("Endereço");
+		TableColumn<Usuario, String> tcEndereco = new TableColumn<>("Endereço de Correpondência");
 		
 		ObservableList<Usuario> obsList = FXCollections.observableArrayList();
 		
 		
-		ChoiceBox<Endereco> cbEndereco = new ChoiceBox<>();
-		ObservableList<Endereco> obsListEndereco = FXCollections.observableArrayList();
+		ChoiceBox<Endereco> cbEnderecoEmpreedimento = new ChoiceBox<>();
+		ObservableList<Endereco> obsListEnderecoEmpreendimento = FXCollections.observableArrayList();
 		
 		ChoiceBox<Interferencia> cbInterferencia = new ChoiceBox<>();
 		ObservableList<Interferencia> obsListInterferencia = FXCollections.observableArrayList();
@@ -351,10 +360,6 @@ public class TabUsuarioControlador implements Initializable {
 	
 			Usuario us = tvLista.getSelectionModel().getSelectedItem(); 
 			
-			System.out.println(us.getUsNome() + " id  " + us.getUsID());
-			
-			System.out.println("ra get value " + cbRA.getValue());
-			
 				// -- preencher os campos -- //
 				us.setUsTipo(cbTipoPessoa.getValue()); 
 				us.setUsNome(tfNome.getText());
@@ -536,23 +541,23 @@ public class TabUsuarioControlador implements Initializable {
 	    lblDataAtualizacao.setLayoutX(772);
 	    lblDataAtualizacao.setLayoutY(567);
 	    
-	    Label lblEndereco = new  Label("Endereço: ");
+	    Label lblEndereco = new  Label("Endereço do Empreendimento: ");
 	    lblEndereco.setLayoutX(121);
 	    lblEndereco.setLayoutY(574);
 	    
-	    Label lblInterferencia = new  Label("Interferência: ");
+	    Label lblInterferencia = new  Label("Interferências: ");
 	    lblInterferencia.setLayoutX(501);
 	    lblInterferencia.setLayoutY(574);
 	    
-	    cbEndereco.setPrefSize(368, 25);
-	    cbEndereco.setLayoutX(121);
-	    cbEndereco.setLayoutY(600);
+	    cbEnderecoEmpreedimento.setPrefSize(368, 25);
+	    cbEnderecoEmpreedimento.setLayoutX(121);
+	    cbEnderecoEmpreedimento.setLayoutY(600);
 	    
 	    cbInterferencia.setPrefSize(368, 25);
 	    cbInterferencia.setLayoutX(501);
 	    cbInterferencia.setLayoutY(600);
 	    
-	    cbEndereco.setItems(obsListEndereco);
+	    cbEnderecoEmpreedimento.setItems(obsListEnderecoEmpreendimento);
 	    cbInterferencia.setItems(obsListInterferencia);
 	   
 	    btnGerarRequerimento.setPrefSize(140, 25);
@@ -585,7 +590,7 @@ public class TabUsuarioControlador implements Initializable {
 		p1.getChildren().addAll(
 				p_lblEndereco, pDadosBasicos, pPersistencia, tvLista, 
 				lblDataAtualizacao, 
-				lblEndereco, cbEndereco, lblInterferencia, cbInterferencia,
+				lblEndereco, cbEnderecoEmpreedimento, lblInterferencia, cbInterferencia,
 				btnGerarRequerimento);
 		
 		modularBotoesInicial();
@@ -661,7 +666,7 @@ public class TabUsuarioControlador implements Initializable {
 		        }
 		    });
 		
-		    cbEndereco.setConverter(new StringConverter<Endereco>() {
+		    cbEnderecoEmpreedimento.setConverter(new StringConverter<Endereco>() {
 				
 				public String toString(Endereco e) {
 					
@@ -675,7 +680,7 @@ public class TabUsuarioControlador implements Initializable {
 			});
 		    
 		    
-		    cbEndereco.valueProperty().addListener(new ChangeListener<Endereco>() {
+		    cbEnderecoEmpreedimento.valueProperty().addListener(new ChangeListener<Endereco>() {
 	            @Override 
 	            public void changed(ObservableValue<? extends Endereco> ov, Endereco oldValue, Endereco newValue) {  
 	            	
@@ -716,8 +721,11 @@ public class TabUsuarioControlador implements Initializable {
 	        });
 		    
 		    
+		    
+		    
+		    
 		    selecionarUsuario();
-		    selecionarInterferencia ();
+		   // selecionarInterferencia ();
 		    
 	}
 	
@@ -853,7 +861,7 @@ public class TabUsuarioControlador implements Initializable {
 	}
 	
 	
-	Button btnBuscarEnd = new Button();
+	Button btnBuscaEnderecoEmpreendimento = new Button();
 	
 	public void obterEndereco () {
 		
@@ -872,11 +880,19 @@ public class TabUsuarioControlador implements Initializable {
 	    lblEndereco.setLayoutX(90);
 	    lblEndereco.setLayoutY(13);
 	    
-	    btnBuscarEnd.setPrefSize(25, 25);
-	    btnBuscarEnd.setLayoutX(850);
-	    btnBuscarEnd.setLayoutY(13);
+	    btnBuscaEnderecoEmpreendimento.setPrefSize(25, 25);
+	    btnBuscaEnderecoEmpreendimento.setLayoutX(850);
+	    btnBuscaEnderecoEmpreendimento.setLayoutY(13);
+	    
+	    btnBuscaEnderecoEmpreendimento.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	abrirPaneEditarEndereco();
+	        }
+	    });
 		
-		p_lblEndereco.getChildren().addAll(lblEnd, lblEndereco, btnBuscarEnd);
+		p_lblEndereco.getChildren().addAll(lblEnd, lblEndereco, btnBuscaEnderecoEmpreendimento);
 	}
 	
 	public void obterDadosBasicos () {
@@ -1165,8 +1181,12 @@ public class TabUsuarioControlador implements Initializable {
 					
 					usuario = us;
 					
-					obsListEndereco.clear();
+					enditarEnderecoControlador.setObjetoDeEdicao(us);
+				
+					obsListEnderecoEmpreendimento.clear();
 					
+					
+					/*  // teste - imprimir o endereco e suas interferencias
 					for(Endereco e:  usuario.getEnderecos()) {
 						System.out.println("enderecos selecionados por usuario " + e.getEndLogadouro());
 						
@@ -1174,20 +1194,26 @@ public class TabUsuarioControlador implements Initializable {
 							System.out.println(" insterferencias selecionadas por usuario  " + i.getInterDDLatitude());
 						}
 					}
-					
+					*/
 					
 					Set<Endereco> setEnderecos = us.getEnderecos();
 					
-					for(Endereco e: setEnderecos) {
-						System.out.println(e.getEndLogadouro());
+					if (! us.getEnderecos().isEmpty()) {
 						
-						obsListEndereco.add(e);
-						/*
-						 * para atualizar o endereço com qualquer um dos  relacionados
-						 * 		o objeto endereco não pode ficar vazio
-						 */
-						endereco = e;
-				
+						for(Endereco e: setEnderecos) {
+							System.out.println(e.getEndLogadouro());
+							
+							obsListEnderecoEmpreendimento.add(e);
+							/*
+							 * para atualizar o endereço com qualquer um dos  relacionados
+							 * 		o objeto endereco não pode ficar vazio
+							 */
+							endereco = e;
+							
+						}
+						
+					} else {
+						endereco = null;
 					}
 					
 					obsListInterferencia.clear();
@@ -1207,12 +1233,12 @@ public class TabUsuarioControlador implements Initializable {
 					btnExcluir.setDisable(false);
 					btnCancelar.setDisable(false);
 					
-					
 				}
 				}
 			});
 	}
-	
+
+	/*
 	public void selecionarInterferencia () {
 		
 		
@@ -1239,8 +1265,35 @@ public class TabUsuarioControlador implements Initializable {
 				}
 			});
 			*/
+	//}
+	
+	
+	EditarEnderecoControlador editarEnderecoControlador;
+	
+	public void abrirPaneEditarEndereco () {
+		
+		Pane pEndereco = new Pane();
+		editarEnderecoControlador = new EditarEnderecoControlador();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/principal/EditarEndereco.fxml"));
+		loader.setRoot(pEndereco);
+		loader.setController(editarEnderecoControlador);
+		
+		try {
+			loader.load();
+		} catch (IOException e) {
+		
+			e.printStackTrace();
+		}
+		
+		Scene scene = new Scene(pEndereco);
+		Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
+		stage.setWidth(964);
+		stage.setHeight(600);
+        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true); 
+        stage.show();
 	}
-	
-	
 	
 }

@@ -286,8 +286,6 @@ public class TabEnderecoControlador implements Initializable {
 										obsList.remove(end);
 										obsList.add(end);
 										
-										selecionarEndereco();
-										
 										modularBotoesInicial();
 										
 										Alerta a = new Alerta ();
@@ -464,13 +462,14 @@ public class TabEnderecoControlador implements Initializable {
 		strPesquisa = tfPesquisar.getText();
 		
 		listarEnderecos (strPesquisa);
-		
-		selecionarEndereco () ;
-		
+	
 		modularBotoesInicial (); 
 	
 }
 
+	/*
+	 * capturar as coordenadas clicadas no mapa e trazer para o cadastro do endereco
+	 */
 	public void btnMapsHab () {
 		
 		tfLat.setText( ControladorPrincipal.capturarGoogleMaps().getLat() );
@@ -567,6 +566,7 @@ public class TabEnderecoControlador implements Initializable {
 	    pEnderecoMapa.getChildren().add(googleMaps);
 	    googleMaps.setWidth(900);
 	    googleMaps.setHeight(400);
+	    googleMaps.switchHybrid();
 	    
 	    p1.getChildren().addAll(p_lblDemanda, pDadosBasicos, pPersistencia, lblDataAtualizacao, tvLista, pEnderecoMapa);
 	    
@@ -921,11 +921,17 @@ public class TabEnderecoControlador implements Initializable {
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);}
 						
-//aquii 	ao excluir um endereco  Index: 0, Size: 0				
+//aquii 	ao excluir um endereco  Index: 0, Size: 0	
+					
+					try {
 					// setar a demanda 0 do endereco selecionado // 
-					setDemanda (end.getDemandas().get(0));               // *****  colocar try catch (para quando nao houver demanda associada //
+						setDemanda (end.getDemandas().get(0)); 
 					
-					
+					} catch (IndexOutOfBoundsException ex) {
+						
+						Alerta a = new Alerta ();
+						a.alertar(new Alert(Alert.AlertType.ERROR, "Não há demandas cadastradas para este endereço!!!", ButtonType.OK));
+					}
 					
 					// setar na interferencia (tabinterferencia) este endereco selecinado //
 					tabIntCon.setEndereco(end);

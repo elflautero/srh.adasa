@@ -56,8 +56,6 @@
 }
 
 
-
-
 .classeBotoesLateral {
 	-fx-background-color	: white;
 	-fx-background-radius: 0 0 0 0;
@@ -68,30 +66,30 @@
 
 /* cor de fundo tab, local do click */
 .tab { 
-	-fx-background-color	: rgba(71,169,100,0.95); /* verde claro rgba(71,169,100,0.95);*/ /* azul meio escuro tab lateral rgba(58,86,109,0.95); */
+	-fx-background-color	: rgba(71,169,100,1); /* escuro S */
 	
 
 }
 /* cor ao passar o mouse */
 .tab:hover { 
-    -fx-background-color	: rgba(71,169,100,0.95);
+    -fx-background-color	: rgba(71,169,100,1); /* escuro S Light (meio claro) */
    
 }
  /* cor ao passar o mouse do texto da tab */
 .tab:hover .tab-label{
-    -fx-background-color	: rgba(71,169,100,0.95);
+    -fx-background-color	: rgba(71,169,100,1);
     -fx-text-fill			: #FFFFFF;
 
 }
 /* cor ao selecionar */
 .tab:selected { 
-    -fx-background-color	: rgba(71,169,100,0.95);
+    -fx-background-color	: rgba(71,169,100,1);
  
     
 }
  /* cor do texto da tab ao selecionar */
 .tab:selected .tab-label {
-    -fx-background-color	: rgba(71,169,100,0.95);
+    -fx-background-color	: rgba(71,169,100,1);
     -fx-text-fill			: #FFFFFF;
 
 }
@@ -104,7 +102,7 @@
 
 /* pane superior */
 .classePaneSuperior { 
-	-fx-background-color: rgba(2,121,57,0.85);
+	-fx-background-color: rgba(2,121,57,0.85); /* escuro S */
 	
 }
 
@@ -145,6 +143,10 @@
 	-fx-background-color	:  #E98D58;
 }
 
+.classeIconTab {
+	-fx-fill			: white;
+	
+}
 
 
 

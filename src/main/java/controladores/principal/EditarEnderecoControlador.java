@@ -11,12 +11,14 @@ import dao.EnderecoDao;
 import entidades.Demanda;
 import entidades.Endereco;
 import entidades.RA;
+import entidades.Usuario;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -40,18 +42,14 @@ import principal.FormatoData;
 
 public class EditarEnderecoControlador implements Initializable {
 	
-	static Demanda demanda = new Demanda ();
+	static Object objetoDeEdicao = new Object();
 	
-	public void setDemanda (Demanda demanda) {
+	public void setObjetoDeEdicao (Object objetoDeEdicao) {
 		
-		EditarEnderecoControlador.demanda = demanda;
+		EditarEnderecoControlador.objetoDeEdicao = objetoDeEdicao;
 		
 	}
 	
-	public static Demanda getDemanda () {
-		return demanda;
-	}
-
 	@FXML Pane tabEndereco;
 	@FXML Button btnBuscarDoc;
 	@FXML TextField tfEnd;
@@ -84,11 +82,7 @@ public class EditarEnderecoControlador implements Initializable {
 	
 	@FXML Pane pEndCoord;
 	
-	
-	
-	
 	@FXML Label lblDataAtualizacao;
-	
 	
 	@FXML Pane p_lblDemanda;
 	@FXML Label lblDemanda1;
@@ -104,7 +98,6 @@ public class EditarEnderecoControlador implements Initializable {
 	@FXML TextField tfPesquisar;
 	
 	//-- combobox -Regiao Administrativa --//	
-	
 	//List <String> listaRA = new ArrayList<> ();
 	
 	int intRA = 1;
@@ -145,7 +138,6 @@ public class EditarEnderecoControlador implements Initializable {
 			30	,
 
 	};
-	
 	
 	@FXML
 	ChoiceBox<String> cbEndRA = new ChoiceBox<String>();
@@ -241,6 +233,10 @@ public class EditarEnderecoControlador implements Initializable {
 	
 	public void btnSalvarHab (ActionEvent event) {
 		
+	}
+	/*
+	public void btnSalvarHab (ActionEvent event) {
+		
 		if (tfEndLat.getText().isEmpty() || 
 				tfEndLon.getText().isEmpty()) {
 			
@@ -326,8 +322,8 @@ public class EditarEnderecoControlador implements Initializable {
 			
 	}
 	
-	public void btnEditarHab (ActionEvent event) {
-		
+	*/
+	public void editarEndereco (Object objetoDeEdicao) {
 		
 		if (tfEnd.isDisable()) {
 			
@@ -348,9 +344,9 @@ public class EditarEnderecoControlador implements Initializable {
 				// colocar para não aceitar texto e somente número
 				} 
 				
-				else if (demanda == null) {
+				else if (objetoDeEdicao == null) {
 					Alerta a = new Alerta ();
-					a.alertar(new Alert(Alert.AlertType.ERROR, "Não foi selecionado uma demanda!!!", ButtonType.OK));
+					a.alertar(new Alert(Alert.AlertType.ERROR, "não selecionado(a)!!!", ButtonType.OK));
 				}
 			
 				else {
@@ -375,20 +371,35 @@ public class EditarEnderecoControlador implements Initializable {
 							Timestamp.valueOf((LocalDateTime.now())));
 					
 					Demanda dem = new Demanda();
+					Usuario us = new Usuario();
 					
-					dem = demanda;
-					dem.setDemEnderecoFK(end);
-					
-					// para não dar repeticao de objetos //
-					for (int i = 0 ; i < end.getDemandas().size(); i++) {
-						if (end.getDemandas().get(i).getDemID() == (dem.getDemID())) {
-							end.getDemandas().remove(end.getDemandas().get(i));
+					if (objetoDeEdicao.getClass().getName().equals("entidades.Demanda")) {
+						
+						dem = (Demanda) objetoDeEdicao;
+						dem.setDemEnderecoFK(end);
+						
+						// para não dar repeticao de objetos //
+						for (int i = 0 ; i < end.getDemandas().size(); i++) {
+							if (end.getDemandas().get(i).getDemID() == (dem.getDemID())) {
+								end.getDemandas().remove(end.getDemandas().get(i));
+							}
 						}
+						
+						// adicionar a demanda editada //
+						end.getDemandas().add(dem);
+						
 					}
 					
-					// adicionar a demanda editada //
-					end.getDemandas().add(dem);
-					
+					else if (objetoDeEdicao.getClass().getName().equals("entidades.Usuario")) {
+						
+						us = (Usuario) objetoDeEdicao;
+						//us.setUsDataAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+						// adiciona neste endereco o id usuario selecionado
+						end.setEndUsuarioFK(us);
+						// adiciona este endereco no setEnderecos do usuario
+						//us.getEnderecos().add(end);
+						
+					}
 					
 					// dao //
 					EnderecoDao enderecoDao = new EnderecoDao();
@@ -406,9 +417,10 @@ public class EditarEnderecoControlador implements Initializable {
 						
 				}
 		
-		}	
+		}
 		
 	}
+	
 	public void btnExcluirHab (ActionEvent event) {
 		
 		Endereco end = tvLista.getSelectionModel().getSelectedItem();
@@ -475,6 +487,9 @@ public class EditarEnderecoControlador implements Initializable {
 		
 	}
 	
+	/*
+	 * capturar as coordenadas clicada no mapa e trazer para o cadastro do endereco 
+	 */
 	public void btnEndMapsHab (ActionEvent event) {
 		
 		tfEndLat.setText( ControladorPrincipal.capturarGoogleMaps().getLat() );
@@ -533,6 +548,7 @@ public class EditarEnderecoControlador implements Initializable {
 	    		
 	    		strRA = (String) newValue );
 	    
+	    /*
 	    // Se houver endereco cadastrado para a demanda, abrir mostrando o endereco //
 	    try {
 	    	
@@ -543,6 +559,7 @@ public class EditarEnderecoControlador implements Initializable {
 	    	Alerta a = new Alerta ();
 	    	a.alertar(new Alert(Alert.AlertType.CONFIRMATION, "Cadastre um endereço para esta demanda!!!", ButtonType.OK));
 	    }
+	    */
 	    
 	    tvLista.setItems(obsList);
 	    
@@ -552,7 +569,19 @@ public class EditarEnderecoControlador implements Initializable {
 	    selecionarEndereco();
 	    
 		lblDemanda2 = new Label();
-		lblDemanda2.setText(demanda.getDemDocumento());
+	
+		if (objetoDeEdicao.getClass().getName().equals("entidades.Demanda")) {
+			
+			lblDemanda2.setText(((Demanda) objetoDeEdicao).getDemDocumento()); //
+			System.out.println("teste demanda selecionada");
+		} 
+		
+		if (objetoDeEdicao.getClass().getName().equals("entidades.Usuario")){
+			
+			lblDemanda2.setText(((Usuario) objetoDeEdicao).getUsNome()); // 
+			System.out.println("teste usuario selecionada");
+		}
+		
 		
 		lblDemanda2.setPrefSize(lblDemanda1.getPrefWidth(), lblDemanda1.getPrefHeight());	
 		lblDemanda2.setLayoutX(lblDemanda1.getLayoutX());
@@ -560,6 +589,14 @@ public class EditarEnderecoControlador implements Initializable {
 		lblDemanda2.setStyle("-fx-font-weight: bold;");
 		
 		p_lblDemanda.getChildren().add(lblDemanda2);
+		
+		btnEditar.setOnAction(new EventHandler<ActionEvent>() {
+
+	        @Override
+	        public void handle(ActionEvent event) {
+	        	editarEndereco (objetoDeEdicao);
+	        }
+	    });
 	 			
 	}
 	

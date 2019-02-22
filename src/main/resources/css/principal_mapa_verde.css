@@ -14,9 +14,9 @@
 
 /* cor background ao chamar o programa */
 .classePressedHover{
-     -fx-background-color	: #027939; /* verde #027939 */ /*azul escuro #1E73BE */
-     -fx-text-fill			: #FFFFFF; 
-     -fx-text-base-color	: #FFFFFF;
+     -fx-background-color	: #ff6a5d; /* verde #ff6a5d */ /*azul escuro #1E73BE */
+     -fx-text-fill			: #000000; 
+     -fx-text-base-color	: #000000;
      -fx-font-weight		: bold;
 }
 
@@ -26,7 +26,7 @@
 .classePressedHover:pressed:hover { 
     -fx-scale-y				: 0.9;
     -fx-scale-x				: 0.9;
-    -fx-text-base-color		: #027939; 
+    -fx-text-base-color		: #ff6a5d; 
     
 }
 
@@ -34,9 +34,9 @@
 	muda a cor do background no combo box DD DMS UTM ao passa o mouse*/
 .classePressedHover:hover { 
     -fx-background-color	: white;
-    -fx-text-fill			: #027939; /*azul escuro = muda cor da letra do botao ao passar mouse */
+    -fx-text-fill			: #ff6a5d; /*azul escuro = muda cor da letra do botao ao passar mouse */
     -fx-scale-y				: 1.1;
-    -fx-text-base-color		: #027939;
+    -fx-text-base-color		: #ff6a5d;
     
     
 }
@@ -44,18 +44,16 @@
 /*combobox e cores no popup = ao passar o mouse */
 .combo-box-popup .list-cell:filled:hover
 {
-    -fx-background-color: #45A364;
+    -fx-background-color: #ff9c8a;
    
 }
 
 /* colocar na  cor certa o selecionado ao abrir o popup */
 .combo-box-popup .list-cell:selected 
 {
-    -fx-background-color: #45A364;
+    -fx-background-color: #ff9c8a;
    
 }
-
-
 
 
 .classeBotoesLateral {
@@ -68,31 +66,31 @@
 
 /* cor de fundo tab, local do click */
 .tab { 
-	-fx-background-color	: rgba(71,169,100,0.95); /* verde claro rgba(71,169,100,0.95);*/ /* azul meio escuro tab lateral rgba(58,86,109,0.95); */
+	-fx-background-color	: rgba(255,106,93,1); /* verde claro rgba(255,106,93,0.85);*/ /* azul meio escuro tab lateral rgba(58,86,109,0.95); */
 	
 
 }
 /* cor ao passar o mouse */
 .tab:hover { 
-    -fx-background-color	: rgba(71,169,100,0.95);
+    -fx-background-color	: rgba(255,106,93,1);
    
 }
  /* cor ao passar o mouse do texto da tab */
 .tab:hover .tab-label{
-    -fx-background-color	: rgba(71,169,100,0.95);
-    -fx-text-fill			: #FFFFFF;
+    -fx-background-color	: rgba(255,106,93,1);
+    -fx-text-fill			: #000000;
 
 }
 /* cor ao selecionar */
 .tab:selected { 
-    -fx-background-color	: rgba(71,169,100,0.95);
+    -fx-background-color	: rgba(255,106,93,1);
  
     
 }
  /* cor do texto da tab ao selecionar */
 .tab:selected .tab-label {
-    -fx-background-color	: rgba(71,169,100,0.95);
-    -fx-text-fill			: #FFFFFF;
+    -fx-background-color	: rgba(255,106,93,1);
+    -fx-text-fill			: #000000;
 
 }
 
@@ -104,20 +102,21 @@
 
 /* pane superior */
 .classePaneSuperior { 
-	-fx-background-color: rgba(2,121,57,0.85);
+	-fx-background-color: rgba(255,106,93,0.85);
 	
 }
 
 /* cor dos  panes dentro das tabs laterais */
 .classePanesLaterais { 
-	-fx-background-color: rgba(71,169,100,0.75);
+	-fx-background-color: rgba(255,156,138,0.85);
+
 	
 }
 
 .classeLabel{
 
-     -fx-text-fill	: #FFFFFF;
-     -fx-text-base-color: #FFFFFF;
+     -fx-text-fill	: #000000;
+     -fx-text-base-color: #000000;
      -fx-font-weight: bold;
 }
 
@@ -144,7 +143,10 @@
 #btnRetroMap {
 	-fx-background-color	:  #E98D58;
 }
-
+.classeIconTab {
+	-fx-fill			: white;
+	
+}
 
 
 

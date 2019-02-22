@@ -23,6 +23,7 @@ import entidades.TipoAto;
 import entidades.TipoInterferencia;
 import entidades.TipoOutorga;
 import entidades.UnidadeHidrografica;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -37,8 +38,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TableColumn;
@@ -49,6 +53,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import principal.Alerta;
 import principal.FormatoData;
 
@@ -106,9 +111,9 @@ public class TabInterferenciaControlador  implements Initializable{
 	//-- TableView Endereco --//
 	private TableView <Interferencia> tvLista = new TableView<>();
 	
-	TableColumn<Interferencia, String> tcLogadouro  = new TableColumn<>("Endereço da Interferência");
-	TableColumn<Interferencia, String> tcCorpoHidrico  = new TableColumn<>("Corpo Hídrico");
-	TableColumn<Interferencia, String> tcUH  = new TableColumn<>("UH");
+	TableColumn<Interferencia, String> tcTipoInterferencia  = new TableColumn<>("Tipo de Interferência");
+	TableColumn<Interferencia, String> tcLogadouro  = new TableColumn<>("Endereço do Empreendimento");
+	TableColumn<Interferencia, String> tcSituacao  = new TableColumn<>("Situação");
 	
 	Label lblDataAtualizacao = new Label();
 												
@@ -124,7 +129,7 @@ public class TabInterferenciaControlador  implements Initializable{
 			22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41};
 	
 	int tipoOutorgaID = 1;
-	final int [] listaTipoOutorgaID = new int [] { 1,2,3,4,5,6,7 };
+	final int [] listaTipoOutorgaID = new int [] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14 };
 	
 	int tipoAtoID = 1;
 	final int [] listaTipoAtoID = new int [] { 1,2,3,4,5,6 };
@@ -770,15 +775,28 @@ public class TabInterferenciaControlador  implements Initializable{
 		bpPrincipal.setTop(p1);
 	    BorderPane.setAlignment(p1, Pos.CENTER);
 	    
+	   
+	    tcTipoInterferencia.setPrefWidth(232);
 	    tcLogadouro.setPrefWidth(409);
-	    tcCorpoHidrico.setPrefWidth(232);
-	    tcUH.setPrefWidth(232);
+	    tcSituacao.setPrefWidth(232);
 		
-	    tcLogadouro.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("interLogadouro")); 
-		tcCorpoHidrico.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("inter_Corpo_Hidrico")); 
-		//tcUH.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("inter_UH"));
+	    tcTipoInterferencia.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Interferencia, String>, ObservableValue<String>>() {
+		    public ObservableValue<String> call(TableColumn.CellDataFeatures<Interferencia, String> i) {
+		    	return new SimpleStringProperty(i.getValue().getInterTipoInterferenciaFK().getTipoInterDescricao());
+		       
+		    }
+		});
 	    
-	    tvLista.getColumns().addAll(tcLogadouro, tcCorpoHidrico, tcUH);
+	    tcLogadouro.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("interLogadouro")); 
+	    
+	    tcSituacao.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Interferencia, String>, ObservableValue<String>>() {
+		    public ObservableValue<String> call(TableColumn.CellDataFeatures<Interferencia, String> i) {
+		    	return new SimpleStringProperty(i.getValue().getInterSituacaoProcessoFK().getSituacaoProcessoDescricao());
+		       
+		    }
+		});
+	    
+	    tvLista.getColumns().addAll(tcTipoInterferencia, tcLogadouro, tcSituacao);
 	    tvLista.setItems(obsList);
 	    
 	    tvLista.setPrefSize(900, 185);
@@ -836,13 +854,20 @@ public class TabInterferenciaControlador  implements Initializable{
 		olTipoOutorga = FXCollections
 				.observableArrayList(
 						
-						"Outorga de Direito de Uso"	,
-						"Outorga Prévia"	,
-						"Registro de Uso"	,
-						"Modificação"	,
-						"Renovação"	,
-						"Transferência"	,
-						"Suspensão/Revogação"	
+						"Outorga",
+						"Renovação de Outorga",
+						"Transferência de Outorga",
+						"Revogação de Outorga",
+						"Suspensão de Outorga",
+						"Outorga Prévia",
+						"Renovação de Outorga Prévia",
+						"Transferência de Outorga Prévia",
+						"Revogação de Outorga Prévia",
+						"Suspensão de Outorga Prévia",
+						"Registro",
+						"Transferência de Registro",
+						"Revogação de Registro",
+						"Suspensão de Registro"	
 
 						); 
 		
@@ -875,6 +900,51 @@ public class TabInterferenciaControlador  implements Initializable{
 		cbBacia.setItems(olBacia);
 		cbUnidHid.setItems(olUniHid);
 		cbTipoOutorga.setItems(olTipoOutorga);
+		
+		cbTipoOutorga.setCellFactory(
+	            new Callback<ListView<String>, ListCell<String>>() {
+	               
+	            	@Override public ListCell<String> call(ListView<String> param) {
+	            		
+	                    final ListCell<String> cell = new ListCell<String>() {
+	                        {
+	                            super.setPrefWidth(100);
+	                        }    
+                    @Override public void updateItem(String item, 
+                        boolean empty) {
+                            super.updateItem(item, empty);
+                            if (item != null) {
+                                setText(item);    
+                                if (		item.equals("Outorga") 
+                                		|| 	item.equals("Renovação de Outorga") 
+                                		|| 	item.equals("Transferência de Outorga") 
+                                		|| 	item.equals("Revogação de Outorga") 
+                                		|| 	item.equals("Suspensão de Outorga")
+                                		) {
+                                	setTextFill(Color.BLUE);
+                                }
+                                
+                                else if (	item.equals("Outorga Prévia") 
+                                		|| 	item.equals("Renovação de Outorga Prévia") 
+                                		|| 	item.equals("Transferência de Outorga Prévia") 
+                                		|| 	item.equals("Revogação de Outorga Prévia") 
+                                		|| 	item.equals("Suspensão de Outorga Prévia")
+                                		) {
+                                    setTextFill(Color.CHOCOLATE);
+                                }
+                                
+                                else {
+                                    setTextFill(Color.DIMGRAY);
+                                }
+                            }
+                        } // fim metodo updateItem
+	                };
+	                
+	                return cell;
+	                
+	            } // fim metodo call
+	        });
+		
 		cbTipoAto.setItems(olTipoAto);
 		cbSituacaoProcesso.setItems(olSituacaoProcesso);
 		
@@ -1093,7 +1163,7 @@ public class TabInterferenciaControlador  implements Initializable{
 				ChoiceBox<String> cbUnidHid  = new ChoiceBox<String>();
 				ObservableList<String> olUniHid; 
 				
-					ChoiceBox<String> cbTipoOutorga  = new ChoiceBox<String>();
+					ComboBox<String>  cbTipoOutorga  = new ComboBox<String>();
 					ObservableList<String> olTipoOutorga; 
 					
 						ChoiceBox<String> cbTipoAto  = new ChoiceBox<String>();
@@ -1508,8 +1578,6 @@ public class TabInterferenciaControlador  implements Initializable{
 						tabSupCon.imprimirSuperficial(((Superficial) inter));
 						
 					}
-					
-					
 					
 					//System.out.println("FK " + intTab.getEnderecoInterferenciaObjetoTabelaFK());
 					
