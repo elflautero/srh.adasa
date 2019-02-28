@@ -1,30 +1,27 @@
-// This example adds a search box to a map, using the Google Place Autocomplete
-// feature. People can enter geographical searches. The search box will return a
-// pick list containing a mix of places and predicted search terms.
-
-// This example requires the Places library. Include the libraries=places
-// parameter when you first load the API. For example:
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 var map;
-var marker;6
+var marker;
 var markers = [];
 var layers = [];
 
 
 function initAutocomplete() {
 
-	var defLatLng = new google.maps.LatLng(-15.790631073109617, -47.74939032660592); // centralizar o mapa no DF
+	var defLatLng = new google.maps.LatLng(-1, -47);
+		/* centralizar o mapa no retangulo do DF = (-15.790631073109617, -47.74939032660592);
+		 * 	No caso, -2,-47, está centralizado para aparecer melhor o mapa no zoom 2
+		 */
+	// coordenada da adasa para o primeiro marcador
 	var adasa = new google.maps.LatLng(-15.775073004902042, -47.940351677729836); // coordenada adasa
 	
 	// opcoes do mapa //
 	var mapOptions = {
-	        center: defLatLng,
-	        zoom: 3,
+			center: defLatLng,
+	        zoom: 2,
 	        mapTypeId: google.maps.MapTypeId.ROADMAP,
 	        scaleControl: true,
-	        disableDefaultUI: true, // desabilitar controles
-	        styles: styles.darkBlue
+	        disableDefaultUI: true, // desabilitar controles nativos como zoom etc
+	        styles: styles.darkBlue // cor inicial do mapa
 	    };
 	
 	// mapa //

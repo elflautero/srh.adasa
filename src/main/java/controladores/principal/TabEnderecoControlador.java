@@ -913,7 +913,6 @@ public class TabEnderecoControlador implements Initializable {
 					*/
 					
 					
-					
 					// mostrar data de atualizacao //
 					FormatoData d = new FormatoData();
 					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(end.getEndAtualizacao()));
@@ -955,9 +954,10 @@ public class TabEnderecoControlador implements Initializable {
 						
 						strInterferencias += "|" + i.getInterDDLatitude() + "," + i.getInterDDLongitude() ;
 						
-						strDetalhes += "|" + i.getInterTipoInterferenciaFK().getTipoInterDescricao() + "," + i.getInterBaciaFK().getBaciaNome()
-								+ "," + i.getInterUHFK().getUhID()
-								+ "," +  i.getInterSituacaoProcessoFK().getSituacaoProcessoDescricao();
+						strDetalhes += "|" + i.getInterTipoInterferenciaFK().getTipoInterDescricao() 
+										+ "," + i.getInterBaciaFK().getBaciaNome()
+										+ "," + i.getInterUHFK().getUhID()
+										+ "," +  i.getInterSituacaoProcessoFK().getSituacaoProcessoDescricao();
 						
 					}
 					
@@ -965,7 +965,7 @@ public class TabEnderecoControlador implements Initializable {
 						zoom do mapa e deois centralizar o mapa de acordo com o endereco
 						*/
 					googleMaps.setEnderecoInterferencias(strEndereco, strInterferencias, strDetalhes);
-					googleMaps.setZoom (15);
+					googleMaps.setZoom (13);
 					googleMaps.setMapCenter(end.getEndDDLatitude(), end.getEndDDLongitude());
 					
 				}

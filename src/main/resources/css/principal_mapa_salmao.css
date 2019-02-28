@@ -75,29 +75,30 @@
     -fx-background-color	: rgba(82,171,86,1);
    
 }
+/* cor ao selecionar */
+.tab:selected { 
+    -fx-background-color	: rgba(82,171,86,1);
+}
+
  /* cor ao passar o mouse do texto da tab */
 .tab:hover .tab-label{
     -fx-background-color	: rgba(82,171,86,1);
     -fx-text-fill			: #FFFFFF;
 
 }
-/* cor ao selecionar */
-.tab:selected { 
-    -fx-background-color	: rgba(82,171,86,1);
- 
-    
-}
+
  /* cor do texto da tab ao selecionar */
 .tab:selected .tab-label {
     -fx-background-color	: rgba(82,171,86,1);
     -fx-text-fill			: #FFFFFF;
-
 }
 
 /* para o fundo do tabPane ficar transparent, aparecer somente a tab para escolha */
 .tab-pane .tab-header-area .tab-header-background { 
-    -fx-background-color	: transparent;
-    -fx-effect				: null;
+      -fx-background-color	: transparent	; /* fundo */
+    -fx-border-color		: rgba(82,171,86,1);			/* cor da borda */
+  	-fx-border-radius		: 2 2 2 2;					/* arredondamento dos cantos */
+  	-fx-border-width		: 0 0 1 0; 						/* somente parte inferior aparecendo da borda */
 }
 
 /* pane superior */
@@ -149,5 +150,19 @@
 .classeIconTab {
 	-fx-fill			: white;
 	
+}
+
+/* para o icon  */
+.tab .glyph-icon { 
+	-fx-fill				: black; /* icon nas tabs na cor preta */
+}
+
+/* cor do icone ao passar o mouse */
+.tab:hover .glyph-icon { 
+	-fx-fill				: white; /* icon nas tabs ao passar o mouse na cor branca */
+}
+/* cor do icone ao selecionar */
+.tab:selected .glyph-icon { 
+	-fx-fill				: white; /* icon nas tabs ao selecionar na cor branca */
 }
 

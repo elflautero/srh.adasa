@@ -7,6 +7,7 @@ import controladores.fiscalizacao.ControladorFiscalizacao;
 import controladores.modelosHTML.ControladorModelosHTML;
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -25,6 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -209,7 +211,8 @@ public class ControladorPrincipal {
 		
 	    pLD1.setPrefSize(140, 370);
 	    pLD2.setPrefSize(140, 370);
-		
+	    
+	   
 		tabLD1.setContent(pLD1);
 		tabLD2.setContent(pLD2);
 		
@@ -615,14 +618,14 @@ public class ControladorPrincipal {
 			        btnConversor.setLayoutY(211.0);
 		        
 		        Text iconTabHome = GlyphsDude.createIcon(FontAwesomeIcon.HOME, "20px");
-		        iconTabHome.getStyleClass().add("classeIconTab");
+		        //iconTabHome.getStyleClass().add("classeIconTab");
 		        
 		        
 			        tabLE1.setGraphic(iconTabHome);
 			        tabLE1.setClosable(false);
 		      
 		        Text iconTabHome2 = GlyphsDude.createIcon(FontAwesomeIcon.CROP, "20px");
-		        iconTabHome2.getStyleClass().add("classeIconTab");
+		        //iconTabHome2.getStyleClass().add("classeIconTab");
 		        
 			        tabLE2.setGraphic(iconTabHome2);
 			        tabLE2.setClosable(false);
@@ -635,6 +638,8 @@ public class ControladorPrincipal {
 		        
 		        tabLE1.setContent(pLE1);
 		        tabLE2.setContent(pLE2);
+		        //aaqq
+		        
 		    
 		        // traslalte transition do conversor de coordenadas, para sumir deslizando para baixo
 		        downSearch = new TranslateTransition(new Duration(350), (spConversorCoordenadas));
@@ -958,36 +963,39 @@ public class ControladorPrincipal {
        btnSattelite = new Button("SATÉLITE");
        btnHybrid = new Button("HÍBRIDO");
     	
-    	btnNightMap = new Button();
-    		btnBlueMap = new Button();
-    			btnGreenMap = new Button();
-    				btnRetroMap = new Button();
-    	
-    	btnNightMap.setId("btnNight");
-	    	btnBlueMap.setId("btnBlueMap");
-		    	btnGreenMap.setId("btnGreenMap");
-		    		btnRetroMap.setId("btnRetroMap");
+   	btnBlueMap = new Button();
+		btnNightMap = new Button();
+			btnGreenMap = new Button();
+			btnRetroMap = new Button();
+
+	btnNightMap.setId("btnNight");
+		btnBlueMap.setId("btnBlueMap");
+	    	btnGreenMap.setId("btnGreenMap");
+	    		btnRetroMap.setId("btnRetroMap");
+	    		
+	    		btnNightMap.getStyleClass().add("classeMapaEstilo");
+		    	btnBlueMap.getStyleClass().add("classeMapaEstilo");
+			    	btnGreenMap.getStyleClass().add("classeMapaEstilo");
+			    		btnRetroMap.getStyleClass().add("classeMapaEstilo");
 		    		
-		    		btnNightMap.getStyleClass().add("classeMapaEstilo");
-			    	btnBlueMap.getStyleClass().add("classeMapaEstilo");
-				    	btnGreenMap.getStyleClass().add("classeMapaEstilo");
-				    		btnRetroMap.getStyleClass().add("classeMapaEstilo");
-				    		
-    	
-    	btnNightMap.setLayoutX(10.0);
-    	btnNightMap.setLayoutY(216.0);
-	    	btnBlueMap.setLayoutX(41.0);
-	    	btnBlueMap.setLayoutY(216.0);
-		    	btnGreenMap.setLayoutX(72.0);
-		    	btnGreenMap.setLayoutY(216.0);
-			    	btnRetroMap.setLayoutX(103.0);
-			    	btnRetroMap.setLayoutY(216.0);
-			    	
-			    	btnNightMap.setOnAction((ActionEvent evt)->{
-			        	googleMaps.mudarEstiloMapa(1);
-			        	apPrincipal.getStylesheets().clear();
-			        	apPrincipal.getStylesheets().add("/css/principal_mapa_escuro.css");
-			      
+	
+							btnBlueMap.setLayoutX(10.0);
+							btnBlueMap.setLayoutY(216.0);
+							
+								btnNightMap.setLayoutX(41.0);
+								btnNightMap.setLayoutY(216.0);
+								
+							    	btnGreenMap.setLayoutX(72.0);
+							    	btnGreenMap.setLayoutY(216.0);
+							    	
+								    	btnRetroMap.setLayoutX(103.0);
+								    	btnRetroMap.setLayoutY(216.0);
+							    	
+							    	btnNightMap.setOnAction((ActionEvent evt)->{
+							        	googleMaps.mudarEstiloMapa(1);
+							        	apPrincipal.getStylesheets().clear();
+							        	apPrincipal.getStylesheets().add("/css/principal_mapa_escuro.css");
+							      
 			        	
 			        });	
 			    	
@@ -1069,19 +1077,30 @@ public class ControladorPrincipal {
 					    	
 						    	checkTrafego.setLayoutX(5.0);
 						    	checkTrafego.setLayoutY(165.0);
+
+						    	
+						    	//fontAwesomeIconView.setStyleClass("thumbs-up-icon");  //.setStyleClass("thumbs-up-icon");
+						        
+    	FontAwesomeIconView mapIcon = 
+    			  new FontAwesomeIconView(FontAwesomeIcon.MAP);	
     	
+    					mapIcon.setSize("20px");
+
+    						Text txtMapIcon = mapIcon;
+   
+    	FontAwesomeIconView shapeIcon = 
+  			  new FontAwesomeIconView(FontAwesomeIcon.OBJECT_GROUP);	
+    	
+    			shapeIcon.setSize("20px");
+    	
+    				Text txtShapeIcon= shapeIcon;
+    	
+    	tabLD1.setGraphic(txtMapIcon);
+    		tabLD1.setClosable(false);
+      
+        tabLD2.setGraphic(txtShapeIcon);
         
-        Text iconTabMap1 = GlyphsDude.createIcon(FontAwesomeIcon.MAP, "20px");
-        iconTabMap1.getStyleClass().add("classeIconTab");
-        
-        tabLD1.setGraphic(iconTabMap1);
-        tabLD1.setClosable(false);
-        
-        Text iconTabMap2 = GlyphsDude.createIcon(FontAwesomeIcon.OBJECT_GROUP, "20px");
-        iconTabMap2.getStyleClass().add("classeIconTab");
-        
-        tabLD2.setGraphic(iconTabMap2);
-        tabLD2.setClosable(false);
+        	tabLD2.setClosable(false);
        
 	        pLD1.getStyleClass().add("classePanesLaterais");
         
