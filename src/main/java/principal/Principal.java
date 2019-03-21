@@ -46,11 +46,13 @@ public class Principal extends Application{
         // stage.setWidth(1266);
         // stage.setHeight(668);
        
+        /*
         // limites de tamanho do stage
         stage.setMinHeight(768);
         stage.setMinWidth(1366);
         stage.setMaxHeight(1080);
         stage.setMaxWidth(1920);
+        */
         
         
         //stage.sizeToScene(); 

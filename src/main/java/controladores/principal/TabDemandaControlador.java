@@ -5,8 +5,12 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import org.apache.poi.xslf.model.PropertyFetcher;
 
 import dao.DemandaDao;
 import entidades.Demanda;
@@ -20,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -37,8 +42,10 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import mapas.GoogleMap;
 import principal.Alerta;
 import principal.FormatoData;
 
@@ -313,6 +320,7 @@ public class TabDemandaControlador implements Initializable {
 	Label lblDataAtualizacao = new Label();
 	
 	@FXML Pane pDemanda;
+	
 	AnchorPane apPrincipal = new AnchorPane();
 	BorderPane bpPrincipal = new BorderPane();
 	ScrollPane spPrincipal = new ScrollPane();
@@ -322,47 +330,50 @@ public class TabDemandaControlador implements Initializable {
 	Pane pPersistencia = new Pane();
 	Pane pEndereco = new Pane();
 	
+	/////////////////
+	
+	BorderPane bp1 = new BorderPane();
+	BorderPane bp2 = new BorderPane();
+	ScrollPane sp = new ScrollPane();
+	Pane pMapa = new Pane ();
+	
+	GoogleMap googleMaps = new GoogleMap();
+	
 	@SuppressWarnings("unchecked")
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		pDemanda.getChildren().add(apPrincipal);
+		bp1.minWidthProperty().bind(pDemanda.widthProperty());
+		bp1.maxHeightProperty().bind(pDemanda.heightProperty().subtract(60));
 		
-		apPrincipal.minWidthProperty().bind(pDemanda.widthProperty());
-		apPrincipal.minHeightProperty().bind(pDemanda.heightProperty());
+			bp1.getStyleClass().add("border-pane");
 		
-		apPrincipal.getChildren().add(spPrincipal);
+			bp2.setPrefHeight(800);
+			bp2.minWidthProperty().bind(pDemanda.widthProperty());
+			
+				sp.setHbarPolicy(ScrollBarPolicy.NEVER);
+			
+				sp.setContent(bp2);
+				
+					bp1.setCenter(sp);
+				
 		
-		spPrincipal.setHbarPolicy(ScrollBarPolicy.NEVER);
-		spPrincipal.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		pDemanda.getChildren().add(bp1);
 		
-	    AnchorPane.setLeftAnchor(spPrincipal, 0.0);
-		AnchorPane.setRightAnchor(spPrincipal, 0.0);
-		AnchorPane.setTopAnchor(spPrincipal, 0.0);
-		AnchorPane.setBottomAnchor(spPrincipal, 47.0);
+		p1.setMaxSize(980, 800);
+		p1.setMinSize(980, 800);
 		
-		spPrincipal.setPrefSize(200, 200);
+		bp2.setTop(p1);
+		BorderPane.setAlignment(p1, Pos.CENTER);
 		
-	    bpPrincipal.minWidthProperty().bind(spPrincipal.widthProperty());
-	    bpPrincipal.setPrefHeight(1200);
-
-	    spPrincipal.setContent(bpPrincipal);
-	    
-	    p1.setMaxSize(1140, 680);
-	    p1.setMinSize(1140, 680);
-	    
-	    obterDadosBasicos ();
-	    obterPersistencia ();
-	    obterEndereco ();
-	    
+		inicializarCadastroDeDados();
+		inicializarEnderecoRelacionado ();
+		inicializarPersistencia ();
+		
 	    lblDataAtualizacao.setPrefSize(247, 22);
-	    lblDataAtualizacao.setLayoutX(779);
-	    lblDataAtualizacao.setLayoutY(441);
+	    lblDataAtualizacao.setLayoutX(637);
+	    lblDataAtualizacao.setLayoutY(457);
 	    
-	    p1.getChildren().addAll(
-	    		
-	    		pDadosBasicos, pPersistencia, tvLista, lblDataAtualizacao, pEndereco
-	    		);
-		
+	   
 		// --- habilitar e desabilitar botões ---- //
 		modularBotoesInicial();
 		
@@ -370,28 +381,46 @@ public class TabDemandaControlador implements Initializable {
 		tcDocSEI.setCellValueFactory(new PropertyValueFactory<Demanda,String>("demDocumentoSEI"));
 		tcProcSEI.setCellValueFactory(new PropertyValueFactory<Demanda,String>("demProcessoSEI")); 
 		
-		tcDocumento.setPrefWidth(409);
-		tcDocSEI.setPrefWidth(232);
-		tcProcSEI.setPrefWidth(232);
+		tcDocumento.setPrefWidth(405);
+		tcDocSEI.setPrefWidth(180);
+		tcProcSEI.setPrefWidth(185);
 		
-		tvLista.setPrefSize(900, 185);
-		tvLista.setLayoutX(126);
-		tvLista.setLayoutY(248);
+		tvLista.setPrefSize(790, 185);
+		tvLista.setLayoutX(95);
+		tvLista.setLayoutY(260);
 		
 		tvLista.getColumns().addAll(tcDocumento, tcDocSEI, tcProcSEI);
 		
 		tvLista.setItems(obsList);
 		
-		bpPrincipal.setTop(p1);
-	    BorderPane.setAlignment(p1, Pos.CENTER);
+		pMapa.setPrefSize(790, 250);
+		pMapa.setLayoutX(95);
+		pMapa.setLayoutY(501);
+		pMapa.getStyleClass().add("panes");
+	
+			pMapa.getChildren().add(googleMaps);
+				googleMaps.setWidth(790);
+				googleMaps.setHeight(240);
+				googleMaps.switchHybrid();
+		    
+		p1.getChildren().addAll(
+		    		
+		    		tvLista, lblDataAtualizacao, pMapa
+		    		);
+			
+		 
+		//bpPrincipal.setTop(p1);
+	    //BorderPane.setAlignment(p1, Pos.CENTER);
 		
 		selecionarDemanda ();
+	
 		
 		btnNovo.setOnAction(new EventHandler<ActionEvent>() {
 
 	        @Override
 	        public void handle(ActionEvent event) {
 	            btnNovoHab();
+	            
 	        }
 	    });
 		    
@@ -442,147 +471,208 @@ public class TabDemandaControlador implements Initializable {
 	        	btnExcluirHab();
 	        }
 	    });
-	    
-	   
-		    
-	}
-	
-	public void obterDadosBasicos () {
-		
-	 	pDadosBasicos.setStyle("-fx-background-color: #E9E9E9;");
-	    pDadosBasicos.setPrefSize(900, 160);
-	    pDadosBasicos.setLayoutX(126);
-	    pDadosBasicos.setLayoutY(35);
-	   
-	    Label lblDoc = new Label("Documento: ");
-	    lblDoc.setLayoutX(19);
-	    lblDoc.setLayoutY(3);
-	    
-	    tfDocumento.setPrefSize(520, 25);
-	    tfDocumento.setLayoutX(19);
-	    tfDocumento.setLayoutY(27);
-	    
-	    Label lblDocSEI = new Label("Número SEI: ");
-
-	    lblDocSEI.setLayoutX(551);
-	    lblDocSEI.setLayoutY(3);
-	    
-	    tfDocSei.setPrefSize(128, 25);
-	    tfDocSei.setLayoutX(550);
-	    tfDocSei.setLayoutY(27);
-	    
-	    Label lblProcSEI = new Label("Número do Processo: ");
-
-	    lblProcSEI.setLayoutX(690);
-	    lblProcSEI.setLayoutY(3);
-	    
-	    tfProcSei.setPrefSize(197, 25);
-	    tfProcSei.setLayoutX(689);
-	    tfProcSei.setLayoutY(27);
-	    
-	    Label lblDistribuicao = new Label("Data de Distribuição: ");
-	    lblDistribuicao.setLayoutX(308);
-	    lblDistribuicao.setLayoutY(64);
-
-	    dpDataDistribuicao.setPrefSize(125, 25);
-	    dpDataDistribuicao.setLayoutX(308); //504
-	    dpDataDistribuicao.setLayoutY(87);
-
-	    Label lblRecebimento = new Label("Data de Recebimento: ");
-	    lblRecebimento.setLayoutX(469);
-	    lblRecebimento.setLayoutY(64);
-
-	    dpDataRecebimento.setPrefSize(125, 25);
-	    dpDataRecebimento.setLayoutX(469); //504
-	    dpDataRecebimento.setLayoutY(87);
-	    
-	    Label lblResDemanda = new Label("Resumo da Demanda: ");
-	    lblResDemanda.setLayoutX(19);
-	    lblResDemanda.setLayoutY(100);
-	    
-	    tfResDemanda.setPrefSize(865, 25);
-	    tfResDemanda.setLayoutX(19);
-	    tfResDemanda.setLayoutY(124);
-	   
-	    pDadosBasicos.getChildren().addAll( 
-	    		
-	    		lblDoc, tfDocumento, lblDocSEI, tfDocSei, lblProcSEI, tfProcSei,
-	    		lblDistribuicao, dpDataDistribuicao, lblRecebimento, dpDataRecebimento,
-	    		lblResDemanda, tfResDemanda
-				
-				);
-	    
-	}
-	
-    public void obterPersistencia () {
-    	
-    	pPersistencia  = new Pane();
-   	    pPersistencia.setPrefSize(900, 50);
-   	    pPersistencia.setLayoutX(126);
-   	    pPersistencia.setLayoutY(195);
-   
-		btnNovo.setPrefSize(76, 25);
-		btnNovo.setLayoutX(42);
-		btnNovo.setLayoutY(12);
-	
-	    btnSalvar.setPrefSize(76, 25);
-	    btnSalvar.setLayoutX(129);
-	    btnSalvar.setLayoutY(12);
-	
-	    btnEditar.setPrefSize(76, 25);
-	    btnEditar.setLayoutX(216);
-	    btnEditar.setLayoutY(12);
-	
-	    btnExcluir.setPrefSize(76, 25);
-	    btnExcluir.setLayoutX(303);
-	    btnExcluir.setLayoutY(12);
-	    
-	    btnCancelar.setPrefSize(76, 25);
-	    btnCancelar.setLayoutX(390);
-	    btnCancelar.setLayoutY(12);
-	    
-	    btnPesquisar.setPrefSize(76, 25);
-	    btnPesquisar.setLayoutX(783);
-	    btnPesquisar.setLayoutY(12);
-	    
-	    tfPesquisar.setPrefSize(295, 25);
-	    tfPesquisar.setLayoutX(477);
-	    tfPesquisar.setLayoutY(12);
-	    
-	    pPersistencia.getChildren().addAll( 
-	    		btnNovo, btnSalvar, btnEditar, btnExcluir,
-	    		btnCancelar, tfPesquisar, btnPesquisar
-	    		
-	    		);
-	    
-	    
-    }
-    
-    public void obterEndereco () {
-    	
-   	    pEndereco.setPrefSize(900, 50);
-   	    pEndereco.setLayoutX(126);
-   	    pEndereco.setLayoutY(474);
-   	    
-   	    pEndereco.setStyle("-fx-background-color: #E9E9E9;");
-   	    
-    	Label lblEnd = new Label("Endereço: ");
-    	lblEnd.setLayoutX(15);
-    	lblEnd.setLayoutY(15);
-    	
-    	lblDemEnd.setPrefSize(728, 25);
-    	lblDemEnd.setLayoutX(85);
-    	lblDemEnd.setLayoutY(13);
-   
-    	btnEndDetalhes.setLayoutX(824);
-    	btnEndDetalhes.setLayoutY(13);
-	
-    	pEndereco.getChildren().addAll( 
-	    		lblEnd, lblDemEnd, btnEndDetalhes
-	    		);
-	    
-    }
 	 
+	} // fim initialize //////////////////////////////////////////////////////
+	
+	
+	ArrayList<Node> listNodesDados= new ArrayList<Node>();
+	
+	Pane pCadastroDeDados = new Pane();
+	
+	public void inicializarCadastroDeDados(){
+		
+		pCadastroDeDados.setPrefSize(586, 148);
+		pCadastroDeDados.setLayoutX(20);
+		pCadastroDeDados.setLayoutY(12);
+		
+		pCadastroDeDados.getStyleClass().add("panes");
+		
+		 	listNodesDados.add(new Label("DOCUMENTO:")); // 0 a 4 - Labels
+		 	listNodesDados.add(new Label("NÚMERO SEI:"));
+		 	listNodesDados.add(new Label("PROCESSO:"));
+		 	listNodesDados.add(new Label("DATA DE RECEBIMENTO:"));
+		 	listNodesDados.add(new Label("DATA DE DISTRIBUIÇÃO:"));
+		 	
+		 	listNodesDados.add(new TextField()); // 5 a 7
+		 	listNodesDados.add( new TextField());
+		 	listNodesDados.add(new TextField());
+			
+		 	listNodesDados.add(new DatePicker()); // 8 a 9 - DatePicker
+		 	listNodesDados.add(new DatePicker());	
+		 	
+			 	Double[][] prefSizeWHeLayXY  = {
+				
+						/* labels */	{85.0, 17.0, 10.0, 10.0}	, 
+										{85.0, 17.0, 410.0, 10.0}	,
+										{85.0, 17.0, 10.0, 75.0}	,
+										{145.0, 17.0, 234.0, 75.0}	,
+										{145.0, 17.0, 409.0, 75.0}	, 
+										
+							/* textfields */ 	{388.0, 17.0, 10.0, 35.0}	,
+												{165.0, 25.0, 408.0, 35.0}	,
+												{213.0, 25.0, 10.0, 100.0}	,
+												
+								/* datepickers */	{165.0, 25.0, 233.0, 100.0}	,
+													{165.0, 25.0, 409.0, 100.0}	,
+								
+					
+				};
+			 	
+			 	for (int i1 = 0; i1< prefSizeWHeLayXY .length ; i1++) {
+					
+			 			Double dblWHXY [][] = new Double[11][4];
+					
+						for (int i2 = 0; i2 < prefSizeWHeLayXY [i1].length ; i2++) {
+							
+							dblWHXY[i1][i2] = prefSizeWHeLayXY [i1][i2];
+							
+						} // fim loop i2
+
+						((Region)listNodesDados.get(i1)).setPrefSize(dblWHXY[i1][0], dblWHXY[i1][1]);
+						((Region)listNodesDados.get(i1)).setLayoutX(dblWHXY[i1][2]);
+						((Region)listNodesDados.get(i1)).setLayoutY(dblWHXY[i1][3]);
+						
+						
+						
+			 		} // fim loop i1 for
+			 	
+			 	pCadastroDeDados.getChildren().addAll(listNodesDados);
+			 	
+				p1.getChildren().addAll(
+						pCadastroDeDados
+						 );
+		
+		
+	}
+	
+	ArrayList<Node> listNodesEndereco = new ArrayList<Node>();
+	
+	Pane pEnderecoDaDemanda = new Pane();
+	
+	public void inicializarEnderecoRelacionado (){ // inicializar a mostra de endereco relacionado com a demanda
+		
+		pEnderecoDaDemanda.setPrefSize(342, 83);
+		pEnderecoDaDemanda.setLayoutX(618);
+		pEnderecoDaDemanda.setLayoutY(44);
+		
+		pEnderecoDaDemanda.getStyleClass().add("panes");
+		
+						listNodesEndereco.add(new Label("ENDERECO:")); // 0 a 4 - Labels
+			/* 1 */		listNodesEndereco.add(new Label("Rua dos Jardins Floridos 10/13"));
+						listNodesEndereco.add(new Label("REGIÃO ADMINISTRATIVA:"));
+			/* 2 */		listNodesEndereco.add(new Label("São Sebastião"));
+						listNodesEndereco.add(new Label("LAT:"));
+			/* 5 */		listNodesEndereco.add(new Label("-15.123456789"));
+						listNodesEndereco.add(new Label("LON:"));
+			/* 7 */		listNodesEndereco.add(new Label("-47.123456789"));	
+	 	
+			 	
+			 	Double[][] prefSizeWHeLayXY  = {
+				
+						/* labels */	{75.0, 17.0, 11.0, 10.0}	, 
+										{235.0, 17.0, 96.0, 10.0}	,
+										{155.0, 17.0, 11.0, 31.0}	,
+										{155.0, 17.0, 176.0, 31.0}	,
+										
+										{35.0, 17.0, 11.0, 55.0}	, 
+										{120.0, 17.0, 48.0, 55.0}	,
+										{35.0, 17.0, 173.0, 55.0}	,
+										{120.0, 17.0, 211.0, 55.0}	,
+								
+				};
+			 	
+			 	for (int i1 = 0; i1< prefSizeWHeLayXY .length ; i1++) {
+					
+			 			Double dblWHXY [][] = new Double[11][4];
+					
+						for (int i2 = 0; i2 < prefSizeWHeLayXY [i1].length ; i2++) {
+							
+							dblWHXY[i1][i2] = prefSizeWHeLayXY [i1][i2];
+							
+						} // fim loop i2
+
+						((Region)listNodesEndereco.get(i1)).setPrefSize(dblWHXY[i1][0], dblWHXY[i1][1]);
+						((Region)listNodesEndereco.get(i1)).setLayoutX(dblWHXY[i1][2]);
+						((Region)listNodesEndereco.get(i1)).setLayoutY(dblWHXY[i1][3]);
+						
+						
+						
+			 		} // fim loop i1 for
+			 	
+			 	pEnderecoDaDemanda.getChildren().addAll(listNodesEndereco);
+			 	
+				p1.getChildren().addAll(
+						pEnderecoDaDemanda
+						 );
+		
+		
+	}
+
+	ArrayList<Node> listNodesPersistencia = new ArrayList<Node>();
+	
+	Pane pPersisten = new Pane();
+	
+	public void inicializarPersistencia (){
+		
+		pPersisten.setPrefSize(790, 60);
+		pPersisten.setLayoutX(95);
+		pPersisten.setLayoutY(175);
+		
+		pPersisten.getStyleClass().add("panes");
+		
+		 	listNodesPersistencia.add(new Button("NOVO")); 
+		 	listNodesPersistencia.add(new Button("SALVAR"));
+		 	listNodesPersistencia.add(new Button("EDITAR"));
+		 	listNodesPersistencia.add(new Button("EXCLUIR"));
+		 	listNodesPersistencia.add(new Button("CANCELAR"));
+		 	
+		 	listNodesPersistencia.add(new TextField());
+		 	
+		 	listNodesPersistencia.add(new Button("PESQUISAR"));
+		 
+		 	
+			 	Double[][] prefSizeWHeLayXY  = {
+
+						{85.0, 25.0, 17.0, 18.0}	, 
+						{85.0, 25.0, 111.0, 18.0}	,
+						{85.0, 25.0, 207.0, 18.0}	,
+						{85.0, 25.0, 302.0, 18.0}	,
+						{85.0, 25.0, 397.0, 18.0}	,
+						
+						{195.0, 25.0, 493.0, 17.0}	,
+						
+						{85.0, 25.0, 699.0, 18.0}	,
+					
+				};
+			 	
+			 	for (int i1 = 0; i1< prefSizeWHeLayXY .length ; i1++) {
+					
+			 			Double dblWHXY [][] = new Double[11][4];
+					
+						for (int i2 = 0; i2 < prefSizeWHeLayXY [i1].length ; i2++) {
+							
+							dblWHXY[i1][i2] = prefSizeWHeLayXY [i1][i2];
+							
+						} // fim loop i2
+
+						((Region)listNodesPersistencia.get(i1)).setPrefSize(dblWHXY[i1][0], dblWHXY[i1][1]);
+						((Region)listNodesPersistencia.get(i1)).setLayoutX(dblWHXY[i1][2]);
+						((Region)listNodesPersistencia.get(i1)).setLayoutY(dblWHXY[i1][3]);
+						
+						
+						
+			 		} // fim loop i1 for
+			 	
+			 	pPersisten.getChildren().addAll(listNodesPersistencia);
+			 	
+				p1.getChildren().addAll(
+						pPersisten
+						 );
+		
+		
+	}
+
+
 	ObservableList<Demanda> obsList = FXCollections.observableArrayList();
 
 	public void listarDemandas(String strPesquisa) {

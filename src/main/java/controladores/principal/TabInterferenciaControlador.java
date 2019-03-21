@@ -238,10 +238,10 @@ public class TabInterferenciaControlador  implements Initializable{
 											sub.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
 											sub.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
 												
-											sub.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+										//	sub.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 											
-											sub.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
-											sub.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
+										//	sub.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
+										//	sub.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 											
 											sub.setInterNumeroAto(tfNumeroAto.getText());
 											
@@ -259,7 +259,7 @@ public class TabInterferenciaControlador  implements Initializable{
 												
 												p.setSRID(4674);
 													
-												sub.setInterGeom(p);
+											//	sub.setInterGeom(p);
 											
 											InterferenciaDao interferenciaDao = new InterferenciaDao ();
 											
@@ -307,10 +307,10 @@ public class TabInterferenciaControlador  implements Initializable{
 												sup.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
 												sup.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
 													
-												sup.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+											//	sup.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 												
-												sup.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
-												sup.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
+											//	sup.setInterDataPublicacao(Date.valueOf(dpDataPublicacao.getValue()));
+												//sup.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 												
 												sup.setInterNumeroAto(tfNumeroAto.getText());
 												
@@ -328,7 +328,7 @@ public class TabInterferenciaControlador  implements Initializable{
 													
 													p.setSRID(4674);
 														
-													sup.setInterGeom(p);
+													//sup.setInterGeom(p);
 												
 											InterferenciaDao interferenciaDao = new InterferenciaDao ();
 											interferenciaDao.salvaInterferencia(sup);
@@ -366,7 +366,7 @@ public class TabInterferenciaControlador  implements Initializable{
 							inter.setInterProcRenovacao(tfProcessoRenovacao.getText());
 							inter.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
 							
-							inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+							//inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 						
 							inter.setInterEnderecoFK(endereco);
 							
@@ -379,7 +379,7 @@ public class TabInterferenciaControlador  implements Initializable{
 							
 							p.setSRID(4674);
 								
-							inter.setInterGeom(p);
+						//	inter.setInterGeom(p);
 							
 							
 							InterferenciaDao interferenciaDao = new InterferenciaDao ();
@@ -486,6 +486,7 @@ public class TabInterferenciaControlador  implements Initializable{
 											sub.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
 											sub.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
 											
+											/*
 											if (dpDataPublicacao.getValue() == null) {
 												sub.setInterDataPublicacao(null);;}
 												else {
@@ -498,14 +499,14 @@ public class TabInterferenciaControlador  implements Initializable{
 												else {
 													sub.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 												
-													}
+													}*/
 											
 											sub.setInterNumeroAto(tfNumeroAto.getText());
 											
 											sub.setInterProcRenovacao(tfProcessoRenovacao.getText());
 											sub.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
 											
-											sub.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+											//sub.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 											
 											sub.setInterEnderecoFK(endereco);
 												
@@ -514,11 +515,11 @@ public class TabInterferenciaControlador  implements Initializable{
 												Point p = geoFac.createPoint(new Coordinate(
 														Double.parseDouble(tfLon.getText()),
 														Double.parseDouble(tfLat.getText()
-														)));
-												
+											
+															)));
 												p.setSRID(4674);
 													
-												sub.setInterGeom(p);
+										//		sub.setInterGeom(p);
 											
 											InterferenciaDao interferenciaDao = new InterferenciaDao ();
 													
@@ -565,7 +566,7 @@ public class TabInterferenciaControlador  implements Initializable{
 												sup.setInterLogadouro(endereco.getEndLogadouro());
 												sup.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
 												sup.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
-												
+												/*
 												if (dpDataPublicacao.getValue() == null) {
 													sup.setInterDataPublicacao(null);;}
 													else {
@@ -578,14 +579,14 @@ public class TabInterferenciaControlador  implements Initializable{
 													else {
 														sup.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 													
-														}
+														}*/
 												
 												sup.setInterNumeroAto(tfNumeroAto.getText());
 												
 												sup.setInterProcRenovacao(tfProcessoRenovacao.getText());
 												sup.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
 												
-												sup.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+												//sup.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 											
 												sup.setInterEnderecoFK(endereco);
 												
@@ -598,7 +599,7 @@ public class TabInterferenciaControlador  implements Initializable{
 												
 												p.setSRID(4674);
 												
-												sup.setInterGeom(p);
+										//		sup.setInterGeom(p);
 											
 											InterferenciaDao interferenciaDao = new InterferenciaDao ();
 											
@@ -638,7 +639,7 @@ public class TabInterferenciaControlador  implements Initializable{
 							inter.setInterLogadouro(endereco.getEndLogadouro());
 							inter.setInterDDLatitude(Double.parseDouble(tfLat.getText()));
 							inter.setInterDDLongitude(Double.parseDouble(tfLon.getText()));
-							
+							/*
 							if (dpDataPublicacao.getValue() == null) {
 								inter.setInterDataPublicacao(null);;}
 								else {
@@ -651,14 +652,14 @@ public class TabInterferenciaControlador  implements Initializable{
 								else {
 									inter.setInterDataVencimento(Date.valueOf(dpDataVencimento.getValue()));
 								
-									}
+									}*/
 							
 							inter.setInterNumeroAto(tfNumeroAto.getText());
 							
 							inter.setInterProcRenovacao(tfProcessoRenovacao.getText());
 							inter.setInterDespachoRenovacao(tfDespachoRenovacao.getText());
 								
-							inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+							//inter.setIntAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
 							
 							inter.setInterEnderecoFK(endereco);
 								
@@ -671,7 +672,7 @@ public class TabInterferenciaControlador  implements Initializable{
 								
 								p.setSRID(4674);
 								
-								inter.setInterGeom(p);
+							//	inter.setInterGeom(p);
 								
 								/*
 								GeometryFactory geoFac = new GeometryFactory();
@@ -1485,8 +1486,8 @@ public class TabInterferenciaControlador  implements Initializable{
 				i.getInterDDLongitude();
 				
 				i.getInterSituacaoProcessoFK();
-				i.getInterDataPublicacao();
-				i.getInterDataVencimento();
+				//i.getInterDataPublicacao();
+				//i.getInterDataVencimento();
 				i.getInterNumeroAto();
 				
 				obsList.add(i);
@@ -1528,16 +1529,16 @@ public class TabInterferenciaControlador  implements Initializable{
 					tfLat.setText(inter.getInterDDLatitude().toString());
 					tfLon.setText(inter.getInterDDLongitude().toString());
 					
-					Date dPub = inter.getInterDataPublicacao();
-					dpDataPublicacao.setValue(dPub.toLocalDate());
+				//	Date dPub = inter.getInterDataPublicacao();
+					//dpDataPublicacao.setValue(dPub.toLocalDate());
 					
-					Date dVen = inter.getInterDataVencimento();
-					dpDataVencimento.setValue(dVen.toLocalDate());
+					//Date dVen = inter.getInterDataVencimento();
+				//	dpDataVencimento.setValue(dVen.toLocalDate());
 					
 					tfNumeroAto.setText(inter.getInterNumeroAto());
 					tfProcessoRenovacao.setText(inter.getInterProcRenovacao());
 					tfDespachoRenovacao.setText(inter.getInterDespachoRenovacao());
-					
+					/*
 					// mostrar data de atualizacao //
 					FormatoData d = new FormatoData();
 					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(inter.getIntAtualizacao()));
@@ -1547,7 +1548,7 @@ public class TabInterferenciaControlador  implements Initializable{
 							lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);
 							System.out.println("teste data atualizacao red");
-					}
+					}*/
 				
 					setEndereco(inter.getInterEnderecoFK());
 					

@@ -20,6 +20,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 
 @Entity
 public class Endereco implements Serializable{
@@ -48,16 +49,23 @@ public class Endereco implements Serializable{
 	@Column (name="end_DD_Longitude")
 	private Double endDDLongitude;
 	
+	/*
 	@Basic
 	@Column (name="end_Atualizacao")
 	private java.sql.Timestamp endAtualizacao;
+	*/
 	
 	@ManyToOne (fetch = FetchType.EAGER) 
 	@JoinColumn (name="end_RA_FK")
 	private RA endRAFK;
 	
-	@Column(name="end_Geom")
-	private Geometry endGeom;
+	/*
+	@Column(name="end_Geom", columnDefinition = "geometry(Point,4326)")
+	private Point endGeom;
+	*/
+	//@Column(columnDefinition = "geometry(Point,4326)") // Table 'somde078_mysql1.Demanda' doesn't exist
+	//private Point location;
+	
 	
 	//-- Lista de enderecos vinculados --//
 	@OneToMany (mappedBy = "demEnderecoFK", cascade = CascadeType.MERGE,
@@ -184,22 +192,8 @@ public class Endereco implements Serializable{
 		this.demandas = demandas;
 	}
 
-	public java.sql.Timestamp getEndAtualizacao() {
-		return endAtualizacao;
-	}
 
-	public void setEndAtualizacao(java.sql.Timestamp endAtualizacao) {
-		this.endAtualizacao = endAtualizacao;
-	}
-
-	public Geometry getEndGeom() {
-		return endGeom;
-	}
-
-	public void setEndGeom(Geometry endGeom) {
-		this.endGeom = endGeom;
-	}
-
+	
 	public List<Interferencia> getInterferencias() {
 		return interferencias;
 	}

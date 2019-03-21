@@ -38,6 +38,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -171,6 +172,8 @@ public class ControladorPrincipal {
 	@FXML 
 	private void initialize() {
 		
+		//Font.loadFont(getClass().getResourceAsStream("/fonts/HammersmithOne-Regular.ttf"), 10);
+		
 	    Platform.runLater(new Runnable(){
 
 			public void run() {
@@ -219,14 +222,14 @@ public class ControladorPrincipal {
 		tpLateralEsquera.getTabs().addAll(tabLE1, tabLE2);
 		tpLateralDireita.getTabs().addAll(tabLD1, tabLD2);
 		
-		AnchorPane.setTopAnchor(tpLateralEsquera, 200.0);
+		AnchorPane.setTopAnchor(tpLateralEsquera, 155.0);
 		AnchorPane.setLeftAnchor(tpLateralEsquera, 10.0);
 		
-		AnchorPane.setTopAnchor(tpLateralDireita, 200.0);
+		AnchorPane.setTopAnchor(tpLateralDireita, 155.0);
 		AnchorPane.setRightAnchor(tpLateralDireita, 10.0);
 
 	    pSuperior.setPrefSize(600, 25);
-	    pSuperior.getStyleClass().add("classePaneSuperior");
+	    pSuperior.getStyleClass().add("pane-superior");
 	   
 	    AnchorPane.setTopAnchor(pSuperior, 0.0);
 		AnchorPane.setRightAnchor(pSuperior, 0.0);
@@ -247,7 +250,7 @@ public class ControladorPrincipal {
 		  	cbConverterCoord.setPrefSize(100, 30);
 	  		cbConverterCoord.setLayoutX(11);
 	  		cbConverterCoord.setLayoutY(53);
-	  		cbConverterCoord.getStyleClass().add("classePressedHover");
+	  		//cbConverterCoord.getStyleClass().add("classePressedHover");
 	  		
 		  		pConvCentral.setPrefSize(829, 40);
 		  		pConvCentral.setLayoutX(108);
@@ -256,7 +259,7 @@ public class ControladorPrincipal {
 			  		btnConverteCoord.setPrefSize(100, 30);
 			  		btnConverteCoord.setLayoutX(937);
 			  		btnConverteCoord.setLayoutY(53);
-			  		btnConverteCoord.getStyleClass().add("classePressedHover");
+			  		//btnConverteCoord.getStyleClass().add("classePressedHover");
 			  		
 	  		
 			  			paneConversor.getChildren().addAll(cbConverterCoord, pConvCentral, btnConverteCoord); 
@@ -283,7 +286,7 @@ public class ControladorPrincipal {
 		    
 		apPrincipal.getChildren().addAll( pWebMap, tpLateralEsquera, tpLateralDireita, pSuperior,spCentroTabPanes, spConversorCoordenadas);
 		
-		apPrincipal.getStylesheets().add("/css/principal_mapa_azul.css");
+		apPrincipal.getStylesheets().add("/css/principal_mapa_azul.css"); 
 			
 	}
 	
@@ -358,7 +361,7 @@ public class ControladorPrincipal {
 	                	cbNorteSul.setPrefSize(65.0, 30.0);
 	                	cbNorteSul.setLayoutX(11.0);
 	                	cbNorteSul.setLayoutY(6.0);
-	                	cbNorteSul.getStyleClass().add("classePressedHover");
+	                	//cbNorteSul.getStyleClass().add("classePressedHover");
 	                	
 		                	tfZonaUTM = new TextField("23"); 
 		                	tfZonaUTM.setPrefSize(65.0, 30.0);
@@ -418,7 +421,7 @@ public class ControladorPrincipal {
                 	cbNorteSul.setPrefSize(65.0, 30.0);
                 	cbNorteSul.setLayoutX(173.0);
                 	cbNorteSul.setLayoutY(6.0);
-                	cbNorteSul.getStyleClass().add("classePressedHover");
+                	//cbNorteSul.getStyleClass().add("classePressedHover");
                 	
                 	
                 	cbLesteOesteOpcoes = FXCollections.observableArrayList(
@@ -432,7 +435,7 @@ public class ControladorPrincipal {
                 	cbLesteOeste.setPrefSize(65.0, 30.0); 
                 	cbLesteOeste.setLayoutX(410.0);
                 	cbLesteOeste.setLayoutY(6.0);
-                	cbLesteOeste.getStyleClass().add("classePressedHover");
+                	//cbLesteOeste.getStyleClass().add("classePressedHover");
                 	
                 	
                 	tfLatDD = new TextField("15 00 00");
@@ -557,7 +560,7 @@ public class ControladorPrincipal {
 	                "11px",  
 	                ContentDisplay.LEFT);
 	        
-		       	btnHome.getStyleClass().add("classeBotoesLateral");
+		      	btnHome.getStyleClass().add("button-lateral");
 		        btnHome.setLayoutX(10.0);
 		        btnHome.setLayoutY(16.0);
 		        
@@ -568,7 +571,7 @@ public class ControladorPrincipal {
                 "11px",  
                 ContentDisplay.LEFT);
 	        
-		        btnSEI.getStyleClass().add("classeBotoesLateral");
+		      	btnSEI.getStyleClass().add("button-lateral");
 		        btnSEI.setLayoutX(10.0);
 		        btnSEI.setLayoutY(55.0);
 	        
@@ -579,7 +582,7 @@ public class ControladorPrincipal {
                 "11px",   
                 ContentDisplay.LEFT);
 	        
-		       	btnAtendimento.getStyleClass().add("classeBotoesLateral");
+		       	btnAtendimento.getStyleClass().add("button-lateral");
 		        btnAtendimento.setLayoutX(10.0);
 		        btnAtendimento.setLayoutY(94.0);
 	        
@@ -590,7 +593,7 @@ public class ControladorPrincipal {
 	                "11px",  
 	                ContentDisplay.LEFT);
 	        
-		        btnFiscalizacao.getStyleClass().add("classeBotoesLateral");
+		     	btnFiscalizacao.getStyleClass().add("button-lateral");
 		        btnFiscalizacao.setLayoutX(10.0);
 		        btnFiscalizacao.setLayoutY(133.0);
 	        
@@ -601,7 +604,7 @@ public class ControladorPrincipal {
 	                   "11px",  
 	                   ContentDisplay.LEFT);
 	           
-	           btnEditorHTML.getStyleClass().add("classeBotoesLateral");
+	           btnEditorHTML.getStyleClass().add("button-lateral");
 	           btnEditorHTML.setLayoutX(10.0);
 	           btnEditorHTML.setLayoutY(172.0);
 	           
@@ -613,7 +616,7 @@ public class ControladorPrincipal {
 	                "11px",   
 	                ContentDisplay.LEFT);
 	        
-			        btnConversor.getStyleClass().add("classeBotoesLateral");
+			      	btnConversor.getStyleClass().add("button-lateral");
 			        btnConversor.setLayoutX(10.0);
 			        btnConversor.setLayoutY(211.0);
 		        
@@ -630,9 +633,9 @@ public class ControladorPrincipal {
 			        tabLE2.setGraphic(iconTabHome2);
 			        tabLE2.setClosable(false);
 		       
-			        pLE1.getStyleClass().add("classePanesLaterais");
+			        pLE1.getStyleClass().add("pane-lateral");
 		        
-			        pLE2.getStyleClass().add("classePanesLaterais");
+			        pLE2.getStyleClass().add("pane-lateral");
 			        
 			        pLE1.getChildren().addAll(btnHome, btnSEI, btnAtendimento, btnFiscalizacao, btnConversor, btnEditorHTML);
 		        
@@ -923,7 +926,7 @@ public class ControladorPrincipal {
         		"10px", 
                 "9px",  
                 ContentDisplay.TOP);
-        	btnZoomIn.getStyleClass().add("classeBotoesLateral");
+        	btnZoomIn.getStyleClass().add("button-lateral");
         
 	        btnZoomIn.setOnAction((ActionEvent evt)->{
 	        	googleMaps.setZoomIn();
@@ -939,7 +942,7 @@ public class ControladorPrincipal {
         		"10px", 
                 "9px",  
                 ContentDisplay.TOP);
-        	btnZoomOut.getStyleClass().add("classeBotoesLateral");
+        	btnZoomOut.getStyleClass().add("button-lateral");
         
 	        btnZoomOut.setOnAction((ActionEvent evt)->{
 	        	googleMaps.setZoomOut();
@@ -951,12 +954,12 @@ public class ControladorPrincipal {
         Label lblTipoMapa = new Label("Tipo de Mapa");
         	lblTipoMapa.setLayoutX(28.0);
         		lblTipoMapa.setLayoutY(11.0);
-        		lblTipoMapa.getStyleClass().add("classeLabel");
+        		//lblTipoMapa.getStyleClass().add("classeLabel");
         		
         		Label lblEstiloMapa = new Label("Estilo de Mapa");
         			lblEstiloMapa.setLayoutX(26.0);
         				lblEstiloMapa.setLayoutY(189.0);
-        				lblEstiloMapa.getStyleClass().add("classeLabel");
+        				//lblEstiloMapa.getStyleClass().add("classeLabel");
     	
        btnTerrain = new Button("TERRENO");
        btnRoadMap = new Button("RODOVIAS");
@@ -973,10 +976,10 @@ public class ControladorPrincipal {
 	    	btnGreenMap.setId("btnGreenMap");
 	    		btnRetroMap.setId("btnRetroMap");
 	    		
-	    		btnNightMap.getStyleClass().add("classeMapaEstilo");
-		    	btnBlueMap.getStyleClass().add("classeMapaEstilo");
-			    	btnGreenMap.getStyleClass().add("classeMapaEstilo");
-			    		btnRetroMap.getStyleClass().add("classeMapaEstilo");
+	    		btnNightMap.getStyleClass().add("estilo-mapa");
+		    	btnBlueMap.getStyleClass().add("estilo-mapa");
+			    	btnGreenMap.getStyleClass().add("estilo-mapa");
+			    		btnRetroMap.getStyleClass().add("estilo-mapa");
 		    		
 	
 							btnBlueMap.setLayoutX(10.0);
@@ -1003,7 +1006,7 @@ public class ControladorPrincipal {
 				        	googleMaps.mudarEstiloMapa(2);
 				        	apPrincipal.getStylesheets().clear();
 				        	apPrincipal.getStylesheets().add("/css/principal_mapa_azul.css");
-				        	
+				        							
 				        });	 
 			    	
 				    		btnGreenMap.setOnAction((ActionEvent evt)->{
@@ -1024,22 +1027,22 @@ public class ControladorPrincipal {
     	btnTerrain.setLayoutX(10.0);
     		btnTerrain.setLayoutY(40.0);
     	
-    			btnTerrain.getStyleClass().add("classeBotoesLateral");
+    			btnTerrain.getStyleClass().add("button-lateral");
         
     	btnRoadMap.setLayoutX(10.0);
     		btnRoadMap.setLayoutY(75.0);
     	
-    			btnRoadMap.getStyleClass().add("classeBotoesLateral");
+    			btnRoadMap.getStyleClass().add("button-lateral");
         
     	btnSattelite.setLayoutX(10.0);
     		btnSattelite.setLayoutY(110.0);
     	
-    			btnSattelite.getStyleClass().add("classeBotoesLateral");
+    		btnSattelite.getStyleClass().add("button-lateral");
         
     	btnHybrid.setLayoutX(10.0);
     		btnHybrid.setLayoutY(145.0);
     	
-    			btnHybrid.getStyleClass().add("classeBotoesLateral");
+    		btnHybrid.getStyleClass().add("button-lateral");
     	
     	checkBacia = new CheckBox("Bacias");
     		checkRiodDF  = new CheckBox("Rios do DF");
@@ -1102,7 +1105,7 @@ public class ControladorPrincipal {
         
         	tabLD2.setClosable(false);
        
-	        pLD1.getStyleClass().add("classePanesLaterais");
+	        pLD1.getStyleClass().add("pane-lateral");
         
 	        pLD1.getChildren().addAll(
         		lblTipoMapa, 
@@ -1110,7 +1113,7 @@ public class ControladorPrincipal {
         		lblEstiloMapa, btnNightMap, btnBlueMap, btnGreenMap, btnRetroMap,
         		btnZoomIn, btnZoomOut);
 	        
-	        pLD2.getStyleClass().add("classePanesLaterais");
+	        pLD2.getStyleClass().add("pane-lateral");
 	        pLD2.getChildren().addAll(pCheck);
         
         tabLD1.setContent(pLD1);

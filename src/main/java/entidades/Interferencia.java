@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -62,12 +63,18 @@ public class Interferencia implements Serializable {
 	@Column (name="inter_DD_Longitude")
 	private Double interDDLongitude;
 	
-	@Column(name="inter_Geom")
-	private Geometry interGeom;
+	@Column(name="inter_Geom", columnDefinition = "geometry(Point,4326)")
+	private Point interGeom;
+	
+
+	
+	//@Column(columnDefinition = "geometry(Point,4326)") // Table 'somde078_mysql1.Demanda' doesn't exist
+	//private Point location;
 	
 	@Column (name="inter_Logadouro", columnDefinition="varchar (250)")
 	private String interLogadouro;
 	
+	/*
 	@Basic
 	@Column (name="inter_Atualizacao")
 	private java.sql.Timestamp intAtualizacao;
@@ -79,7 +86,7 @@ public class Interferencia implements Serializable {
 	@Basic
 	@Column (name="inter_Data_Publicacao")
 	private java.sql.Date interDataPublicacao;
-	
+	*/
 	@Column (name="inter_Num_Ato", columnDefinition="varchar(20)")
 	private String interNumeroAto;
 	
@@ -162,22 +169,14 @@ public class Interferencia implements Serializable {
 	}
 	
 	
-	public java.sql.Timestamp getIntAtualizacao() {
-		return intAtualizacao;
-	}
-
-	public void setIntAtualizacao(java.sql.Timestamp intAtualizacao) {
-		this.intAtualizacao = intAtualizacao;
-	}
+	
 
 	public Geometry getInterGeom() {
 		return interGeom;
 	}
+	
 
-	public void setInterGeom(Geometry interGeom) {
-		this.interGeom = interGeom;
-	}
-
+	
 	public SituacaoProcesso getInterSituacaoProcessoFK() {
 		return interSituacaoProcessoFK;
 	}
@@ -202,21 +201,8 @@ public class Interferencia implements Serializable {
 		this.interTipoOutorgaFK = interTipoOutorgaFK;
 	}
 
-	public java.sql.Date getInterDataVencimento() {
-		return interDataVencimento;
-	}
-
-	public void setInterDataVencimento(java.sql.Date interDataVencimento) {
-		this.interDataVencimento = interDataVencimento;
-	}
-
-	public java.sql.Date getInterDataPublicacao() {
-		return interDataPublicacao;
-	}
-
-	public void setInterDataPublicacao(java.sql.Date interDataPublicacao) {
-		this.interDataPublicacao = interDataPublicacao;
-	}
+	
+	
 
 	public String getInterNumeroAto() {
 		return interNumeroAto;

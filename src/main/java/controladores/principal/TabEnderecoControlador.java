@@ -258,16 +258,17 @@ public class TabEnderecoControlador implements Initializable {
 								
 								p.setSRID(4674);
 									
-								end.setEndGeom(p);
+							//	end.setEndGeom(p);
 								
+								/*
 								end.setEndAtualizacao(
-										Timestamp.valueOf((LocalDateTime.now())));
+										Timestamp.valueOf((LocalDateTime.now())));*/
 										
 										Demanda dem = new Demanda ();
 										
 											dem = demanda;
 											dem.setDemEnderecoFK(end);
-											end.getDemandas().add(dem);
+										//	end.getDemandas().add(dem);
 										
 										EnderecoDao endDao = new EnderecoDao();
 										
@@ -361,9 +362,9 @@ public class TabEnderecoControlador implements Initializable {
 				
 				p.setSRID(4674);
 					
-				end.setEndGeom(p);
+				//end.setEndGeom(p);
 				
-				end.setEndAtualizacao(Timestamp.valueOf((LocalDateTime.now())));
+			/*	end.setEndAtualizacao(Timestamp.valueOf((LocalDateTime.now())));*/
 				
 				Demanda dem = new Demanda();
 				
@@ -912,13 +913,13 @@ public class TabEnderecoControlador implements Initializable {
 					}
 					*/
 					
-					
+					/*
 					// mostrar data de atualizacao //
 					FormatoData d = new FormatoData();
 					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(end.getEndAtualizacao()));
 							lblDataAtualizacao.setTextFill(Color.BLACK);
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
-							lblDataAtualizacao.setTextFill(Color.RED);}
+							lblDataAtualizacao.setTextFill(Color.RED);}*/
 						
 //aquii 	ao excluir um endereco  Index: 0, Size: 0	
 					

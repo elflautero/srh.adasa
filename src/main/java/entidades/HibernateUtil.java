@@ -5,15 +5,39 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 	
-	private static SessionFactory factory = null;
 	
+	private static String newUserName;
+	private static String newPassword;
+	
+	public static void getUserPass ( String newUserName, String newPassword) {
+		
+		HibernateUtil.newUserName = newUserName;
+		HibernateUtil.newPassword = newPassword;
+	}
+	
+	
+	private static SessionFactory factory = null;
 	private static Configuration conf;
 	
 	private static SessionFactory buildSessionFactory () {
+		
 		try {
 		conf = new Configuration();
+		
 		conf.configure("/Hibernate.cfg.xml"); // /hibernate/Hibernate.cfg.xml
-		// /resources/hibernate.cfg.xml  original: hibernate.cfg.xml
+		
+		/////////////////////
+	
+		conf.getProperties().setProperty("hibernate.connection.username",newUserName);
+		conf.getProperties().setProperty("hibernate.connection.password",newPassword);
+		
+		
+		//  hibernate.cfg.xml
+		// <property name="connection.username">somde078_srh</property>
+    	// <property name="connection.password">12345</property>
+    	
+		////////////////////////
+	
 		
 			System.out.println("Configurou!");
 		
@@ -30,6 +54,7 @@ public class HibernateUtil {
 	}
 	
 	public static SessionFactory getSessionFactory () {
+		
 		if (factory == null) 
 			factory = buildSessionFactory();
 		

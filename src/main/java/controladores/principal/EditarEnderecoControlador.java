@@ -366,9 +366,9 @@ public class EditarEnderecoControlador implements Initializable {
 					end.setEndUF(cbEndUF.getValue());
 					end.setEndDDLatitude(Double.parseDouble(tfEndLat.getText()));
 					end.setEndDDLongitude(Double.parseDouble(tfEndLon.getText()));
-					
+					/*
 					end.setEndAtualizacao(
-							Timestamp.valueOf((LocalDateTime.now())));
+							Timestamp.valueOf((LocalDateTime.now())));*/
 					
 					Demanda dem = new Demanda();
 					Usuario us = new Usuario();
@@ -705,12 +705,12 @@ public class EditarEnderecoControlador implements Initializable {
 					FormatoData d = new FormatoData();
 					
 					// mostrar data de atualizacao //
-					
+					/*
 					try {lblDataAtualizacao.setText("Data de Atualização: " + d.formatarData(end.getEndAtualizacao()));
 							lblDataAtualizacao.setTextFill(Color.BLACK);
 					}catch (Exception e) {lblDataAtualizacao.setText("Não há data de atualização!");
 							lblDataAtualizacao.setTextFill(Color.RED);}
-					
+					*/
 					// atualizar o valor da demanda //
 					/*
 					if (end.getDemandas().size() != 0) { // colocar regra de só pode enditar escolhendo uma demanda...
